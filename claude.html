@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1Alquila Seguro MDP</title>
+    <title>Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="keywords" content="verificación inmobiliaria, anti fraude, alquiler seguro, mar del plata">
     <meta name="theme-color" content="#002B49">
@@ -4122,96 +4122,101 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Centro ajustado un poco al oeste para el zoom inicial
+        // Centro del Mapa
         const map = L.map('map', { 
-            center: [-38.0000, -57.5500], 
+            center: [-38.0050, -57.5450], 
             zoom: 12, 
             scrollWheelZoom: false 
         });
 
+        // Estilo del mapa (Limpio)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 20
+            attribution: '&copy; OSM &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- CONFIGURACIÓN ---
-        const cantidadPuntos = 600; // Muchos más puntos como pediste
-        
-        // Función matemática que define APROXIMADAMENTE la línea costera de MDP
-        // Devuelve la longitud máxima (Este) permitida para una latitud dada
-        function getCostaLimite(lat) {
-            // Latitud base (Centro / Cabo Corrientes)
-            const baseLat = -38.01; 
-            
-            // Cuanto más nos alejamos del centro (Norte o Sur), más al Oeste se mete la costa
-            // Esta fórmula crea una curva que imita la geografía de la ciudad
-            const diferencia = Math.abs(lat - baseLat);
-            
-            // El "Cabo" está en -57.51 aprox. El resto se mete hacia adentro.
-            // Factor de corrección: 1.2 para el norte, 0.8 para el sur
-            const factorCurva = lat > baseLat ? 1.5 : 0.8; 
-            
-            return -57.515 - (diferencia * factorCurva);
+        // --- DEFINICIÓN DEL POLÍGONO DE MAR DEL PLATA (Solo Tierra) ---
+        // Estos puntos trazan la costa real y cierran por tierra adentro
+        const limiteTierra = [
+            [-37.9317, -57.5350], // Parque Camet
+            [-37.9463, -57.5312], // Costa Norte
+            [-37.9664, -57.5381], // Constitución y Costa
+            [-37.9942, -57.5303], // La Perla / Alfonsina
+            [-38.0135, -57.5149], // Cabo Corrientes (Punta máxima al este)
+            [-38.0263, -57.5218], // Playa Grande
+            [-38.0371, -57.5259], // Escollera Norte
+            [-38.0553, -57.5362], // Punta Mogotes
+            [-38.0841, -57.5458], // Faro
+            [-38.0800, -57.6200], // Cierre Sur (Campo)
+            [-38.0000, -57.6400], // Cierre Oeste (Champagnat fondo)
+            [-37.9300, -57.6000]  // Cierre Norte (Aeropuerto aprox)
+        ];
+
+        // Función matemática: "Ray Casting Algorithm"
+        // Determina si un punto [lat, lng] está DENTRO del polígono
+        function estaEnTierra(lat, lng) {
+            let inside = false;
+            for (let i = 0, j = limiteTierra.length - 1; i < limiteTierra.length; j = i++) {
+                const xi = limiteTierra[i][0], yi = limiteTierra[i][1];
+                const xj = limiteTierra[j][0], yj = limiteTierra[j][1];
+                const intersect = ((yi > lng) !== (yj > lng)) &&
+                    (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
         }
 
-        let puntosGenerados = 0;
-        let intentos = 0;
+        // --- GENERADOR DE PUNTOS ---
+        const totalPuntos = 500;
+        let generados = 0;
+        let seguridad = 0;
 
-        // Bucle hasta conseguir la cantidad deseada
-        while (puntosGenerados < cantidadPuntos && intentos < 10000) {
-            intentos++;
+        while (generados < totalPuntos && seguridad < 10000) {
+            seguridad++;
 
-            // 1. Generar latitud con sesgo hacia el centro (Campana de Gauss aproximada)
-            // Generamos un número entre -37.90 (Norte) y -38.10 (Sur)
-            // Usamos una función cúbica para concentrar puntos en el medio (-38.00)
-            const r = (Math.random() * 2 - 1); // -1 a 1
-            const latOffset = (r * r * r) * 0.08; // Concentra valores cerca de 0
-            const lat = -38.00 + latOffset;
+            // 1. Generar punto aleatorio en un cuadrado grande que cubre toda la ciudad
+            // Usamos una función cúbica para que haya MAS puntos en el centro (-38.00)
+            const rLat = (Math.random() * 2 - 1); 
+            const latOffset = (rLat * rLat * rLat) * 0.08; 
+            const lat = -38.00 + latOffset; // Latitud con sesgo central
 
-            // 2. Generar longitud
-            // Generamos desde muy al oeste (-57.65) hasta el límite de la costa
-            const limiteEste = getCostaLimite(lat);
-            const anchoZona = 0.12; // Qué tan al oeste vamos
-            
-            // Sesgo también en longitud para que haya más cerca de la costa (centro urbano)
-            const r2 = Math.random(); 
-            // r2^2 hace que haya más números cercanos a 1 (el este/costa) que a 0 (el campo)
-            const lng = (limiteEste - anchoZona) + (Math.pow(r2, 0.6) * anchoZona);
+            const rLng = (Math.random() * 2 - 1);
+            const lngOffset = (rLng * rLng * rLng) * 0.08;
+            const lng = -57.56 + lngOffset; // Longitud con sesgo al centro geográfico
 
-            // 3. FILTRO DE SEGURIDAD (ANTI-AGUA)
-            // Si por error matemático nos pasamos del límite costero - 200 metros (buffer), descartamos
-            if (lng > (limiteEste - 0.002)) {
-                continue; // Saltar a la siguiente iteración sin dibujar
+            // 2. FILTRO MAESTRO: ¿Cae dentro del dibujo de la costa?
+            if (!estaEnTierra(lat, lng)) {
+                continue; // Si cae en el mar, lo descartamos y probamos otro
             }
 
-            // 4. Lógica de colores y tamaños
+            // 3. Lógica de Colores (Centro vs Periferia)
+            const esCentro = (lat > -38.02 && lat < -37.98 && lng > -57.56);
             const rand = Math.random();
-            let color, text, radius, opacity;
+            let color, radius;
 
-            // Densidad geográfica: Si es muy periférico, aumentamos chance de rojo/amarillo
-            const esPeriferia = (lat > -37.96 || lat < -38.05 || lng < -57.58);
-            
-            if (esPeriferia) {
-                // Lógica PERIFERIA (Más estafas)
-                if (rand < 0.3) { color = '#10B981'; text = '🛡️ Verificado'; radius = 30; } // 30% verde
-                else if (rand < 0.8) { color = '#EF4444'; text = '⚠️ ALERTA: Zona sin relevar'; radius = 50; } // 50% rojo
-                else { color = '#F59E0B'; text = '✋ En proceso'; radius = 40; } // 20% amarillo
+            if (esCentro) {
+                // En el centro: Puntos más chicos, más verdes
+                radius = 25;
+                if (rand < 0.85) color = '#10B981';      // Verde
+                else if (rand < 0.95) color = '#EF4444'; // Rojo
+                else color = '#F59E0B';                  // Amarillo
             } else {
-                // Lógica CENTRO (Más verde)
-                if (rand < 0.75) { color = '#10B981'; text = '🛡️ Verificado'; radius = 25; } // 75% verde
-                else if (rand < 0.90) { color = '#EF4444'; text = '⚠️ Denuncia Activa'; radius = 35; } // 15% rojo
-                else { color = '#F59E0B'; text = '✋ Validación pendiente'; radius = 25; } // 10% amarillo
+                // Periferia: Puntos un pelín más grandes, más rojos
+                radius = 35;
+                if (rand < 0.40) color = '#10B981';      // Verde
+                else if (rand < 0.85) color = '#EF4444'; // Rojo
+                else color = '#F59E0B';                  // Amarillo
             }
 
-            // DIBUJAR
+            // 4. Dibujar
             L.circle([lat, lng], {
                 color: color,
                 fillColor: color,
-                fillOpacity: 0.6,
+                fillOpacity: 0.7,
                 radius: radius,
-                weight: 0 
-            }).addTo(map).bindPopup(text);
+                weight: 0 // Sin bordes
+            }).addTo(map);
 
-            puntosGenerados++;
+            generados++;
         }
 
         // Modo oscuro

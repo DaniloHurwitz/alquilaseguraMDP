@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1Alquila Seguro MDP</title>
+    <title>Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="keywords" content="verificación inmobiliaria, anti fraude, alquiler seguro, mar del plata">
     <meta name="theme-color" content="#002B49">
@@ -109,6 +109,11 @@
             box-sizing: border-box;
             -webkit-tap-highlight-color: transparent;
         }
+
+        *, *::before, *::after {
+    box-sizing: border-box;
+    min-width: 0;                        /* Permitir shrink en flex/grid */
+}
         
         html {
             scroll-behavior: smooth;
@@ -2015,19 +2020,32 @@ border-bottom: 1px solid var(--border-color);
         }        .section-padding {
             padding: var(--space-2xl) 0;
         }        .nav-links {
-            position: fixed;
-            top: 70px;
-            left: -100%;
-            width: 100%;
-            height: calc(100vh - 70px);
-            background: var(--bg-card);
-            flex-direction: column;
-            padding: var(--space-2xl);
-            transition: left 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: var(--shadow-xl);
-            z-index: 999;
-            gap: var(--space-lg);
-        }        .nav-links.active {
+    position: fixed;
+    top: 70px;
+    left: -100%;
+    width: 100%;
+    max-width: 100vw;                    /* AGREGAR */
+    height: calc(100vh - 70px);
+    background: var(--bg-card);
+    flex-direction: column;
+    padding: var(--space-xl) var(--space-lg); /* CAMBIAR padding horizontal */
+    transition: left 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    box-shadow: var(--shadow-xl);
+    z-index: 999;
+    gap: var(--space-md);                /* REDUCIR gap */
+    overflow-y: auto;                    /* AGREGAR scroll si es necesario */
+    overflow-x: hidden;                  /* CRÍTICO */
+}
+
+.nav-item {
+    width: 100%;                         /* AGREGAR */
+    text-align: center;                  /* AGREGAR - centrar texto */
+}
+
+.nav-links .btn {
+    width: 100%;                         /* AGREGAR - botón full width */
+    justify-content: center;
+}       .nav-links.active {
             left: 0;
         }        .hamburger {
             display: flex;
@@ -2047,7 +2065,27 @@ border-bottom: 1px solid var(--border-color);
             margin-top: -60px;
         }        .checkbox-group {
             grid-template-columns: 1fr;
-        }        .gallery-grid {
+        }        .tool-layout {
+    grid-template-columns: 1fr; /* YA EXISTE pero verificá que esté */
+}
+
+.checkbox-group {
+    grid-template-columns: 1fr; /* YA EXISTE */
+    gap: var(--space-sm);        /* AGREGAR - reducir gap */
+}
+
+.chk-item {
+    padding: var(--space-md);    /* Reducir padding en mobile */
+    min-width: 0;                /* CRÍTICO: permitir shrink */
+}
+
+.chk-content strong,
+.chk-content small {
+    word-wrap: break-word;       /* Romper texto largo */
+    overflow-wrap: break-word;
+}
+        
+        .gallery-grid {
             grid-template-columns: 1fr;
         }        .pricing-grid {
             grid-template-columns: 1fr;

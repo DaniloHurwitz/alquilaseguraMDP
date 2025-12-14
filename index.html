@@ -1025,7 +1025,10 @@ html, body {
 
 /* Transiciones suaves para el morphing */
 #mouth, #left-eye, #right-eye {
-    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    /* Usamos un ease-in-out estándar pero más largo para suavidad premium */
+    transition: d 0.8s cubic-bezier(0.4, 0.0, 0.2, 1), 
+                ry 0.8s cubic-bezier(0.4, 0.0, 0.2, 1),
+                cy 0.8s cubic-bezier(0.4, 0.0, 0.2, 1);
 }
 
 .gauge-score {
@@ -3349,49 +3352,54 @@ section {
     const items = document.querySelectorAll('.chk-item');
     const checkedItems = document.querySelectorAll('.chk-item.checked');
     const score = (checkedItems.length / items.length) * 100;
-    
+
     const scoreEl = document.getElementById('score');
     const labelEl = document.getElementById('risk-label');
-    
+
     // Elementos SVG de la cara
     const mouth = document.getElementById('mouth');
     const leftEye = document.getElementById('left-eye');
     const rightEye = document.getElementById('right-eye');
-    
+
     // Actualizar porcentaje
     scoreEl.textContent = Math.round(score) + '%';
-    
+
     // MORPHING DE LA CARA según el score
     if (score >= 75) {
         // 😊 FELIZ - boca sonriente hacia arriba
-        mouth.setAttribute('d', 'M 30 65 Q 50 75 70 65');
+        // Estructura: M (Inicio) Q (Punto de control curva) (Fin)
+        mouth.setAttribute('d', 'M 30 65 Q 50 80 70 65'); // Aumenté un poco la curva (80) para más felicidad
         leftEye.setAttribute('ry', '4');
         rightEye.setAttribute('ry', '4');
         leftEye.setAttribute('cy', '35');
         rightEye.setAttribute('cy', '35');
-        
+
         labelEl.textContent = '✅ RIESGO BAJO';
         labelEl.style.color = 'var(--success)';
-        
+
     } else if (score >= 50) {
-        // 😐 NEUTRAL - boca recta
-        mouth.setAttribute('d', 'M 30 65 L 70 65');
-        leftEye.setAttribute('ry', '5');
-        rightEye.setAttribute('ry', '5');
+        // 😐 NEUTRAL - boca recta (CORREGIDO)
+        // ANTES (Salto brusco): mouth.setAttribute('d', 'M 30 65 L 70 65');
+        // AHORA (Morph suave): Usamos Q pero con el punto de control al medio para simular recta
+        mouth.setAttribute('d', 'M 30 65 Q 50 65 70 65');
+
+        leftEye.setAttribute('ry', '6'); // Ojos un poco más abiertos que feliz
+        rightEye.setAttribute('ry', '6');
         leftEye.setAttribute('cy', '35');
         rightEye.setAttribute('cy', '35');
-        
+
         labelEl.textContent = '⚠️ RIESGO MEDIO';
         labelEl.style.color = 'var(--warning)';
-        
+
     } else {
         // 😢 TRISTE - boca hacia abajo
-        mouth.setAttribute('d', 'M 30 60 Q 50 55 70 60');
-        leftEye.setAttribute('ry', '8'); // ojos más alargados
-        rightEye.setAttribute('ry', '8');
-        leftEye.setAttribute('cy', '38'); // bajar un poco
+        mouth.setAttribute('d', 'M 30 65 Q 50 50 70 65'); // Ajusté las coordenadas para que coincidan inicio/fin con las otras
+
+        leftEye.setAttribute('ry', '7'); // ojos más alargados verticalmente
+        rightEye.setAttribute('ry', '7');
+        leftEye.setAttribute('cy', '38'); // bajar un poco los ojos
         rightEye.setAttribute('cy', '38');
-        
+
         labelEl.textContent = '🚨 RIESGO ALTO';
         labelEl.style.color = 'var(--danger)';
     }

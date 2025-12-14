@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alquila Seguro MDP</title>
+    <title>1Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="theme-color" content="#002B49">
     
@@ -780,18 +780,7 @@
         }
 
         // === ADMIN LOGIC (COMPLEX HASH) ===
-        function authAdmin() {
-    const u = document.getElementById('adm-u').value;
-    const p = document.getElementById('adm-p').value;
-    if(u === 'admin' && p === 'SEGURO2025') {
-        closeModal('login-modal');
-        document.getElementById('admin-overlay').style.display = 'block';
-        showToast("Bienvenido Staff. Panel Habilitado.", 'success');
-        loadLeads(); // Cargar leads al entrar
-    } else {
-        showToast("Credenciales incorrectas", 'error');
-    }
-}
+    
 
         // === ENCRIPTACIÓN Y GENERACIÓN ===
 function generateAndPrint() {
@@ -849,32 +838,6 @@ function generateAndPrint() {
             document.getElementById('plan-select').value = plan;
             document.getElementById('contacto').scrollIntoView();
         }
-        function submitLead(e) {
-    e.preventDefault();
-    const btn = e.target.querySelector('button');
-    btn.innerText = "GUARDANDO...";
-    
-    // Capturar datos
-    const inputs = e.target.querySelectorAll('input, select');
-    const newLead = {
-        date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
-        name: inputs[0].value,
-        phone: inputs[1].value,
-        link: inputs[2].value,
-        plan: inputs[3].value
-    };
-
-    // Guardar en LocalStorage (Simulando base de datos)
-    let leads = JSON.parse(localStorage.getItem('leads') || "[]");
-    leads.unshift(newLead); // Agregar al principio
-    localStorage.setItem('leads', JSON.stringify(leads));
-
-    setTimeout(() => {
-        showToast("Solicitud recibida correctamente.", 'success');
-        btn.innerText = "¡ENVIADO!";
-        e.target.reset();
-    }, 1000);
-}
 
 function loadLeads() {
     const leads = JSON.parse(localStorage.getItem('leads') || "[]");
@@ -929,6 +892,114 @@ function decryptHash(hash) {
         alert("Hash inválido");
     }
 }
+
+        // ==========================================
+    // 🛠️ FIX: FUNCIONES DE SISTEMA Y ADMIN
+    // ==========================================
+
+    // 1. SISTEMA DE NOTIFICACIONES (TOAST) - Faltaba esto para que salgan los mensajes
+    function showToast(message, type = 'success') {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = `toast ${type}`;
+        const icon = type === 'success' ? '✅' : '⚠️';
+        toast.innerHTML = `<span style="font-size:1.2rem">${icon}</span> <span>${message}</span>`;
+        
+        container.appendChild(toast);
+        
+        // Animación de entrada y salida
+        setTimeout(() => {
+            toast.style.opacity = '0';
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+
+    // 2. LÓGICA DE ADMIN CORREGIDA
+    function authAdmin() {
+        const u = document.getElementById('adm-u').value;
+        const p = document.getElementById('adm-p').value;
+        
+        // Credenciales: admin / SEGURO2025
+        if(u === 'admin' && p === 'SEGURO2025') {
+            closeModal('login-modal');
+            document.getElementById('admin-overlay').style.display = 'flex'; // Abrir panel
+            showToast("Acceso Autorizado. Bienvenido Staff.", 'success');
+            loadLeads(); // Cargar la lista de clientes
+        } else {
+            showToast("Contraseña incorrecta", 'error');
+            // Efecto visual de error
+            const box = document.querySelector('.login-box');
+            box.style.transform = "translateX(10px)";
+            setTimeout(() => box.style.transform = "translateX(0)", 100);
+        }
+    }
+
+    // 3. SISTEMA DE LEADS (TABLA DE CLIENTES) - Faltaba esta lógica
+    function loadLeads() {
+        // Recuperar leads guardados o iniciar vacío
+        const leads = JSON.parse(localStorage.getItem('leads') || "[]");
+        const tbody = document.getElementById('leads-body');
+        
+        if (!tbody) return; // Seguridad si no existe la tabla
+        tbody.innerHTML = ""; // Limpiar tabla
+
+        if(leads.length === 0) {
+            tbody.innerHTML = "<tr><td colspan='5' style='padding:20px; text-align:center; color:#666;'>No hay solicitudes nuevas.</td></tr>";
+            return;
+        }
+
+        // Dibujar filas
+        leads.forEach(l => {
+            const row = document.createElement('tr');
+            row.style.borderBottom = "1px solid #eee";
+            row.innerHTML = `
+                <td style="padding: 10px;">${l.date}</td>
+                <td style="padding: 10px; font-weight:bold;">${l.name}</td>
+                <td style="padding: 10px;">${l.phone}</td>
+                <td style="padding: 10px;"><span style="background:var(--secondary); color:white; padding:2px 8px; border-radius:10px; font-size:0.7rem;">${l.plan}</span></td>
+                <td style="padding: 10px; font-size:0.8rem; color:#666;">${l.link}</td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // 4. GUARDADO DE LEADS (CONECTADO AL FORMULARIO)
+    function submitLead(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button');
+        const originalText = btn.innerText;
+        
+        btn.innerText = "PROCESANDO...";
+        btn.style.opacity = "0.7";
+
+        // Capturar datos del form
+        const inputs = e.target.querySelectorAll('input, select');
+        const newLead = {
+            date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
+            name: inputs[0].value,
+            phone: inputs[1].value,
+            link: inputs[2].value,
+            plan: inputs[3].value
+        };
+
+        // Guardar en memoria del navegador
+        const leads = JSON.parse(localStorage.getItem('leads') || "[]");
+        leads.unshift(newLead);
+        localStorage.setItem('leads', JSON.stringify(leads));
+
+        setTimeout(() => {
+            showToast("Solicitud enviada con éxito.", 'success');
+            btn.innerText = "¡ENVIADO!";
+            btn.style.background = "var(--success)";
+            e.target.reset();
+            
+            setTimeout(() => {
+                btn.innerText = originalText;
+                btn.style.background = "";
+                btn.style.opacity = "1";
+            }, 3000);
+        }, 1500);
+    }
     </script>
 </body>
 </html>

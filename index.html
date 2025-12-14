@@ -3,21 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Alquila Seguro MDP: Servicio de verificación de propiedades temporarias en Mar del Plata. Evitá estafas y asegurá tus vacaciones.">
-    <title>Inicio | Alquila Seguro MDP</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Alquila Seguro MDP | Verificación de Alquileres Temporarios</title>
+    <meta name="description" content="Evitá estafas en Mar del Plata. Verificamos propiedades y dueños presencialmente antes de que pagues la seña.">
     
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        /* --- CSS GLOBAL --- */
+        /* --- 1. VARIABLES & RESET --- */
         :root {
-            --primary: #003366; /* Azul Marino */
-            --secondary: #00BFFF; /* Celeste Costa */
-            --accent: #FFD700; /* Dorado sutil para alertas */
+            --primary: #003366;      /* Azul Marino Profundo */
+            --primary-dark: #002244;
+            --secondary: #00BFFF;    /* Celeste Costa Atlántica */
+            --secondary-hover: #009acd;
+            --accent: #FF9F1C;       /* Naranja para CTAs urgentes */
             --white: #ffffff;
-            --gray-light: #f4f6f8;
-            --gray-dark: #333333;
-            --text-color: #2c3e50;
-            --transition: all 0.3s ease;
+            --light-gray: #f8f9fa;
+            --text-main: #2d3436;
+            --text-muted: #636e72;
+            --success: #2ecc71;
+            --danger: #e74c3c;
+            
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.05);
+            --shadow-md: 0 5px 15px rgba(0,0,0,0.1);
+            --shadow-lg: 0 10px 30px rgba(0,0,0,0.15);
+            
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * {
@@ -26,34 +37,56 @@
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Open Sans', sans-serif;
+            color: var(--text-main);
+            background-color: var(--white);
             line-height: 1.6;
-            color: var(--text-color);
-            background-color: var(--gray-light);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4, h5 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            color: var(--primary);
+            line-height: 1.2;
         }
 
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         ul { list-style: none; }
-
-        /* --- HEADER & NAV --- */
-        header {
-            background-color: var(--primary);
-            color: var(--white);
-            padding: 1rem 0;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
+        
         .container {
+            width: 90%;
             max-width: 1200px;
             margin: 0 auto;
-            padding: 0 20px;
+            padding: 0 15px;
         }
 
-        .navbar {
+        .section-padding { padding: 80px 0; }
+
+        /* --- 2. HEADER & NAVIGATION --- */
+        #navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 20px 0;
+            transition: var(--transition);
+            background: transparent;
+        }
+
+        #navbar.scrolled {
+            background: rgba(255, 255, 255, 0.98);
+            box-shadow: var(--shadow-sm);
+            padding: 15px 0;
+        }
+
+        .nav-flex {
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -61,324 +94,633 @@
 
         .logo {
             font-size: 1.5rem;
-            font-weight: 700;
+            font-weight: 800;
+            color: var(--white);
             display: flex;
             align-items: center;
+            gap: 8px;
         }
+        
+        #navbar.scrolled .logo { color: var(--primary); }
 
-        .logo span { color: var(--secondary); margin-left: 5px; }
+        .logo span { color: var(--secondary); }
 
         .nav-links {
             display: flex;
-            gap: 20px;
+            gap: 30px;
         }
 
         .nav-links a {
             color: var(--white);
-            font-weight: 500;
-            padding: 8px 15px;
-            border-radius: 4px;
-        }
-
-        .nav-links a:hover, .nav-links a.active {
-            background-color: var(--secondary);
-            color: var(--primary);
-        }
-
-        /* Menu Hamburger Mobile */
-        .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; }
-
-        /* --- HERO SECTION --- */
-        .hero {
-            background: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)), url('https://images.unsplash.com/photo-1542259682-167856333908?auto=format&fit=crop&q=80');
-            background-size: cover;
-            background-position: center;
-            height: 80vh;
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: var(--white);
-        }
-
-        .hero-content h1 {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-        }
-
-        .hero-content p {
-            font-size: 1.25rem;
-            margin-bottom: 2rem;
-            max-width: 700px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .btn {
-            display: inline-block;
-            padding: 12px 30px;
-            background-color: var(--secondary);
-            color: var(--primary);
-            border-radius: 5px;
-            font-weight: 700;
-            text-transform: uppercase;
-            border: none;
-            cursor: pointer;
-        }
-
-        .btn:hover {
-            background-color: var(--white);
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        }
-
-        /* --- SECCIONES GENERALES --- */
-        section { padding: 60px 0; }
-
-        .section-title {
-            text-align: center;
-            margin-bottom: 40px;
-            color: var(--primary);
-            font-size: 2.2rem;
+            font-weight: 600;
+            font-size: 0.95rem;
             position: relative;
         }
 
-        .section-title::after {
+        #navbar.scrolled .nav-links a { color: var(--primary); }
+
+        .nav-links a::after {
             content: '';
-            display: block;
-            width: 60px;
-            height: 3px;
-            background: var(--secondary);
-            margin: 10px auto 0;
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -5px;
+            left: 0;
+            background-color: var(--secondary);
+            transition: var(--transition);
         }
 
-        /* --- BENEFICIOS (Grid) --- */
-        .benefits-grid {
+        .nav-links a:hover::after { width: 100%; }
+
+        .btn-nav {
+            background: var(--secondary);
+            color: var(--white) !important;
+            padding: 10px 25px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 191, 255, 0.3);
+        }
+        
+        .btn-nav:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0, 191, 255, 0.5); }
+        .btn-nav::after { display: none; }
+
+        /* Mobile Menu */
+        .hamburger { display: none; cursor: pointer; color: var(--white); font-size: 1.8rem; }
+        #navbar.scrolled .hamburger { color: var(--primary); }
+
+        /* --- 3. HERO SECTION --- */
+        .hero {
+            position: relative;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(135deg, rgba(0, 51, 102, 0.9) 0%, rgba(0, 34, 68, 0.8) 100%), url('https://images.unsplash.com/photo-1612198188060-c7c2a3b66eae?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed; /* Parallax effect */
+            color: var(--white);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+            animation: fadeIn Up 1s ease;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+
+        .btn-hero {
+            display: inline-block;
+            background-color: var(--secondary);
+            color: var(--white);
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 10px 25px rgba(0, 191, 255, 0.4);
+            transition: var(--transition);
+        }
+
+        .btn-hero:hover {
+            background-color: var(--white);
+            color: var(--primary);
+            transform: translateY(-5px);
+        }
+
+        /* --- 4. SERVICES CARDS --- */
+        .services { background-color: var(--light-gray); }
+        .section-header { text-align: center; margin-bottom: 60px; }
+        .section-header h2 { font-size: 2.5rem; margin-bottom: 15px; }
+        .section-header p { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
+        .separator { width: 80px; height: 4px; background: var(--secondary); margin: 0 auto; border-radius: 2px; }
+
+        .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 30px;
         }
 
-        .benefit-card {
+        .card {
             background: var(--white);
-            padding: 30px;
-            border-radius: 8px;
+            padding: 40px 30px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border-top: 5px solid transparent;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+            border-top-color: var(--secondary);
+        }
+
+        .card-icon {
+            font-size: 3rem;
+            margin-bottom: 25px;
+            background: rgba(0, 191, 255, 0.1);
+            width: 80px;
+            height: 80px;
+            line-height: 80px;
+            border-radius: 50%;
+            margin-left: auto;
+            margin-right: auto;
+            color: var(--secondary);
             transition: var(--transition);
         }
 
-        .benefit-card:hover { transform: translateY(-5px); }
-        .benefit-icon { font-size: 3rem; margin-bottom: 20px; color: var(--secondary); }
+        .card:hover .card-icon { background: var(--secondary); color: var(--white); }
+        .card h3 { margin-bottom: 15px; font-size: 1.4rem; }
+        .card p { color: var(--text-muted); font-size: 0.95rem; }
 
-        /* --- FAQ (Acordeón) --- */
-        .faq-container { max-width: 800px; margin: 0 auto; }
-
-        .faq-item {
-            background: var(--white);
-            margin-bottom: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-            overflow: hidden;
-        }
-
-        .faq-question {
-            padding: 20px;
-            background: var(--white);
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 500;
-            color: var(--primary);
-        }
-
-        .faq-question:hover { background-color: #f9f9f9; }
-        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--secondary); }
-        
-        .faq-item.active .faq-question::after { content: '-'; }
-        
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.3s ease-out;
-            padding: 0 20px;
-            background: #fafafa;
-            color: #555;
-        }
-
-        .faq-item.active .faq-answer { padding: 20px; max-height: 500px; border-top: 1px solid #eee; }
-
-        /* --- FOOTER --- */
-        footer {
-            background-color: var(--primary);
+        /* --- 5. INTERACTIVE VERIFICATION TOOL (JS) --- */
+        .tool-section {
+            background: var(--primary);
             color: var(--white);
-            padding: 50px 0 20px;
-            margin-top: auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* Background pattern styling */
+        .tool-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+            opacity: 0.5;
+            transform: rotate(45deg);
         }
 
-        .footer-content {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 40px;
-            margin-bottom: 40px;
+        .tool-container {
+            position: relative;
+            background: var(--white);
+            border-radius: 15px;
+            padding: 40px;
+            max-width: 800px;
+            margin: 0 auto;
+            color: var(--text-main);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
-        .footer-col h4 { margin-bottom: 20px; color: var(--secondary); }
-        .footer-col ul li { margin-bottom: 10px; }
-        .footer-col ul li a:hover { color: var(--secondary); padding-left: 5px; }
+        .tool-steps { display: flex; justify-content: space-between; margin-bottom: 30px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+        .step { font-weight: 600; color: #ccc; flex: 1; text-align: center; position: relative; }
+        .step.active { color: var(--primary); }
+        .step.active::after { content: ''; position: absolute; bottom: -21px; left: 0; width: 100%; height: 3px; background: var(--secondary); }
 
-        .copyright {
+        .form-row { margin-bottom: 20px; }
+        .form-row label { display: block; margin-bottom: 8px; font-weight: 600; color: var(--primary); }
+        .form-input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 8px; font-size: 1rem; transition: var(--transition); }
+        .form-input:focus { border-color: var(--secondary); outline: none; }
+
+        .checkbox-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .custom-check {
+            display: flex;
+            align-items: center;
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            transition: var(--transition);
+        }
+        .custom-check:hover { background: #e9ecef; }
+        .custom-check.checked { border-color: var(--secondary); background: rgba(0, 191, 255, 0.05); }
+        .custom-check input { margin-right: 12px; accent-color: var(--secondary); transform: scale(1.2); }
+
+        .btn-action {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .btn-action:hover { background: var(--secondary); }
+
+        #result-display { display: none; text-align: center; margin-top: 30px; animation: fadeIn 0.5s; }
+        .risk-meter { height: 10px; background: #eee; border-radius: 5px; margin: 20px 0; overflow: hidden; }
+        .risk-fill { height: 100%; width: 0%; transition: width 1s ease; }
+        .low-risk .risk-fill { background: var(--success); }
+        .high-risk .risk-fill { background: var(--danger); }
+
+        /* --- 6. PRICING & CONTACT --- */
+        .price-card {
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 40px;
             text-align: center;
-            padding-top: 20px;
-            border-top: 1px solid rgba(255,255,255,0.1);
-            font-size: 0.9rem;
+            position: relative;
+            background: var(--white);
         }
+        .price-card.featured {
+            border: 2px solid var(--secondary);
+            transform: scale(1.05);
+            box-shadow: var(--shadow-md);
+        }
+        .badge {
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--secondary);
+            color: var(--white);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+        .price { font-size: 2.5rem; font-weight: 800; color: var(--primary); margin: 20px 0; }
+        .price span { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
 
-        /* --- RESPONSIVE MEDIA QUERIES --- */
+        /* Contact Form */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+        .contact-info h3 { margin-bottom: 20px; }
+        .info-item { display: flex; align-items: center; margin-bottom: 20px; font-size: 1.1rem; }
+        .info-icon { width: 40px; height: 40px; background: var(--secondary); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; }
+
+        /* Footer */
+        footer { background: var(--primary-dark); color: rgba(255,255,255,0.7); padding: 50px 0 20px; }
+        .footer-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px; }
+        .footer-logo { color: white; font-size: 1.5rem; font-weight: bold; margin-bottom: 20px; display: block; }
+        .footer-links li { margin-bottom: 10px; }
+        .footer-links a:hover { color: var(--secondary); padding-left: 5px; }
+        .copyright { text-align: center; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.9rem; }
+
+        /* Animations */
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
         @media (max-width: 768px) {
-            .navbar { flex-wrap: wrap; }
-            .menu-toggle { display: block; }
+            .hero h1 { font-size: 2.2rem; }
             .nav-links {
-                display: none;
-                width: 100%;
+                position: fixed;
+                top: 0;
+                right: -100%;
+                height: 100vh;
+                width: 70%;
+                background: var(--white);
                 flex-direction: column;
-                margin-top: 20px;
-                background: rgba(0,0,0,0.1);
+                justify-content: center;
+                align-items: center;
+                transition: var(--transition);
+                box-shadow: -5px 0 15px rgba(0,0,0,0.1);
             }
-            .nav-links.active { display: flex; }
-            .hero-content h1 { font-size: 2rem; }
+            .nav-links.active { right: 0; }
+            .nav-links a { color: var(--text-main) !important; font-size: 1.2rem; }
+            .hamburger { display: block; z-index: 1001; }
+            .contact-wrapper { grid-template-columns: 1fr; }
+            .checkbox-grid { grid-template-columns: 1fr; }
+            .price-card.featured { transform: scale(1); margin: 20px 0; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="container navbar">
-            <div class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
-                <span>AlquilaSeguroMDP</span>
-            </div>
-            <div class="menu-toggle" id="mobile-menu">☰</div>
-            <nav class="nav-links" id="nav-links">
-                <a href="index.html" class="active">Inicio</a>
-                <a href="verification.html">Verificación</a>
-                <a href="about.html">Nosotros</a>
-                <a href="contact.html">Contacto</a>
-            </nav>
+    <nav id="navbar">
+        <div class="container nav-flex">
+            <a href="#" class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                AlquilaSeguro<span>MDP</span>
+            </a>
+            
+            <div class="hamburger" onclick="toggleMenu()">&#9776;</div>
+            
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#inicio" onclick="toggleMenu()">Inicio</a></li>
+                <li><a href="#servicios" onclick="toggleMenu()">Servicios</a></li>
+                <li><a href="#verificar" onclick="toggleMenu()">Verificar</a></li>
+                <li><a href="#precios" onclick="toggleMenu()">Precios</a></li>
+                <li><a href="#contacto" class="btn-nav" onclick="toggleMenu()">Contactar</a></li>
+            </ul>
         </div>
-    </header>
+    </nav>
 
-    <section class="hero">
+    <section id="inicio" class="hero">
         <div class="container hero-content">
-            <h1>Tus ojos en Mar del Plata</h1>
-            <p>No arriesgues tus vacaciones. Verificamos la existencia de propiedades y dueños antes de que transfieras la seña.</p>
-            <a href="verification.html" class="btn">Solicitar Verificación</a>
+            <h1>No dejes que una estafa arruine tus vacaciones</h1>
+            <p>Somos tus ojos en Mar del Plata. Verificamos presencialmente que la propiedad exista y el dueño sea real antes de que pagues la seña.</p>
+            <a href="#verificar" class="btn-hero">Verificar Propiedad Ahora</a>
         </div>
     </section>
 
-    <section class="container">
-        <h2 class="section-title">¿Por qué elegirnos?</h2>
-        <div class="benefits-grid">
-            <div class="benefit-card">
-                <div class="benefit-icon">📍</div>
-                <h3>Presencia Local</h3>
-                <p>Vivimos en Mar del Plata. Vamos personalmente a la dirección para comprobar que la propiedad existe y no es un terreno baldío.</p>
+    <section id="servicios" class="section-padding services">
+        <div class="container">
+            <div class="section-header">
+                <h2>¿Cómo te protegemos?</h2>
+                <div class="separator"></div>
+                <p style="margin-top:15px">Nuestro proceso de triple validación asegura tu inversión.</p>
             </div>
-            <div class="benefit-card">
-                <div class="benefit-icon">🛡️</div>
-                <h3>Seguridad Total</h3>
-                <p>Validamos la identidad del supuesto dueño solicitando documentación y prueba de vida en el lugar.</p>
-            </div>
-            <div class="benefit-card">
-                <div class="benefit-icon">🚀</div>
-                <h3>Reporte en 24hs</h3>
-                <p>Recibís un informe completo con fotos, videos y videollamada en tiempo real para tu tranquilidad.</p>
+
+            <div class="cards-grid">
+                <article class="card">
+                    <div class="card-icon">📍</div>
+                    <h3>Visita Presencial</h3>
+                    <p>Vamos físicamente a la dirección. Comprobamos que no sea un terreno baldío, una fábrica abandonada o una dirección inexistente.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">👤</div>
+                    <h3>Validación de Identidad</h3>
+                    <p>Hablamos cara a cara con quien está en la propiedad. Cruzamos datos: DNI, servicios a su nombre y titularidad bancaria.</p>
+                </article>
+
+                <article class="card">
+                    <div class="card-icon">📹</div>
+                    <h3>Video Reporte</h3>
+                    <p>Te enviamos una videollamada en vivo desde el lugar o un video detallado del exterior e interior (si es posible acceder).</p>
+                </article>
             </div>
         </div>
     </section>
 
-    <section class="container">
-        <h2 class="section-title">Preguntas Frecuentes</h2>
-        <div class="faq-container">
-            <div class="faq-item">
-                <div class="faq-question">¿Cómo sé que el dueño es real?</div>
-                <div class="faq-answer">
-                    <p>Nos encargamos de realizar un cruce de datos. Visitamos la propiedad, hablamos con quien nos recibe, pedimos servicios a su nombre y verificamos que coincida con la cuenta bancaria donde te piden depositar.</p>
+    <section id="verificar" class="section-padding tool-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 style="color: white;">Analizador de Riesgo Gratuito</h2>
+                <p style="color: rgba(255,255,255,0.8);">Antes de contratarnos, hacé este chequeo rápido.</p>
+            </div>
+
+            <div class="tool-container">
+                <div class="tool-steps">
+                    <div class="step active">1. Datos</div>
+                    <div class="step">2. Evidencias</div>
+                    <div class="step">3. Resultado</div>
+                </div>
+
+                <form id="riskForm" onsubmit="calculateRisk(event)">
+                    <div class="form-row">
+                        <label>Dirección de la Propiedad</label>
+                        <input type="text" class="form-input" placeholder="Ej: Calle Olavarría 2500" required>
+                    </div>
+
+                    <div class="form-row">
+                        <label>¿Qué evidencias tenés hasta ahora?</label>
+                        <div class="checkbox-grid">
+                            <label class="custom-check" onclick="toggleCheck(this)">
+                                <input type="checkbox" value="10"> Videollamada desde ADENTRO de la casa
+                            </label>
+                            <label class="custom-check" onclick="toggleCheck(this)">
+                                <input type="checkbox" value="10"> Foto del DNI del dueño
+                            </label>
+                            <label class="custom-check" onclick="toggleCheck(this)">
+                                <input type="checkbox" value="10"> Titular de la cuenta bancaria coincide con el DNI
+                            </label>
+                            <label class="custom-check" onclick="toggleCheck(this)">
+                                <input type="checkbox" value="10"> Perfil de Facebook con +5 años de antigüedad
+                            </label>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-action">Analizar Riesgo</button>
+                </form>
+
+                <div id="result-display">
+                    <h3 id="result-title">Analizando...</h3>
+                    <div class="risk-meter">
+                        <div class="risk-fill" id="risk-bar"></div>
+                    </div>
+                    <p id="result-text" style="font-size: 1.1rem; margin-bottom: 20px;">...</p>
+                    
+                    <a href="#contacto" class="btn-action" style="background: var(--accent); display: inline-block; width: auto; padding: 10px 30px;">Solicitar Verificación Profesional</a>
                 </div>
             </div>
-            <div class="faq-item">
-                <div class="faq-question">¿Cuánto cuesta el servicio?</div>
-                <div class="faq-answer">
-                    <p>Las tarifas varían según la zona de Mar del Plata (Centro, Puerto, Constitución, etc.). Podés ver nuestros precios actualizados en la sección de contacto o realizar una cotización rápida en la pestaña de verificación.</p>
+        </div>
+    </section>
+
+    <section id="precios" class="section-padding">
+        <div class="container">
+            <div class="section-header">
+                <h2>Planes Simples</h2>
+                <div class="separator"></div>
+            </div>
+
+            <div class="cards-grid" style="max-width: 900px; margin: 0 auto;">
+                <div class="price-card">
+                    <h3>Zona Centro / Macrocentro</h3>
+                    <p>Ideal departamentos cerca de la playa</p>
+                    <div class="price">$10.000 <span>ARS</span></div>
+                    <ul style="text-align: left; margin-bottom: 30px; line-height: 2;">
+                        <li>✅ Verificación de Fachada</li>
+                        <li>✅ Validación de timbre/habitante</li>
+                        <li>✅ Reporte fotográfico</li>
+                        <li>✅ Entrega en 48hs</li>
+                    </ul>
+                    <a href="#contacto" class="btn-nav" style="background: var(--primary);">Solicitar</a>
+                </div>
+
+                <div class="price-card featured">
+                    <div class="badge">MÁS ELEGIDO</div>
+                    <h3>Toda la Ciudad + Video</h3>
+                    <p>Puerto, Mogotes, Constitución, Bosque</p>
+                    <div class="price">$15.000 <span>ARS</span></div>
+                    <ul style="text-align: left; margin-bottom: 30px; line-height: 2;">
+                        <li>✅ <strong>Todo lo del plan básico</strong></li>
+                        <li>✅ Videollamada en vivo</li>
+                        <li>✅ Validación Documental Profunda</li>
+                        <li>✅ Entrega PRIORITARIA (24hs)</li>
+                    </ul>
+                    <a href="#contacto" class="btn-nav">Solicitar Ahora</a>
                 </div>
             </div>
-            <div class="faq-item">
-                <div class="faq-question">¿Qué pasa si resulta ser una estafa?</div>
-                <div class="faq-answer">
-                    <p>Si detectamos una estafa, te avisamos de inmediato con pruebas. Aunque la noticia no sea buena, nuestro servicio habrá valido la pena al ahorrarte perder el 100% de tu dinero de la seña.</p>
+        </div>
+    </section>
+
+    <section id="contacto" class="section-padding" style="background: var(--light-gray);">
+        <div class="container">
+            <div class="contact-wrapper">
+                <div class="contact-info">
+                    <h2>¿Listo para viajar tranquilo?</h2>
+                    <p style="margin-bottom: 30px;">Dejanos los datos de la propiedad y nos ponemos en marcha. Respondemos rápido por WhatsApp.</p>
+                    
+                    <div class="info-item">
+                        <div class="info-icon">📍</div>
+                        <div>
+                            <strong>Base Operativa:</strong><br>
+                            Mar del Plata, Buenos Aires
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📱</div>
+                        <div>
+                            <strong>WhatsApp Directo:</strong><br>
+                            +54 9 223 123 4567
+                        </div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-icon">📧</div>
+                        <div>
+                            <strong>Email:</strong><br>
+                            hola@alquilaseguromdp.com.ar
+                        </div>
+                    </div>
                 </div>
+
+                <form class="card" style="text-align: left;" onsubmit="sendForm(event)">
+                    <div class="form-row">
+                        <label>Tu Nombre</label>
+                        <input type="text" class="form-input" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Tu WhatsApp</label>
+                        <input type="tel" class="form-input" required>
+                    </div>
+                    <div class="form-row">
+                        <label>Mensaje / Link de la casa</label>
+                        <textarea class="form-input" rows="4"></textarea>
+                    </div>
+                    <button type="submit" class="btn-action">Enviar Solicitud</button>
+                </form>
             </div>
         </div>
     </section>
 
     <footer>
         <div class="container">
-            <div class="footer-content">
-                <div class="footer-col">
-                    <h4>Alquila Seguro MDP</h4>
-                    <p>Brindando seguridad y confianza a los turistas desde 2024.</p>
+            <div class="footer-grid">
+                <div>
+                    <a href="#" class="footer-logo">AlquilaSeguroMDP</a>
+                    <p>Servicio independiente de verificación turística. No somos inmobiliaria, somos tu seguridad.</p>
                 </div>
-                <div class="footer-col">
-                    <h4>Enlaces Rápidos</h4>
-                    <ul>
-                        <li><a href="index.html">Inicio</a></li>
-                        <li><a href="verification.html">Verificar Propiedad</a></li>
-                        <li><a href="contact.html">Contacto</a></li>
-                        <li><a href="#">Términos y Condiciones</a></li>
+                <div>
+                    <h4 style="color: white; margin-bottom: 15px;">Enlaces</h4>
+                    <ul class="footer-links">
+                        <li><a href="#inicio">Inicio</a></li>
+                        <li><a href="#servicios">Cómo funciona</a></li>
+                        <li><a href="#precios">Precios</a></li>
                     </ul>
                 </div>
-                <div class="footer-col">
-                    <h4>Contacto</h4>
-                    <ul>
-                        <li>Email: info@alquilaseguromdp.com.ar</li>
-                        <li>WhatsApp: +54 223 123 4567</li>
-                        <li>Mar del Plata, Buenos Aires</li>
+                <div>
+                    <h4 style="color: white; margin-bottom: 15px;">Legales</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">Términos y Condiciones</a></li>
+                        <li><a href="#">Política de Privacidad</a></li>
                     </ul>
                 </div>
             </div>
             <div class="copyright">
-                <p>&copy; 2025 Alquila Seguro MDP. Todos los derechos reservados.</p>
+                &copy; 2025 Danilo Hurwitz & Alquila Seguro MDP. Hecho con 💙 en Mar del Plata.
             </div>
         </div>
     </footer>
 
     <script>
-        // --- JAVASCRIPT INDEX ---
-        
-        // Mobile Menu Toggle
-        const menuToggle = document.getElementById('mobile-menu');
-        const navLinks = document.getElementById('nav-links');
-
-        menuToggle.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
+        // 1. NAVBAR SCROLL EFFECT
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
 
-        // FAQ Accordion Logic
-        const faqQuestions = document.querySelectorAll('.faq-question');
+        // 2. MOBILE MENU TOGGLE
+        function toggleMenu() {
+            const nav = document.getElementById('navLinks');
+            const hamburger = document.querySelector('.hamburger');
+            nav.classList.toggle('active');
+            
+            // Animación simple del icono (opcional)
+            if(nav.classList.contains('active')){
+                hamburger.innerHTML = "&times;"; // X symbol
+            } else {
+                hamburger.innerHTML = "&#9776;"; // Hamburger
+            }
+        }
 
-        faqQuestions.forEach(question => {
-            question.addEventListener('click', () => {
-                const item = question.parentElement;
+        // 3. CHECKBOX STYLING LOGIC
+        function toggleCheck(element) {
+            element.classList.toggle('checked');
+            const input = element.querySelector('input');
+            input.checked = !input.checked; // Sync logic for div click
+        }
+
+        // 4. RISK CALCULATOR LOGIC
+        function calculateRisk(e) {
+            e.preventDefault();
+            
+            const checks = document.querySelectorAll('#riskForm input[type="checkbox"]:checked');
+            const resultBox = document.getElementById('result-display');
+            const riskBar = document.getElementById('risk-bar');
+            const resultTitle = document.getElementById('result-title');
+            const resultText = document.getElementById('result-text');
+            
+            // Ocultar form y mostrar loader (simulado)
+            document.getElementById('riskForm').style.opacity = '0.5';
+            document.querySelector('#riskForm button').innerText = 'Analizando datos...';
+            
+            setTimeout(() => {
+                document.getElementById('riskForm').style.display = 'none';
+                resultBox.style.display = 'block';
                 
-                // Close others (optional, for accordion effect)
-                document.querySelectorAll('.faq-item').forEach(i => {
-                    if (i !== item) i.classList.remove('active');
-                });
+                // Lógica simple: Menos de 2 checks = ALTO RIESGO
+                if (checks.length < 2) {
+                    resultBox.className = "high-risk";
+                    resultTitle.innerText = "⚠️ RIESGO ALTO DETECTADO";
+                    resultTitle.style.color = "var(--danger)";
+                    resultText.innerHTML = "Faltan evidencias críticas. Es muy probable que sea una estafa o una propiedad fantasma. <strong>No transfieras dinero sin verificar presencialmente.</strong>";
+                    
+                    setTimeout(() => { riskBar.style.width = '90%'; riskBar.style.background = 'var(--danger)'; }, 100);
+                } else {
+                    resultBox.className = "low-risk";
+                    resultTitle.innerText = "✅ RIESGO MODERADO / BAJO";
+                    resultTitle.style.color = "var(--success)";
+                    resultText.innerHTML = "Tenés buenas pruebas, pero los estafadores roban identidad de dueños reales. <strong>Para estar 100% seguro, recomendamos una visita rápida.</strong>";
+                    
+                    setTimeout(() => { riskBar.style.width = '30%'; riskBar.style.background = 'var(--success)'; }, 100);
+                }
+            }, 1500);
+        }
 
-                item.classList.toggle('active');
-            });
-        });
+        // 5. CONTACT FORM SEND SIMULATION
+        function sendForm(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            
+            btn.innerText = "Enviando...";
+            btn.style.opacity = "0.7";
+            
+            setTimeout(() => {
+                btn.innerText = "¡Mensaje Enviado!";
+                btn.style.background = "var(--success)";
+                e.target.reset();
+                
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.background = "var(--primary)";
+                    btn.style.opacity = "1";
+                }, 3000);
+            }, 2000);
+        }
     </script>
 </body>
 </html>

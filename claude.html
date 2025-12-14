@@ -19,6 +19,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    
     <style>
         /* ==========================================================================
            1. VARIABLES CSS (DISEÑO ATÓMICO)
@@ -2405,6 +2407,31 @@ section {
         </div>
     </div>
 </section>
+<section id="mapa-riesgo" class="section-padding">
+    <div class="container reveal">
+        <div class="text-center" style="margin-bottom: var(--space-xl);">
+            <h2>🗺️ Mapa de Riesgo en Vivo</h2>
+            <p style="color: var(--text-muted);">Monitoreo en tiempo real de denuncias y verificaciones en Mar del Plata.</p>
+        </div>
+        
+        <div style="background: var(--bg-card); padding: var(--space-sm); border-radius: var(--radius-xl); border: 1px solid var(--border-color); box-shadow: var(--shadow-xl); position: relative;">
+            <div id="map" style="height: 500px; width: 100%; border-radius: var(--radius-lg); z-index: 1;"></div>
+            
+            <div style="position: absolute; bottom: 30px; left: 30px; background: var(--bg-glass); backdrop-filter: blur(10px); padding: 15px; border-radius: var(--radius-md); z-index: 400; border: 1px solid var(--border-color); box-shadow: var(--shadow-lg);">
+                <h5 style="margin-bottom: 10px; font-size: 0.9rem;">Referencias</h5>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 0.8rem;">
+                    <span style="width: 12px; height: 12px; background: #EF4444; border-radius: 50%; display: block; box-shadow: 0 0 5px #EF4444;"></span> Zona Roja (Estafas)
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 5px; font-size: 0.8rem;">
+                    <span style="width: 12px; height: 12px; background: #F59E0B; border-radius: 50%; display: block; box-shadow: 0 0 5px #F59E0B;"></span> En Verificación
+                </div>
+                <div style="display: flex; align-items: center; gap: 8px; font-size: 0.8rem;">
+                    <span style="width: 12px; height: 12px; background: #10B981; border-radius: 50%; display: block; box-shadow: 0 0 5px #10B981;"></span> Zona Segura
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <!-- Evidence Gallery -->
 <section id="galeria" class="section-padding" style="background: var(--bg-card);">
     <div class="container reveal">
@@ -2597,7 +2624,8 @@ section {
             </div>
         </div>
     </div>
-</section><!-- Contact Form -->
+</section>
+    <!-- Contact Form -->
 <section id="contacto" class="section-padding">
     <div class="container reveal">
         <div class="contact-box">
@@ -2651,7 +2679,8 @@ section {
             </form>
         </div>
     </div>
-</section><!-- Footer -->
+</section>
+    <!-- Footer -->
 <footer>
     <div class="container">
         <div class="footer-cols">
@@ -4090,5 +4119,37 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 console.log('%c🛡️ AlquilaSeguro MDP - Sistema V9.0', 'color: #00A8E8; font-size: 18px; font-weight: bold;');
 console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669; font-size: 12px;');
     </script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Coordenadas MDP
+        const map = L.map('map', { center: [-38.0055, -57.5426], zoom: 13, scrollWheelZoom: false });
+
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 20
+        }).addTo(map);
+
+        const points = [
+            [-37.9700, -57.5900, '#EF4444', 1200, '⚠️ <strong>Zona ALERTA:</strong> Reportes de señas falsas.'],
+            [-38.0300, -57.5900, '#EF4444', 800, '⚠️ <strong>Precaución:</strong> Propiedades inexistentes.'],
+            [-38.0000, -57.5450, '#F59E0B', 600, '✋ <strong>Centro:</strong> Alta densidad. Verificar titularidad.'],
+            [-38.0150, -57.5300, '#F59E0B', 500, '✋ <strong>Torreón:</strong> En proceso de verificación.'],
+            [-38.0120, -57.5150, '#10B981', 400, '🛡️ <strong>Playa Grande:</strong> Zona Verificada.'],
+            [-38.0080, -57.5380, '#10B981', 300, '🛡️ <strong>Güemes:</strong> Zona Segura.']
+        ];
+
+        points.forEach(p => L.circle([p[0], p[1]], { color: p[2], fillColor: p[2], fillOpacity: 0.4, radius: p[3], weight: 1 }).addTo(map).bindPopup(p[4]));
+
+        // Modo oscuro automático para el mapa
+        new MutationObserver((m) => {
+            m.forEach((mu) => {
+                if (mu.attributeName === 'data-theme') {
+                    const pane = document.querySelector('.leaflet-tile-pane');
+                    if(pane) pane.style.filter = document.documentElement.getAttribute('data-theme') === 'dark' ? 'invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%)' : 'none';
+                }
+            });
+        }).observe(document.documentElement, { attributes: true });
+    });
+</script>
 </body>
 </html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Alquila Seguro MDP: Verificación de propiedades de alquiler en Mar del Plata para evitar estafas.">
+    <title>Alquila Seguro MDP - Home</title>
+    <style>
+        body { font-family: 'Roboto', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
+        header { background-color: #003366; color: white; padding: 10px; position: fixed; width: 100%; top: 0; z-index: 1000; }
+        nav ul { list-style: none; display: flex; justify-content: center; margin: 0; padding: 0; }
+        nav ul li { margin: 0 15px; }
+        nav ul li a { color: white; text-decoration: none; font-weight: bold; transition: color 0.3s; }
+        nav ul li a:hover { color: #00BFFF; }
+        .hero { background-color: #00BFFF; color: white; text-align: center; padding: 100px 20px; margin-top: 60px; }
+        .hero h1 { font-size: 2.5em; }
+        .hero button { background-color: #003366; color: white; border: none; padding: 10px 20px; font-size: 1.2em; cursor: pointer; transition: background 0.3s; }
+        .hero button:hover { background-color: #005599; }
+        section { padding: 50px 20px; max-width: 1200px; margin: auto; }
+        .testimonials { background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
+        .faq { cursor: pointer; }
+        .faq-content { display: none; padding: 10px; background-color: #eee; }
+        footer { background-color: #003366; color: white; text-align: center; padding: 20px; }
+        @media (max-width: 768px) { nav ul { flex-direction: column; } .hero { padding: 80px 10px; } }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="verification.html">Verificación</a></li>
+                <li><a href="about.html">Sobre Nosotros</a></li>
+                <li><a href="contact.html">Contacto</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Bienvenido a Alquila Seguro MDP</h1>
+        <p>Verificamos propiedades de alquiler en Mar del Plata para que tus vacaciones sean seguras y sin estafas. Evitá fraudes comunes como fotos falsas o dueños inventados.</p>
+        <button onclick="window.location.href='verification.html'">Iniciar Verificación</button>
+    </section>
+
+    <section class="testimonials">
+        <h2>Testimonios</h2>
+        <p>"Gracias a Alquila Seguro, evité una estafa en MDP. ¡Recomendado!" - Juan P., Buenos Aires</p>
+        <p>"Servicio rápido y detallado. Ahora alquilo con confianza." - María L., Córdoba</p>
+        <!-- Agrega más testimonios para extender -->
+        <p>"Excelente atención, verificaron todo en 24 horas." - Pedro G., Rosario</p>
+        <p>"Me salvaron de perder $50.000 en una seña falsa." - Ana M., Mendoza</p>
+    </section>
+
+    <section class="faq">
+        <h2>Preguntas Frecuentes</h2>
+        <div class="faq-item">
+            <h3 onclick="toggleFAQ(this)">¿Cómo funciona el servicio?</h3>
+            <div class="faq-content">Ingresás los datos de la propiedad, nosotros verificamos físicamente y te enviamos un reporte detallado.</div>
+        </div>
+        <div class="faq-item">
+            <h3 onclick="toggleFAQ(this)">¿Cuánto cuesta?</h3>
+            <div class="faq-content">Desde $20.000 por verificación básica. Consultá precios en la página de verificación.</div>
+        </div>
+        <!-- Agrega más FAQs para extender -->
+        <div class="faq-item">
+            <h3 onclick="toggleFAQ(this)">¿Qué pasa si detectan una estafa?</h3>
+            <div class="faq-content">Te alertamos inmediatamente y te damos consejos para denunciar.</div>
+        </div>
+        <div class="faq-item">
+            <h3 onclick="toggleFAQ(this)">¿Cubren otras ciudades?</h3>
+            <div class="faq-content">Por ahora solo MDP, pero planeamos expandirnos.</div>
+        </div>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Alquila Seguro MDP. Todos los derechos reservados.</p>
+    </footer>
+
+    <script>
+        function toggleFAQ(element) {
+            const content = element.nextElementSibling;
+            content.style.display = content.style.display === 'block' ? 'none' : 'block';
+        }
+    </script>
+</body>
+</html>

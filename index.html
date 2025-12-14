@@ -570,81 +570,60 @@ html, body {
 }
 
 /* Paneles blancos */
+/* REEMPLAZAR ESTOS ESTILOS ESPECÍFICOS EN TU CSS EXISTENTE */
+
+/* 1. Paneles con aceleración de hardware forzada (Arregla PC) */
 .intro-panel {
     position: absolute;
     left: 0;
     width: 100%;
-    height: 50.5%; /* Un poco más de 50% para que no haya línea en el medio */
+    height: 50.5%;
     background-color: #ffffff;
     z-index: 2;
-    /* Suavidad extrema en la transformación */
+    /* Usamos translate3d(0,0,0) para activar la GPU en Brave PC */
+    transform: translate3d(0, 0, 0); 
     transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
-    will-change: transform; /* Optimización de rendimiento */
+    will-change: transform;
 }
 
-.panel-top {
-    top: 0;
-    transform-origin: top;
-}
-
-.panel-bottom {
-    bottom: 0;
-    transform-origin: bottom;
-}
-
-/* Contenido */
-.intro-content {
-    position: relative;
-    z-index: 3;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 15px;
-    /* Transición solo para la opacidad del texto */
-    transition: opacity 0.5s ease-out;
-}
-
+/* 2. Logo adaptable (Arregla el tamaño gigante en móvil) */
 .intro-logo {
-    font-size: 3rem; /* Más grande */
+    /* clamp(minimo, ideal, maximo) -> Esto hace que nunca sea gigante en celular */
+    font-size: clamp(1.8rem, 6vw, 3.5rem); 
     font-weight: 900;
     color: var(--primary);
     text-transform: uppercase;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px; /* Gap reducido para móviles */
     font-family: 'Montserrat', sans-serif;
 }
 
-.intro-slogan {
-    font-size: 1rem;
-    color: var(--text-muted);
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-weight: 600;
+/* Ajuste del ícono SVG dentro del logo para móviles */
+.intro-logo svg {
+    width: clamp(30px, 8vw, 60px);
+    height: clamp(30px, 8vw, 60px);
 }
 
-.intro-welcome {
-    font-size: 0.85rem;
-    color: var(--secondary);
-    margin-top: 20px;
-    animation: pulse 1.5s infinite;
-}
-
-/* ESTADOS DE ANIMACIÓN */
-
-/* 1. Desaparece el texto */
-.content-fade-out .intro-content {
-    opacity: 0;
-}
-
-/* 2. Se abren los paneles */
+/* 3. Definición explícita del movimiento (Arregla el "no split") */
 .panels-open .panel-top {
-    transform: translateY(-100%);
+    /* Usamos translate3d en lugar de Y para forzar suavidad */
+    transform: translate3d(0, -100%, 0) !important;
 }
 
 .panels-open .panel-bottom {
-    transform: translateY(100%);
+    transform: translate3d(0, 100%, 0) !important;
+}
+
+/* Media query extra para asegurar márgenes en pantallas muy chicas */
+@media (max-width: 480px) {
+    .intro-content {
+        padding: 0 20px;
+    }
+    .intro-slogan {
+        font-size: 0.75rem; /* Slogan más chico en celular */
+        letter-spacing: 1px;
+    }
 }
         /* ==========================================================================
            8. HEADER Y NAVEGACIÓN
@@ -3241,32 +3220,35 @@ function initLoader() {
     document.body.style.overflow = 'hidden';
     
     const introScreen = document.getElementById('intro-screen');
+    const introContent = document.querySelector('.intro-content'); // Seleccionamos el contenido
     
     if (!introScreen) return;
 
-    // FASE 1: ESPERA (Lectura) - 3.5 Segundos
+    // FASE 1: ESPERA DE LECTURA (3s)
     setTimeout(() => {
         
-        // FASE 2: DESVANECER TEXTO (Primero se va el logo)
+        // FASE 2: DESVANECER TEXTO
+        // Forzamos al navegador a leer el estilo actual antes de cambiarlo (Truco de Reflow)
+        void introContent.offsetWidth; 
         introScreen.classList.add('content-fade-out');
 
-        // Esperamos 500ms a que el texto desaparezca para abrir el telón
+        // FASE 3: SPLIT (0.6s después, cuando el texto ya casi se fue)
         setTimeout(() => {
-            
-            // FASE 3: ABRIR PANELES (El efecto partido)
+            // Forzamos reflow de nuevo para los paneles
+            void introScreen.offsetWidth; 
             introScreen.classList.add('panels-open');
             
-            // Devolver scroll
+            // Devolver scroll inmediatamente empieza a abrirse
             document.body.style.overflow = 'auto';
 
-            // FASE 4: LIMPIEZA (Eliminar del DOM cuando termine la animación)
+            // FASE 4: LIMPIEZA FINAL (1.2s después de abrirse)
             setTimeout(() => {
                 introScreen.remove();
-            }, 1200); // Esperamos a que termine la animación de apertura
+            }, 1200);
 
-        }, 600); // Tiempo que tarda el texto en irse
+        }, 600); 
 
-    }, 3500); // TIEMPO INICIAL EN PANTALLA (Aumentado para que no sea rápido)
+    }, 3000); 
 }
     // ==========================================
     // 4. THEME SYSTEM

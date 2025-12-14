@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alquila Seguro MDP | Certificación de Inmuebles Turísticos</title>
+    <title>Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="theme-color" content="#002B49">
     
@@ -281,7 +281,24 @@
         }
         
         /* Print Styles */
-        @media print { body * { visibility: hidden; } #legal-doc, #legal-doc * { visibility: visible; } #legal-doc { position: absolute; top: 0; left: 0; width: 100%; } }
+        /* IMPRESIÓN PROFESIONAL CORREGIDA */
+@media print {
+    body * { visibility: hidden; } /* Ocultar todo */
+    #legal-doc, #legal-doc * { visibility: visible; } /* Mostrar solo el doc */
+    #legal-doc {
+        display: block !important;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        background: white;
+        -webkit-print-color-adjust: exact; /* Forzar impresión de colores */
+        print-color-adjust: exact;
+    }
+    @page { margin: 0; size: A4; } /* Quitar margenes del navegador */
+}
     </style>
 </head>
 <body>
@@ -531,8 +548,10 @@
             <h3 style="margin-bottom: 30px; letter-spacing: 1px;">BACKOFFICE V8</h3>
             <div class="adm-item active" onclick="showTab('gen')">📄 Generar Código</div>
             <div class="adm-item" onclick="showTab('leads')">👥 Leads</div>
+            
             <div class="adm-item" onclick="document.getElementById('admin-modal').style.display='none'">🚪 Salir</div>
         </div>
+        
         <div class="admin-main">
             <div id="tab-gen">
                 <h2 style="margin-bottom: 20px; color: var(--text-main);">Generador de Certificado Seguro</h2>
@@ -569,41 +588,102 @@
                 </div>
                 <button class="btn btn-primary" onclick="generateAndPrint()" style="margin-top: 20px;">GENERAR E IMPRIMIR DOCUMENTO</button>
             </div>
+            <div id="tab-leads" class="hidden">
+    <h2 style="margin-bottom: 20px; color: var(--text-main);">Leads Recientes (Guardados Localmente)</h2>
+    <div style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); overflow-x: auto;">
+        <table style="width: 100%; border-collapse: collapse; color: var(--text-main);">
+            <thead>
+                <tr style="background: var(--bg-body); text-align: left;">
+                    <th style="padding: 10px;">Fecha</th>
+                    <th style="padding: 10px;">Cliente</th>
+                    <th style="padding: 10px;">WhatsApp</th>
+                    <th style="padding: 10px;">Plan</th>
+                    <th style="padding: 10px;">Link/Dir</th>
+                </tr>
+            </thead>
+            <tbody id="leads-body">
+                </tbody>
+        </table>
+        <button class="btn btn-danger" onclick="localStorage.removeItem('leads'); loadLeads();" style="margin-top: 20px; font-size: 0.8rem;">Borrar Historial</button>
+    </div>
+</div>
         </div>
     </div>
 
     <div id="legal-doc" style="display: none;">
-        <div style="padding: 50px; font-family: 'Times New Roman', serif;">
-            <div style="text-align: center; border-bottom: 2px solid black; padding-bottom: 20px; margin-bottom: 30px;">
-                <h1 style="font-size: 24px; margin: 0; text-transform: uppercase;">Informe Técnico de Constatación</h1>
-                <p style="margin: 5px 0; font-size: 10px;">ALQUILA SEGURO MDP | UNIDAD DE PREVENCIÓN DE FRAUDES</p>
+    <div style="width: 210mm; min-height: 297mm; padding: 40px; font-family: 'Inter', sans-serif; position: relative; color: #111827; background: white;">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #002B49; padding-bottom: 20px; margin-bottom: 40px;">
+            <div>
+                <h1 style="margin: 0; color: #002B49; font-size: 24px; text-transform: uppercase; font-weight: 900;">Certificado de Verificación</h1>
+                <p style="margin: 5px 0 0 0; color: #00A8E8; font-size: 12px; font-weight: 600;">UNIDAD DE PREVENCIÓN DE FRAUDES INMOBILIARIOS</p>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 30px; font-weight: 900; color: #002B49;">AS<span style="color: #00A8E8;">MDP</span></div>
+                <div style="font-size: 10px; color: #666;">REF. SEGURIDAD</div>
+            </div>
+        </div>
+
+        <div style="background: #F3F4F6; padding: 15px; border-radius: 8px; font-family: monospace; font-size: 11px; color: #4B5563; margin-bottom: 30px; border: 1px solid #E5E7EB;">
+            <strong>HASH ENCRIPTADO:</strong> <span id="p-hash" style="word-break: break-all;">-</span><br>
+            <strong>FECHA DE EMISIÓN:</strong> <span id="p-date">-</span>
+        </div>
+
+        <p style="font-size: 14px; line-height: 1.6; text-align: justify; margin-bottom: 30px;">
+            La Dirección de Operaciones de <strong>ALQUILA SEGURO MDP</strong> certifica que se ha realizado el procedimiento de constatación fáctica y validación técnica sobre el inmueble y los datos proporcionados, arrojando los siguientes resultados:
+        </p>
+
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px; font-size: 14px;">
+            <tr style="background: #002B49; color: white;">
+                <td style="padding: 12px; border: 1px solid #002B49; width: 30%;">PARÁMETRO</td>
+                <td style="padding: 12px; border: 1px solid #002B49;">RESULTADO DE LA INSPECCIÓN</td>
+            </tr>
+            <tr>
+                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">SOLICITANTE</td>
+                <td style="padding: 12px; border: 1px solid #ddd;" id="p-cli-out"></td>
+            </tr>
+            <tr>
+                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">UBICACIÓN</td>
+                <td style="padding: 12px; border: 1px solid #ddd;" id="p-dir-out"></td>
+            </tr>
+            <tr>
+                <td style="padding: 12px; border: 1px solid #ddd; font-weight: bold;">VALOR AUDITADO</td>
+                <td style="padding: 12px; border: 1px solid #ddd;" id="p-val-out"></td>
+            </tr>
+        </table>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 40px;">
+            <div style="background: #F9FAFB; padding: 20px; border-radius: 8px; border: 1px solid #eee;">
+                <h4 style="margin: 0 0 15px 0; color: #002B49; border-bottom: 2px solid #00A8E8; display: inline-block;">MATRIZ TÉCNICA</h4>
+                <ul style="list-style: none; padding: 0; font-size: 13px; line-height: 2;">
+                    <li>🔹 Existencia Física: <strong id="p-c1"></strong></li>
+                    <li>🔹 Coincidencia Visual: <strong id="p-c2"></strong></li>
+                    <li>🔹 Titularidad: <strong id="p-c3"></strong></li>
+                    <li>🔹 Servicios Activos: <strong id="p-c4"></strong></li>
+                    <li>🔹 Prueba de Acceso: <strong id="p-c5"></strong></li>
+                </ul>
             </div>
             
-            <p style="text-align: right;">REF: <span id="p-hash"></span></p>
-            
-            <p style="text-align: justify; margin: 20px 0;">En la ciudad de Mar del Plata, siendo el día <span id="p-date"></span>, la <strong>Dirección de Operaciones</strong> procede a emitir el presente informe a solicitud del interesado.</p>
-            
-            <table style="width: 100%; border: 1px solid black; border-collapse: collapse; margin-bottom: 20px;">
-                <tr><td style="padding: 10px; border: 1px solid black;"><strong>CLIENTE</strong></td><td style="padding: 10px; border: 1px solid black;" id="p-cli-out"></td></tr>
-                <tr><td style="padding: 10px; border: 1px solid black;"><strong>UBICACIÓN</strong></td><td style="padding: 10px; border: 1px solid black;" id="p-dir-out"></td></tr>
-                <tr><td style="padding: 10px; border: 1px solid black;"><strong>DICTAMEN</strong></td><td style="padding: 10px; border: 1px solid black; font-weight: bold;" id="p-ver-out"></td></tr>
-            </table>
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 2px dashed #ccc; border-radius: 8px; padding: 20px;">
+                <h4 style="margin: 0 0 10px 0; font-size: 14px; color: #666;">DICTAMEN FINAL</h4>
+                <div id="p-ver-out" style="font-size: 24px; font-weight: 900; color: #000; text-transform: uppercase;">-</div>
+            </div>
+        </div>
 
-            <h3>MATRIZ DE RESULTADOS</h3>
-            <ul style="line-height: 2;">
-                <li>Existencia Física: <span id="p-c1"></span></li>
-                <li>Coincidencia Visual: <span id="p-c2"></span></li>
-                <li>Titularidad: <span id="p-c3"></span></li>
-                <li>Prueba de Acceso: <span id="p-c5"></span></li>
-            </ul>
-
-            <div style="margin-top: 60px; text-align: center;">
-                <div style="border-bottom: 1px solid black; width: 250px; margin: 0 auto 10px auto;"></div>
-                <strong>Inspector Certificado</strong><br>
-                <span style="font-size: 12px;">Departamento de Verificación</span>
+        <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; border-top: 1px solid #ccc; padding-top: 20px; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div>
+                <img id="qr-code-img" src="" style="width: 100px; height: 100px;">
+                <div style="font-size: 10px; margin-top: 5px; color: #666;">ESCANEAR PARA<br>VALIDAR HASH</div>
+            </div>
+            <div style="text-align: center;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Firma_gen%C3%A9rica.svg" style="width: 150px; opacity: 0.6;">
+                <div style="border-top: 2px solid #002B49; width: 200px; margin-top: 5px;"></div>
+                <div style="font-weight: bold; color: #002B49; font-size: 14px;">DIRECCIÓN DE OPERACIONES</div>
+                <div style="font-size: 11px; color: #666;">Alquila Seguro MDP - Legajo #8821</div>
             </div>
         </div>
     </div>
+</div>
 
     <script>
         // === INIT ===
@@ -701,56 +781,122 @@
 
         // === ADMIN LOGIC (COMPLEX HASH) ===
         function authAdmin() {
-            if(document.getElementById('adm-u').value === 'admin' && document.getElementById('adm-p').value === 'SEGURO2025') {
-                document.getElementById('login-modal').style.display='none';
-                document.getElementById('admin-modal').style.display='flex';
-            } else { alert("Acceso Denegado"); }
-        }
+    const u = document.getElementById('adm-u').value;
+    const p = document.getElementById('adm-p').value;
+    if(u === 'admin' && p === 'SEGURO2025') {
+        closeModal('login-modal');
+        document.getElementById('admin-overlay').style.display = 'block';
+        showToast("Bienvenido Staff. Panel Habilitado.", 'success');
+        loadLeads(); // Cargar leads al entrar
+    } else {
+        showToast("Credenciales incorrectas", 'error');
+    }
+}
 
-        function generateAndPrint() {
-            const cli = document.getElementById('r-cli').value || 'Anonimo';
-            const val = document.getElementById('r-val').value || '0';
-            const now = new Date();
-            
-            // Generate Code: DDMMYYYYHHMM + NameHash + BinaryChecks
-            const dateStr = now.toLocaleDateString('es-AR').replace(/\//g, '') + now.getHours() + now.getMinutes();
-            
-            // Name Encryption (Simple Char Code Sum for Demo)
-            let nameHash = 0;
-            for(let i=0; i<cli.length; i++) nameHash += cli.charCodeAt(i);
-            
-            // Checks Binary
-            let bin = '';
-            for(let i=1; i<=5; i++) bin += document.getElementById('c'+i).checked ? '1' : '0';
+        // === ENCRIPTACIÓN Y GENERACIÓN ===
+function generateAndPrint() {
+    // 1. Obtener datos
+    const cli = document.getElementById('r-cli').value || 'CONSUMIDOR FINAL';
+    const dir = document.getElementById('r-dir').value || 'NO ESPECIFICADA';
+    const val = document.getElementById('r-val').value || '0';
+    const ver = document.getElementById('r-ver').value;
+    
+    // 2. Generar Encriptación Reversible (Base64 modificado para URL)
+    // Formato: FECHA|CLIENTE|DIR|VALOR|VERDICTO|CHECKS
+    const checks = [1,2,3,4,5].map(i => document.getElementById('c'+i).checked ? '1' : '0').join('');
+    const rawData = `${new Date().toISOString()}|${cli}|${dir}|${val}|${ver}|${checks}`;
+    const hash = btoa(unescape(encodeURIComponent(rawData))); // Encriptar a Base64 seguro
 
-            const finalHash = `${dateStr}-${nameHash}-${val.replace(/\D/g,'')}-${bin}`;
-            
-            document.getElementById('hash-output').innerText = finalHash;
-            document.getElementById('p-hash').innerText = finalHash;
-            document.getElementById('p-date').innerText = now.toLocaleDateString();
-            document.getElementById('p-cli-out').innerText = cli.toUpperCase();
-            document.getElementById('p-dir-out').innerText = document.getElementById('r-dir').value.toUpperCase();
-            
-            const v = document.getElementById('r-ver').value;
-            document.getElementById('p-ver-out').innerText = v === '1' ? 'APTO / VERIFICADO' : 'NO APTO / RIESGO';
-            
-            document.getElementById('p-c1').innerText = document.getElementById('c1').checked ? 'POSITIVO' : 'NEGATIVO';
-            document.getElementById('p-c2').innerText = document.getElementById('c2').checked ? 'POSITIVO' : 'NEGATIVO';
-            document.getElementById('p-c3').innerText = document.getElementById('c3').checked ? 'POSITIVO' : 'NEGATIVO';
-            document.getElementById('p-c5').innerText = document.getElementById('c5').checked ? 'POSITIVO' : 'NEGATIVO';
+    // 3. Rellenar el Documento
+    document.getElementById('p-hash').innerText = hash; // Muestra el hash largo
+    document.getElementById('p-date').innerText = new Date().toLocaleDateString('es-AR', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
+    
+    document.getElementById('p-cli-out').innerText = cli.toUpperCase();
+    document.getElementById('p-dir-out').innerText = dir.toUpperCase();
+    document.getElementById('p-val-out').innerText = "$ " + val;
 
-            window.print();
-        }
+    // Colores y textos según veredicto
+    const verEl = document.getElementById('p-ver-out');
+    if(ver === '1') {
+        verEl.innerText = "✅ APTO / VERIFICADO";
+        verEl.style.color = "#059669";
+    } else {
+        verEl.innerText = "🚫 RIESGO DE FRAUDE";
+        verEl.style.color = "#DC2626";
+    }
 
+    // Rellenar Checks
+    const mapCheck = (id, outId) => {
+        const isOk = document.getElementById(id).checked;
+        const el = document.getElementById(outId);
+        el.innerText = isOk ? "POSITIVO" : "NEGATIVO";
+        el.style.color = isOk ? "#002B49" : "#DC2626";
+    };
+    for(let i=1; i<=5; i++) mapCheck('c'+i, 'p-c'+i);
+
+    // 4. Generar QR Real con el Hash
+    // Esto permite que si alguien escanea, tenga toda la data encriptada
+    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${hash}`;
+    document.getElementById('qr-code-img').src = qrUrl;
+
+    // 5. Esperar a que cargue el QR e imprimir
+    document.getElementById('qr-code-img').onload = () => {
+        window.print();
+    };
+}
         // === UTILS ===
         function selectPlan(plan) {
             document.getElementById('plan-select').value = plan;
             document.getElementById('contacto').scrollIntoView();
         }
         function submitLead(e) {
-            e.preventDefault();
-            alert("Solicitud Enviada. Nos contactaremos a la brevedad.");
-        }
+    e.preventDefault();
+    const btn = e.target.querySelector('button');
+    btn.innerText = "GUARDANDO...";
+    
+    // Capturar datos
+    const inputs = e.target.querySelectorAll('input, select');
+    const newLead = {
+        date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+        name: inputs[0].value,
+        phone: inputs[1].value,
+        link: inputs[2].value,
+        plan: inputs[3].value
+    };
+
+    // Guardar en LocalStorage (Simulando base de datos)
+    let leads = JSON.parse(localStorage.getItem('leads') || "[]");
+    leads.unshift(newLead); // Agregar al principio
+    localStorage.setItem('leads', JSON.stringify(leads));
+
+    setTimeout(() => {
+        showToast("Solicitud recibida correctamente.", 'success');
+        btn.innerText = "¡ENVIADO!";
+        e.target.reset();
+    }, 1000);
+}
+
+function loadLeads() {
+    const leads = JSON.parse(localStorage.getItem('leads') || "[]");
+    const tbody = document.getElementById('leads-body');
+    tbody.innerHTML = ""; // Limpiar
+
+    if(leads.length === 0) {
+        tbody.innerHTML = "<tr><td colspan='5' style='padding:20px; text-align:center;'>No hay solicitudes nuevas.</td></tr>";
+        return;
+    }
+
+    leads.forEach(l => {
+        const row = `<tr style="border-bottom: 1px solid #eee;">
+            <td style="padding: 10px;">${l.date}</td>
+            <td style="padding: 10px;"><strong>${l.name}</strong></td>
+            <td style="padding: 10px;">${l.phone}</td>
+            <td style="padding: 10px;"><span style="background:var(--secondary); color:white; padding:2px 6px; border-radius:4px; font-size:0.8rem;">${l.plan}</span></td>
+            <td style="padding: 10px; font-size:0.8rem;">${l.link}</td>
+        </tr>`;
+        tbody.innerHTML += row;
+    });
+}
         function initObserver() {
             const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('active') }));
             document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
@@ -773,6 +919,16 @@
             }
             draw();
         }
+        // Función extra para consola o herramienta futura:
+function decryptHash(hash) {
+    try {
+        const str = decodeURIComponent(escape(atob(hash)));
+        console.log("Datos desencriptados:", str.split('|'));
+        alert("Datos recuperados: " + str);
+    } catch(e) {
+        alert("Hash inválido");
+    }
+}
     </script>
 </body>
 </html>

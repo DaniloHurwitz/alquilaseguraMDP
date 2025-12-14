@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1Alquila Seguro MDP</title>
+    <title>Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="theme-color" content="#002B49">
     
@@ -518,7 +518,7 @@
             <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
         </a>
     </div>
-
+    
     <div id="login-modal">
         <div class="login-box">
             <h3 class="text-center" style="margin-bottom: 20px; color: var(--text-main);">Acceso Staff</h3>
@@ -528,122 +528,27 @@
             <p class="text-center" style="margin-top: 15px; cursor: pointer; color: var(--text-muted);" onclick="document.getElementById('login-modal').style.display='none'">Cancelar</p>
         </div>
     </div>
- <div id="admin-modal" style="display: none;">
-    <div class="sidebar">
-        <h3 style="margin-bottom: 30px; letter-spacing: 1px;">BACKOFFICE V8</h3>
-        <div class="adm-item active" onclick="showTab('gen')">📄 Generar Código</div>
-        <div class="adm-item" onclick="showTab('leads')">👥 Leads</div>
-        <div class="adm-item" onclick="showTab('validate')">🔍 Validar Hash</div>
-        <div class="adm-item" onclick="document.getElementById('admin-modal').style.display='none'">🚪 Salir</div>
-    </div>
-   
-    <div class="admin-main">
-        <div id="tab-gen">
-            <h2 style="margin-bottom: 20px; color: var(--text-main);">Generador de Certificado Seguro</h2>
-            <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border: 1px solid var(--border-color);">
-                <div>
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
-                    <input type="text" id="r-cli" class="adm-input">
-                   
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
-                    <input type="text" id="r-dir" class="adm-input">
-                   
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Valor Alquiler (Mensual/Quincenal)</label>
-                    <input type="text" id="r-val" class="adm-input" placeholder="$">
-                   
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
-                    <select id="r-ver" class="adm-input">
-                        <option value="1">✅ APTO (VERIFICADO)</option>
-                        <option value="0">❌ FRAUDE (NO APTO)</option>
-                    </select>
-                </div>
-                <div>
-                    <h4 style="margin-bottom: 15px; color: var(--text-main);">Matriz de Validación (Binaria)</h4>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c1" checked> Existencia Física (A)</label>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c2" checked> Coincidencia Fotos (B)</label>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c3"> Titularidad Validada (C)</label>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c4"> Servicios Activos (D)</label>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c5"> Llaves/Acceso (E)</label>
-                   
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 6px;">
-                        <small>Código Hash Generado:</small>
-                        <div id="hash-output" style="font-family: monospace; font-weight: bold; color: var(--primary); word-break: break-all;">---</div>
-                    </div>
-                </div>
-            </div>
-            <button class="btn btn-primary" onclick="generateAndPrint()" style="margin-top: 20px;">GENERAR E IMPRIMIR DOCUMENTO</button>
-        </div>
-        <div id="tab-leads" class="hidden">
-        </div>
-        <div id="tab-validate" class="hidden">
-            <h2 style="margin-bottom: 20px; color: var(--text-main);">Validador de Certificado</h2>
-            <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color);">
-                <form onsubmit="desencriptarYMostrar(event)">
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Ingresá el HASH completo:</label>
-                    <input type="text" id="hash-input" class="adm-input" placeholder="Ej: 1412202513565023323133165475001101" required>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">VALIDAR HASH</button>
-                </form>
-                <div id="validate-results" style="display: none; margin-top: 30px;">
-                    <h4 style="margin-bottom: 15px; color: var(--success);">Datos Desencriptados:</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div>
-                            <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
-                            <input type="text" id="v-cli" class="adm-input" readonly>
-                            <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
-                            <input type="text" id="v-dir" class="adm-input" readonly>
-                            <label style="display:block; margin-bottom:5px; font-weight:600;">Fecha de Emisión</label>
-                            <input type="text" id="v-date" class="adm-input" readonly>
-                        </div>
-                        <div>
-                            <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
-                            <input type="text" id="v-ver" class="adm-input" readonly>
-                            <h4 style="margin-bottom: 10px;">Matriz de Validación:</h4>
-                            <ul style="list-style: none; padding: 0;">
-                                <li id="v-c1">Existencia Física: </li>
-                                <li id="v-c2">Coincidencia Fotos: </li>
-                                <li id="v-c3">Titularidad Validada: </li>
-                                <li id="v-c4">Servicios Activos: </li>
-                                <li id="v-c5">Llaves/Acceso: </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <button class="btn btn-outline" onclick="imprimirDesdeValidate()" style="margin-top: 20px; width: 100%;">IMPRIMIR / DESCARGAR PDF</button>
-                </div>
-            </div>
-            <!-- Vista previa del certificado (se rellena y muestra aquí) -->
-            <div id="cert-preview" style="display: none; margin-top: 40px; border: 1px solid var(--border-color); padding: 20px; background: white; box-shadow: var(--shadow-float);">
-                <h4 style="text-align: center; margin-bottom: 20px;">Vista Previa del Certificado</h4>
-                <div id="legal-doc-preview"></div> <!-- Clonaremos el legal-doc aquí -->
-            </div>
-        </div>
-    </div>
- </div>
     <div id="admin-modal" style="display: none;">
         <div class="sidebar">
             <h3 style="margin-bottom: 30px; letter-spacing: 1px;">BACKOFFICE V8</h3>
             <div class="adm-item active" onclick="showTab('gen')">📄 Generar Código</div>
-            <button class="btn btn-outline" onclick="desencriptarHash()" style="margin-top: 10px; width: 100%;">
-    🔍 VALIDAR / DESENCRIPTAR HASH
-</button>
             <div class="adm-item" onclick="showTab('leads')">👥 Leads</div>
-            
+            <div class="adm-item" onclick="showTab('validate')">🔍 Validar Hash</div>
             <div class="adm-item" onclick="document.getElementById('admin-modal').style.display='none'">🚪 Salir</div>
         </div>
-        
+       
         <div class="admin-main">
             <div id="tab-gen">
+                <!-- Todo tu contenido de Generar Código (el que ya tenías) -->
                 <h2 style="margin-bottom: 20px; color: var(--text-main);">Generador de Certificado Seguro</h2>
                 <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border: 1px solid var(--border-color);">
                     <div>
                         <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
                         <input type="text" id="r-cli" class="adm-input">
-                        
                         <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
                         <input type="text" id="r-dir" class="adm-input">
-                        
                         <label style="display:block; margin-bottom:5px; font-weight:600;">Valor Alquiler (Mensual/Quincenal)</label>
                         <input type="text" id="r-val" class="adm-input" placeholder="$">
-                        
                         <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
                         <select id="r-ver" class="adm-input">
                             <option value="1">✅ APTO (VERIFICADO)</option>
@@ -657,7 +562,6 @@
                         <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c3"> Titularidad Validada (C)</label>
                         <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c4"> Servicios Activos (D)</label>
                         <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c5"> Llaves/Acceso (E)</label>
-                        
                         <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 6px;">
                             <small>Código Hash Generado:</small>
                             <div id="hash-output" style="font-family: monospace; font-weight: bold; color: var(--primary); word-break: break-all;">---</div>
@@ -666,28 +570,69 @@
                 </div>
                 <button class="btn btn-primary" onclick="generateAndPrint()" style="margin-top: 20px;">GENERAR E IMPRIMIR DOCUMENTO</button>
             </div>
+
             <div id="tab-leads" class="hidden">
-    <h2 style="margin-bottom: 20px; color: var(--text-main);">Leads Recientes (Guardados Localmente)</h2>
-    <div style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); overflow-x: auto;">
-        <table style="width: 100%; border-collapse: collapse; color: var(--text-main);">
-            <thead>
-                <tr style="background: var(--bg-body); text-align: left;">
-                    <th style="padding: 10px;">Fecha</th>
-                    <th style="padding: 10px;">Cliente</th>
-                    <th style="padding: 10px;">WhatsApp</th>
-                    <th style="padding: 10px;">Plan</th>
-                    <th style="padding: 10px;">Link/Dir</th>
-                </tr>
-            </thead>
-            <tbody id="leads-body">
-                </tbody>
-        </table>
-        <button class="btn btn-danger" onclick="localStorage.removeItem('leads'); loadLeads();" style="margin-top: 20px; font-size: 0.8rem;">Borrar Historial</button>
-    </div>
-</div>
+                <h2 style="margin-bottom: 20px; color: var(--text-main);">Leads Recientes (Guardados Localmente)</h2>
+                <div style="background: var(--bg-card); padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; color: var(--text-main);">
+                        <thead>
+                            <tr style="background: var(--bg-body); text-align: left;">
+                                <th style="padding: 10px;">Fecha</th>
+                                <th style="padding: 10px;">Cliente</th>
+                                <th style="padding: 10px;">WhatsApp</th>
+                                <th style="padding: 10px;">Plan</th>
+                                <th style="padding: 10px;">Link/Dir</th>
+                            </tr>
+                        </thead>
+                        <tbody id="leads-body"></tbody>
+                    </table>
+                    <button class="btn btn-danger" onclick="localStorage.removeItem('leads'); loadLeads();" style="margin-top: 20px; font-size: 0.8rem;">Borrar Historial</button>
+                </div>
+            </div>
+
+            <div id="tab-validate" class="hidden">
+                <h2 style="margin-bottom: 20px; color: var(--text-main);">Validador de Certificado</h2>
+                <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color);">
+                    <form onsubmit="desencriptarYMostrar(event)">
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Ingresá el HASH completo:</label>
+                        <input type="text" id="hash-input" class="adm-input" placeholder="Ej: a1b2c3d4..." required>
+                        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">VALIDAR HASH</button>
+                    </form>
+                    <div id="validate-results" style="display: none; margin-top: 30px;">
+                        <h4 style="margin-bottom: 15px; color: var(--success);">Datos Desencriptados:</h4>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                            <div>
+                                <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
+                                <input type="text" id="v-cli" class="adm-input" readonly>
+                                <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
+                                <input type="text" id="v-dir" class="adm-input" readonly>
+                                <label style="display:block; margin-bottom:5px; font-weight:600;">Fecha de Emisión</label>
+                                <input type="text" id="v-date" class="adm-input" readonly>
+                            </div>
+                            <div>
+                                <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
+                                <input type="text" id="v-ver" class="adm-input" readonly>
+                                <h4 style="margin-bottom: 10px;">Matriz de Validación:</h4>
+                                <ul style="list-style: none; padding: 0;">
+                                    <li id="v-c1">Existencia Física: </li>
+                                    <li id="v-c2">Coincidencia Fotos: </li>
+                                    <li id="v-c3">Titularidad Validada: </li>
+                                    <li id="v-c4">Servicios Activos: </li>
+                                    <li id="v-c5">Llaves/Acceso: </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" onclick="imprimirDesdeValidate()" style="margin-top: 20px; width: 100%;">IMPRIMIR / DESCARGAR PDF</button>
+                    </div>
+                </div>
+                <div id="cert-preview" style="display: none; margin-top: 40px; border: 1px solid var(--border-color); padding: 20px; background: white; box-shadow: var(--shadow-float); border-radius: 12px;">
+                    <h4 style="text-align: center; margin-bottom: 20px;">Vista Previa del Certificado</h4>
+                    <div id="legal-doc-preview"></div>
+                </div>
+            </div>
         </div>
     </div>
-
+    
     <div id="legal-doc" style="display: none;">
     <div style="width: 210mm; min-height: 297mm; padding: 40px; font-family: 'Inter', sans-serif; position: relative; color: #111827; background: white;">
         

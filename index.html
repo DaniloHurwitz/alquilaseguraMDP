@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1Alquila Seguro MDP</title>
+    <title>Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="theme-color" content="#002B49">
     
@@ -686,19 +686,193 @@
 </div>
 
     <script>
-        // === INIT ===
+       <script>
+        // ==========================================
+        // 1. INICIALIZACIÓN DEL SISTEMA
+        // ==========================================
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
+            // Ocultar Loader
+            setTimeout(() => {
+                const loader = document.getElementById('preloader');
+                if(loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.display = 'none', 500);
+                }
+            }, 1000);
+
             initTheme();
-            initParticles();
+            initScamCounter();
+            initCanvas(); 
             initObserver();
+            
+            // Si hay sesión activa (opcional), cargar leads
+            if(localStorage.getItem('adminLogged') === 'true') {
+                loadLeads();
+            }
         });
 
-        // === THEME ===
+        // ==========================================
+        // 2. SISTEMA DE ADMIN & LOGIN (ARREGLADO)
+        // ==========================================
+        
+        // Función para abrir/cerrar modales
+        function openModal(id) {
+            document.getElementById(id).style.display = 'flex';
+        }
+        function closeModal(id) {
+            document.getElementById(id).style.display = 'none';
+        }
+
+        // Autenticación Admin
+        function authAdmin() {
+            const u = document.getElementById('adm-u').value;
+            const p = document.getElementById('adm-p').value;
+            
+            if(u === 'admin' && p === 'SEGURO2025') {
+                closeModal('login-modal');
+                document.getElementById('admin-overlay').style.display = 'flex';
+                showToast("Acceso Autorizado. Bienvenido Staff.", 'success');
+                loadLeads(); // Cargar datos
+                showTab('gen'); // Ir a la primera pestaña por defecto
+            } else {
+                showToast("Credenciales incorrectas", 'error');
+            }
+        }
+
+        // FALTABA ESTA FUNCIÓN: Control de Pestañas del Panel
+        function showTab(tabId) {
+            // Ocultar todas las pestañas
+            document.getElementById('tab-gen').classList.add('hidden');
+            document.getElementById('tab-leads').classList.add('hidden');
+            
+            // Quitar clase active de los botones
+            const navItems = document.querySelectorAll('.admin-nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+            
+            // Mostrar la deseada
+            document.getElementById('tab-' + tabId).classList.remove('hidden');
+            
+            // Activar botón (simple lógica visual)
+            event.currentTarget.classList.add('active');
+        }
+
+        // Sistema de Leads (Guardar y Cargar)
+        function submitLead(e) {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "PROCESANDO...";
+            
+            // Capturar datos
+            const inputs = e.target.querySelectorAll('input, select');
+            const newLead = {
+                date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString(),
+                name: inputs[0].value,
+                phone: inputs[1].value,
+                link: inputs[2].value,
+                plan: inputs[3].value
+            };
+
+            // Guardar en LocalStorage
+            let leads = JSON.parse(localStorage.getItem('leads') || "[]");
+            leads.unshift(newLead);
+            localStorage.setItem('leads', JSON.stringify(leads));
+
+            setTimeout(() => {
+                showToast("Solicitud enviada correctamente", 'success');
+                btn.innerText = "¡ENVIADO!";
+                btn.style.background = "var(--success)";
+                e.target.reset();
+                setTimeout(() => { 
+                    btn.innerText = originalText; 
+                    btn.style.background = ""; 
+                }, 3000);
+            }, 1500);
+        }
+
+        function loadLeads() {
+            const leads = JSON.parse(localStorage.getItem('leads') || "[]");
+            const tbody = document.getElementById('leads-body');
+            if(!tbody) return;
+            
+            tbody.innerHTML = ""; // Limpiar
+
+            if(leads.length === 0) {
+                tbody.innerHTML = "<tr><td colspan='5' style='padding:20px; text-align:center; color:gray;'>No hay solicitudes nuevas.</td></tr>";
+                return;
+            }
+
+            leads.forEach(l => {
+                const row = `<tr style="border-bottom: 1px solid #eee;">
+                    <td style="padding: 10px;">${l.date}</td>
+                    <td style="padding: 10px;"><strong>${l.name}</strong></td>
+                    <td style="padding: 10px;">${l.phone}</td>
+                    <td style="padding: 10px;"><span style="background:var(--secondary); color:white; padding:2px 6px; border-radius:4px; font-size:0.8rem;">${l.plan}</span></td>
+                    <td style="padding: 10px; font-size:0.8rem;">${l.link}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+        }
+
+        // ==========================================
+        // 3. GENERADOR DE DOCUMENTOS (HASH + IMPRESIÓN)
+        // ==========================================
+        function generateAndPrint() {
+            const cli = document.getElementById('r-cli').value || 'CONSUMIDOR FINAL';
+            const dir = document.getElementById('r-dir').value || 'NO ESPECIFICADA';
+            const val = document.getElementById('r-val').value || '0';
+            const ver = document.getElementById('r-ver').value;
+            
+            // Generar Hash Seguro (Base64)
+            const checks = [1,2,3,4,5].map(i => document.getElementById('c'+i).checked ? '1' : '0').join('');
+            const rawData = `${new Date().toISOString()}|${cli}|${dir}|${val}|${ver}|${checks}`;
+            const hash = btoa(unescape(encodeURIComponent(rawData))); 
+
+            // Rellenar Documento Oculto
+            document.getElementById('p-hash').innerText = hash;
+            document.getElementById('p-date').innerText = new Date().toLocaleDateString();
+            document.getElementById('p-cli-out').innerText = cli.toUpperCase();
+            document.getElementById('p-dir-out').innerText = dir.toUpperCase();
+            document.getElementById('p-val-out').innerText = "$ " + val;
+
+            const verEl = document.getElementById('p-ver-out');
+            if(ver === '1') {
+                verEl.innerText = "✅ APTO / VERIFICADO";
+                verEl.style.color = "#059669";
+            } else {
+                verEl.innerText = "🚫 RIESGO DE FRAUDE";
+                verEl.style.color = "#DC2626";
+            }
+
+            // Checks visuales
+            for(let i=1; i<=5; i++) {
+                const isOk = document.getElementById('c'+i).checked;
+                const el = document.getElementById('p-c'+i);
+                if(el) {
+                    el.innerText = isOk ? "POSITIVO" : "NEGATIVO";
+                    el.style.color = isOk ? "#002B49" : "#DC2626";
+                }
+            }
+
+            // QR Dinámico
+            const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${hash}`;
+            const qrImg = document.getElementById('qr-code-img');
+            qrImg.src = qrUrl;
+            
+            // Imprimir cuando cargue el QR
+            qrImg.onload = () => window.print();
+        }
+
+        // ==========================================
+        // 4. UTILIDADES GENERALES & UI
+        // ==========================================
         function initTheme() {
             const theme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', theme);
+            const check = document.getElementById('checkbox');
+            if(check) check.checked = (theme === 'dark');
         }
+
         function toggleTheme() {
             const current = document.documentElement.getAttribute('data-theme');
             const target = current === 'light' ? 'dark' : 'light';
@@ -706,14 +880,55 @@
             localStorage.setItem('theme', target);
         }
 
-        // === CHATBOT TREE ===
+        function selectPlan(plan) {
+            document.getElementById('plan-select').value = plan;
+            document.getElementById('contacto').scrollIntoView();
+        }
+
+        function toggleRisk(el) {
+            el.classList.toggle('checked');
+            el.querySelector('input').checked = !el.querySelector('input').checked;
+            calcRisk();
+        }
+
+        function calcRisk() {
+            const score = document.querySelectorAll('.chk-item.checked').length * 25;
+            document.getElementById('risk-score').innerText = score + "%";
+            document.getElementById('gauge').style.transform = `rotate(${score * 1.8}deg)`;
+            
+            const label = document.getElementById('risk-label');
+            if(score > 75) {
+                label.innerText = "SEGURIDAD ALTA";
+                label.style.color = "var(--success)";
+                document.getElementById('gauge').style.borderTopColor = "var(--success)";
+            } else {
+                label.innerText = "RIESGO ALTO";
+                label.style.color = "var(--danger)";
+                document.getElementById('gauge').style.borderTopColor = "var(--danger)";
+            }
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? '✅' : '⚠️';
+            toast.innerHTML = `<span style="font-size:1.2rem">${icon}</span> <span>${message}</span>`;
+            container.appendChild(toast);
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // Chatbot Simple
         let chatState = 0;
         function toggleChat() {
             const win = document.getElementById('chat-window');
             win.classList.toggle('active');
-            if (win.classList.contains('active') && document.getElementById('chat-body').children.length === 0) {
-                botSay("👋 Hola. Soy el asistente de seguridad. ¿Qué necesitás saber?");
-                chatOpts(['Precios', '¿Cómo funciona?', 'Garantías']);
+            if (win.classList.contains('active') && document.getElementById('chat-body').innerHTML.trim() === "") {
+                botSay("👋 Hola. Soy el asistente de seguridad. ¿Vas a alquilar en la Costa?");
+                setTimeout(() => chatOpts(['Precios', '¿Cómo funciona?', 'Garantías']), 800);
             }
         }
 
@@ -730,142 +945,49 @@
                 const btn = document.createElement('button');
                 btn.className = 'opt-btn';
                 btn.innerText = opt;
-                btn.onclick = () => handleChat(opt, div);
+                btn.onclick = () => {
+                    const usr = document.createElement('div');
+                    usr.className = 'msg msg-user';
+                    usr.innerText = opt;
+                    document.getElementById('chat-body').appendChild(usr);
+                    div.remove();
+                    setTimeout(() => handleChat(opt), 500);
+                };
                 div.appendChild(btn);
             });
             document.getElementById('chat-body').appendChild(div);
         }
 
-        function handleChat(choice, btnContainer) {
-            btnContainer.remove();
-            const usr = document.createElement('div');
-            usr.className = 'msg msg-user';
-            usr.innerText = choice;
-            document.getElementById('chat-body').appendChild(usr);
-
-            setTimeout(() => {
-                if(choice === 'Precios') {
-                    botSay("Tenemos planes desde $12.000 ARS. El 'Blindaje Total' es el más recomendado.");
-                    chatOpts(['Ver Planes', 'Volver']);
-                } else if (choice === '¿Cómo funciona?') {
-                    botSay("Vamos presencialmente a la propiedad, verificamos documentos y te enviamos un PDF certificado.");
-                    chatOpts(['Precios', 'Volver']);
-                } else if (choice === 'Garantías') {
-                    botSay("Si el informe dice APTO y resulta estafa (nunca pasó), te devolvemos el dinero del servicio. Somos peritos verificadores.");
-                    chatOpts(['Volver']);
-                } else if (choice === 'Ver Planes') {
-                    window.location.href = "#precios";
-                } else {
-                    botSay("¿En qué más puedo ayudarte?");
-                    chatOpts(['Precios', '¿Cómo funciona?', 'Garantías']);
-                }
-            }, 600);
-        }
-
-        // === RISK TOOL ===
-        function toggleChk(el) {
-            el.classList.toggle('checked');
-            el.querySelector('input').checked = !el.querySelector('input').checked;
-            calcRisk();
-        }
-        function calcRisk() {
-            const score = document.querySelectorAll('.chk-item.checked').length * 25;
-            document.getElementById('score').innerText = score + "%";
-            document.getElementById('gauge').style.transform = `rotate(${score * 1.8}deg)`;
-            if(score > 75) {
-                document.getElementById('risk-label').innerText = "SEGURIDAD ALTA";
-                document.getElementById('risk-label').style.color = "var(--success)";
-                document.getElementById('gauge').style.borderTopColor = "var(--success)";
+        function handleChat(choice) {
+            if(choice === 'Precios') {
+                botSay("Planes desde $12.000 ARS. El 'Blindaje Total' incluye visita presencial.");
+            } else if (choice === '¿Cómo funciona?') {
+                botSay("Un inspector va a la propiedad, verifica papeles y te enviamos un reporte PDF.");
+            } else {
+                botSay("Si el informe es positivo y te estafan, te devolvemos el valor del servicio.");
             }
+            setTimeout(() => chatOpts(['Ver Planes', 'Hablar con Humano']), 1000);
         }
 
-        // === ADMIN LOGIC (COMPLEX HASH) ===
-    
-
-        // === ENCRIPTACIÓN Y GENERACIÓN ===
-function generateAndPrint() {
-    // 1. Obtener datos
-    const cli = document.getElementById('r-cli').value || 'CONSUMIDOR FINAL';
-    const dir = document.getElementById('r-dir').value || 'NO ESPECIFICADA';
-    const val = document.getElementById('r-val').value || '0';
-    const ver = document.getElementById('r-ver').value;
-    
-    // 2. Generar Encriptación Reversible (Base64 modificado para URL)
-    // Formato: FECHA|CLIENTE|DIR|VALOR|VERDICTO|CHECKS
-    const checks = [1,2,3,4,5].map(i => document.getElementById('c'+i).checked ? '1' : '0').join('');
-    const rawData = `${new Date().toISOString()}|${cli}|${dir}|${val}|${ver}|${checks}`;
-    const hash = btoa(unescape(encodeURIComponent(rawData))); // Encriptar a Base64 seguro
-
-    // 3. Rellenar el Documento
-    document.getElementById('p-hash').innerText = hash; // Muestra el hash largo
-    document.getElementById('p-date').innerText = new Date().toLocaleDateString('es-AR', {weekday:'long', year:'numeric', month:'long', day:'numeric'});
-    
-    document.getElementById('p-cli-out').innerText = cli.toUpperCase();
-    document.getElementById('p-dir-out').innerText = dir.toUpperCase();
-    document.getElementById('p-val-out').innerText = "$ " + val;
-
-    // Colores y textos según veredicto
-    const verEl = document.getElementById('p-ver-out');
-    if(ver === '1') {
-        verEl.innerText = "✅ APTO / VERIFICADO";
-        verEl.style.color = "#059669";
-    } else {
-        verEl.innerText = "🚫 RIESGO DE FRAUDE";
-        verEl.style.color = "#DC2626";
-    }
-
-    // Rellenar Checks
-    const mapCheck = (id, outId) => {
-        const isOk = document.getElementById(id).checked;
-        const el = document.getElementById(outId);
-        el.innerText = isOk ? "POSITIVO" : "NEGATIVO";
-        el.style.color = isOk ? "#002B49" : "#DC2626";
-    };
-    for(let i=1; i<=5; i++) mapCheck('c'+i, 'p-c'+i);
-
-    // 4. Generar QR Real con el Hash
-    // Esto permite que si alguien escanea, tenga toda la data encriptada
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${hash}`;
-    document.getElementById('qr-code-img').src = qrUrl;
-
-    // 5. Esperar a que cargue el QR e imprimir
-    document.getElementById('qr-code-img').onload = () => {
-        window.print();
-    };
-}
-        // === UTILS ===
-        function selectPlan(plan) {
-            document.getElementById('plan-select').value = plan;
-            document.getElementById('contacto').scrollIntoView();
-        }
-
-function loadLeads() {
-    const leads = JSON.parse(localStorage.getItem('leads') || "[]");
-    const tbody = document.getElementById('leads-body');
-    tbody.innerHTML = ""; // Limpiar
-
-    if(leads.length === 0) {
-        tbody.innerHTML = "<tr><td colspan='5' style='padding:20px; text-align:center;'>No hay solicitudes nuevas.</td></tr>";
-        return;
-    }
-
-    leads.forEach(l => {
-        const row = `<tr style="border-bottom: 1px solid #eee;">
-            <td style="padding: 10px;">${l.date}</td>
-            <td style="padding: 10px;"><strong>${l.name}</strong></td>
-            <td style="padding: 10px;">${l.phone}</td>
-            <td style="padding: 10px;"><span style="background:var(--secondary); color:white; padding:2px 6px; border-radius:4px; font-size:0.8rem;">${l.plan}</span></td>
-            <td style="padding: 10px; font-size:0.8rem;">${l.link}</td>
-        </tr>`;
-        tbody.innerHTML += row;
-    });
-}
+        // Animaciones y Fondo
         function initObserver() {
             const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('active') }));
             document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
         }
-        function initParticles() {
+
+        function initScamCounter() {
+            const el = document.getElementById('scam-count');
+            if(!el) return;
+            let count = 1420;
+            setInterval(() => {
+                count++;
+                el.innerText = (count/1000).toFixed(2) + 'K';
+            }, 5000);
+        }
+
+        function initCanvas() {
             const c = document.getElementById('particles');
+            if(!c) return;
             const ctx = c.getContext('2d');
             c.width = window.innerWidth; c.height = window.innerHeight;
             let p = [];
@@ -882,124 +1004,11 @@ function loadLeads() {
             }
             draw();
         }
-        // Función extra para consola o herramienta futura:
-function decryptHash(hash) {
-    try {
-        const str = decodeURIComponent(escape(atob(hash)));
-        console.log("Datos desencriptados:", str.split('|'));
-        alert("Datos recuperados: " + str);
-    } catch(e) {
-        alert("Hash inválido");
-    }
-}
-
-        // ==========================================
-    // 🛠️ FIX: FUNCIONES DE SISTEMA Y ADMIN
-    // ==========================================
-
-    // 1. SISTEMA DE NOTIFICACIONES (TOAST) - Faltaba esto para que salgan los mensajes
-    function showToast(message, type = 'success') {
-        const container = document.getElementById('toast-container');
-        const toast = document.createElement('div');
-        toast.className = `toast ${type}`;
-        const icon = type === 'success' ? '✅' : '⚠️';
-        toast.innerHTML = `<span style="font-size:1.2rem">${icon}</span> <span>${message}</span>`;
         
-        container.appendChild(toast);
-        
-        // Animación de entrada y salida
-        setTimeout(() => {
-            toast.style.opacity = '0';
-            setTimeout(() => toast.remove(), 300);
-        }, 3000);
-    }
-
-    // 2. LÓGICA DE ADMIN CORREGIDA
-    function authAdmin() {
-        const u = document.getElementById('adm-u').value;
-        const p = document.getElementById('adm-p').value;
-        
-        // Credenciales: admin / SEGURO2025
-        if(u === 'admin' && p === 'SEGURO2025') {
-            closeModal('login-modal');
-            document.getElementById('admin-overlay').style.display = 'flex'; // Abrir panel
-            showToast("Acceso Autorizado. Bienvenido Staff.", 'success');
-            loadLeads(); // Cargar la lista de clientes
-        } else {
-            showToast("Contraseña incorrecta", 'error');
-            // Efecto visual de error
-            const box = document.querySelector('.login-box');
-            box.style.transform = "translateX(10px)";
-            setTimeout(() => box.style.transform = "translateX(0)", 100);
+        function toggleMenu() {
+            document.getElementById('nav-menu').classList.toggle('active');
         }
-    }
-
-    // 3. SISTEMA DE LEADS (TABLA DE CLIENTES) - Faltaba esta lógica
-    function loadLeads() {
-        // Recuperar leads guardados o iniciar vacío
-        const leads = JSON.parse(localStorage.getItem('leads') || "[]");
-        const tbody = document.getElementById('leads-body');
-        
-        if (!tbody) return; // Seguridad si no existe la tabla
-        tbody.innerHTML = ""; // Limpiar tabla
-
-        if(leads.length === 0) {
-            tbody.innerHTML = "<tr><td colspan='5' style='padding:20px; text-align:center; color:#666;'>No hay solicitudes nuevas.</td></tr>";
-            return;
-        }
-
-        // Dibujar filas
-        leads.forEach(l => {
-            const row = document.createElement('tr');
-            row.style.borderBottom = "1px solid #eee";
-            row.innerHTML = `
-                <td style="padding: 10px;">${l.date}</td>
-                <td style="padding: 10px; font-weight:bold;">${l.name}</td>
-                <td style="padding: 10px;">${l.phone}</td>
-                <td style="padding: 10px;"><span style="background:var(--secondary); color:white; padding:2px 8px; border-radius:10px; font-size:0.7rem;">${l.plan}</span></td>
-                <td style="padding: 10px; font-size:0.8rem; color:#666;">${l.link}</td>
-            `;
-            tbody.appendChild(row);
-        });
-    }
-
-    // 4. GUARDADO DE LEADS (CONECTADO AL FORMULARIO)
-    function submitLead(e) {
-        e.preventDefault();
-        const btn = e.target.querySelector('button');
-        const originalText = btn.innerText;
-        
-        btn.innerText = "PROCESANDO...";
-        btn.style.opacity = "0.7";
-
-        // Capturar datos del form
-        const inputs = e.target.querySelectorAll('input, select');
-        const newLead = {
-            date: new Date().toLocaleDateString() + ' ' + new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}),
-            name: inputs[0].value,
-            phone: inputs[1].value,
-            link: inputs[2].value,
-            plan: inputs[3].value
-        };
-
-        // Guardar en memoria del navegador
-        const leads = JSON.parse(localStorage.getItem('leads') || "[]");
-        leads.unshift(newLead);
-        localStorage.setItem('leads', JSON.stringify(leads));
-
-        setTimeout(() => {
-            showToast("Solicitud enviada con éxito.", 'success');
-            btn.innerText = "¡ENVIADO!";
-            btn.style.background = "var(--success)";
-            e.target.reset();
-            
-            setTimeout(() => {
-                btn.innerText = originalText;
-                btn.style.background = "";
-                btn.style.opacity = "1";
-            }, 3000);
-        }, 1500);
-    }
+    </script>
     </script>
 </body>
 </html>

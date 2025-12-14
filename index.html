@@ -2415,6 +2415,64 @@ section {
                 padding: 14px !important;
             }
         }
+
+        /* ==========================================================================
+           CORRECCIONES FINALES (PEGAR AL FINAL DEL CSS)
+           ========================================================================== */
+        
+        /* 1. Ocultar Chat y WhatsApp al inicio (para que no tapen) */
+        .chat-widget {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(20px);
+            transition: all 0.4s ease;
+            pointer-events: none; /* Para que no moleste el click */
+        }
+
+        /* Esta clase la agregaremos con JS al bajar */
+        .chat-widget.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        /* 2. Arreglo del Header en Celular (Para que no se encimen las cosas) */
+        @media (max-width: 768px) {
+            .nav-flex {
+                gap: 2px !important;
+                justify-content: space-between !important;
+            }
+
+            /* Logo más chico para que entre */
+            .logo {
+                font-size: 0.95rem !important; 
+                max-width: 60%; /* Le damos espacio, pero no todo */
+                white-space: nowrap;
+            }
+
+            .logo-icon {
+                width: 20px !important;
+                height: 20px !important;
+            }
+
+            /* Controles (Luna y Hamburguesa) pegados a la derecha */
+            .nav-controls {
+                gap: 0px !important;
+                flex-shrink: 0;
+            }
+
+            /* Botón de tema (Sol/Luna) más chico */
+            .theme-toggle {
+                transform: scale(0.7) !important;
+                margin-right: -5px !important;
+            }
+            
+            .hamburger {
+                font-size: 1.5rem !important;
+                margin-left: 5px !important;
+            }
+        }
 </style>
 </head>
 <body>
@@ -3473,19 +3531,30 @@ function initLoader() {
     }
 
     // ==========================================
-    // 8. SCROLL EFFECTS
+    // 8. SCROLL EFFECTS (MODIFICADO)
     // ==========================================
     function initScrollEffects() {
         const header = document.getElementById('header');
+        const widget = document.querySelector('.chat-widget'); 
         let lastScroll = 0;
         
         window.addEventListener('scroll', () => {
             const currentScroll = window.pageYOffset;
             
-            if (currentScroll > 100) {
+            // 1. Sombra del Header
+            if (currentScroll > 50) {
                 header.classList.add('scrolled');
             } else {
                 header.classList.remove('scrolled');
+            }
+            
+            // 2. Lógica de Botones (Aparecen al bajar 300px)
+            if (widget) {
+                if (currentScroll > 300) {
+                    widget.classList.add('visible');
+                } else {
+                    widget.classList.remove('visible');
+                }
             }
             
             lastScroll = currentScroll;

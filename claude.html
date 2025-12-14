@@ -4122,7 +4122,6 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Centro del mapa
         const map = L.map('map', { 
             center: [-38.0050, -57.5460], 
             zoom: 13, 
@@ -4133,17 +4132,34 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
             attribution: '&copy; OSM &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- GENERADOR DETERMINISTA (PUNTOS FIJOS) ---
+        // --- GENERADOR FIJO CON PARED ANTI-AGUA ---
         function agregarPuntosFijos(latBase, lngBase, cantidad, dispersion, zonaNombre) {
             for (let i = 0; i < cantidad; i++) {
-                // Matemática fija para que siempre caigan en el mismo lugar
+                // Generación matemática fija (sin random)
                 const latOffset = Math.sin(i * 12.9898) * dispersion;
-                const lngOffset = Math.cos(i * 78.233) * dispersion * 1.4; 
+                const lngOffset = Math.cos(i * 78.233) * dispersion * 1.3; // Radio agrandado
 
-                const lat = latBase + latOffset;
-                const lng = lngBase + lngOffset;
+                let lat = latBase + latOffset;
+                let lng = lngBase + lngOffset;
 
-                // Color fijo basado en el índice
+                // --- PARED DE REBOTE (Corrección de Costa) ---
+                // Definimos el límite de la costa. Si se pasa, lo movemos al Oeste.
+                // La costa en el centro está aprox en -57.536.
+                // En el Cabo (-38.015) sale más afuera, pero en La Perla y Centro es estricto.
+                
+                let limiteCosta = -57.5360; 
+                
+                // Ajuste fino para Cabo Corrientes (permite ir un poco más al este ahí)
+                if (lat < -38.01 && lat > -38.02) {
+                    limiteCosta = -57.5200; 
+                }
+
+                // Si el punto cae en el agua, lo empujamos para adentro
+                if (lng > limiteCosta) {
+                    lng = limiteCosta - (Math.abs(Math.sin(i)) * 0.005); // Rebote aleatorio hacia adentro
+                }
+
+                // --- COLORES ---
                 let color, texto, radio;
                 const seedColor = Math.abs(Math.sin(i)); 
 
@@ -4152,9 +4168,10 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
                     else if (seedColor > 0.3) { color = '#F59E0B'; texto = '✋ En proceso'; radio = 30; }
                     else { color = '#10B981'; texto = '🛡️ Verificado'; radio = 30; }
                 } else {
-                    if (seedColor > 0.3) { color = '#10B981'; texto = '🛡️ Propiedad Verificada'; radio = 25; }
-                    else if (seedColor > 0.15) { color = '#EF4444'; texto = '⚠️ Denuncia Activa'; radio = 35; }
-                    else { color = '#F59E0B'; texto = '✋ Validación pendiente'; radio = 25; }
+                    // Centro/Güemes
+                    if (seedColor > 0.35) { color = '#10B981'; texto = '🛡️ Propiedad Verificada'; radio = 28; }
+                    else if (seedColor > 0.2) { color = '#EF4444'; texto = '⚠️ Denuncia Activa'; radio = 35; }
+                    else { color = '#F59E0B'; texto = '✋ Validación pendiente'; radio = 28; }
                 }
 
                 L.circle([lat, lng], {
@@ -4167,23 +4184,23 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
             }
         }
 
-        // --- DEFINICIÓN DE ZONAS (AJUSTE FINO OESTE Y RADIO) ---
+        // --- ZONAS AJUSTADAS (MÁS GRANDES Y CENTRADAS) ---
         
-        // 1. MICROCENTRO (Plaza Colón / Luro) - 90 puntos
-        // Movido más a la izquierda (-57.5565) y radio más chico (0.004)
-        agregarPuntosFijos(-38.0020, -57.5565, 90, 0.004, "Microcentro");
+        // 1. MICROCENTRO (Plaza Colón / Casino) - 100 puntos
+        // Aumenté la dispersión a 0.007 para que ocupe más espacio
+        agregarPuntosFijos(-38.0020, -57.5470, 100, 0.007, "Microcentro");
 
-        // 2. GÜEMES / TRONCOS - 70 puntos
-        // Movido más a la izquierda (-57.5560) y radio más chico (0.0045)
-        agregarPuntosFijos(-38.0140, -57.5560, 70, 0.0045, "Güemes");
+        // 2. GÜEMES / TRONCOS - 80 puntos
+        // Dispersión 0.007 para llenar la zona comercial
+        agregarPuntosFijos(-38.0130, -57.5430, 80, 0.007, "Güemes");
 
-        // 3. LA PERLA (Norte) - 40 puntos
-        // Movido bastante a la izquierda (-57.5580) para evitar la curva del mar
-        agregarPuntosFijos(-37.9940, -57.5580, 40, 0.004, "La Perla");
+        // 3. LA PERLA - 50 puntos
+        // Movido un poco al sur (-37.995) para alejarlo de la curva de Alfonsina
+        agregarPuntosFijos(-37.9950, -57.5510, 50, 0.006, "La Perla");
 
-        // 4. PERIFERIA / DISPERSOS - 40 puntos
-        // Muy adentro en la ciudad (-57.5750)
-        agregarPuntosFijos(-38.0050, -57.5750, 40, 0.015, "Periferia");
+        // 4. PERIFERIA / DISPERSOS - 50 puntos
+        // Bien amplio (0.020) para rellenar los huecos
+        agregarPuntosFijos(-38.0050, -57.5600, 50, 0.020, "Periferia");
 
 
         // Fix para Modo Oscuro

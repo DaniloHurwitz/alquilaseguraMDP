@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Preguntas Frecuentes - Alquila Seguro MDP</title>
+    <meta name="theme-color" content="#002B49">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           ESTILOS BASE (Coherencia con tu marca)
+           ========================================================================== */
+        :root {
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --border-color: #E5E7EB;
+            --primary: #002B49;
+            --secondary: #00A8E8;
+            --accent: #FFB703;
+            --danger: #DC2626;
+            --success: #059669;
+            --dark-footer: #020617;
+            --radius-xl: 16px;
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0B1120;
+            --bg-card: #1E293B;
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --border-color: #334155;
+            --primary: #38BDF8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--primary); }
+        [data-theme="dark"] h1 { color: var(--text-main); }
+
+        /* HEADER SIMPLE */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        .logo {
+            font-size: 1.25rem; font-weight: 900; text-decoration: none; color: var(--text-main); text-transform: uppercase;
+        }
+        .logo span { color: var(--secondary); }
+
+        /* CONTENEDOR FAQ */
+        .faq-wrapper {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .faq-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .faq-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+            letter-spacing: -1px;
+        }
+
+        .faq-header p {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        /* ACORDEÓN (DETAILS/SUMMARY) */
+        details {
+            background: var(--bg-card);
+            margin-bottom: 15px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        details[open] {
+            box-shadow: var(--shadow-lg);
+            border-color: var(--secondary);
+        }
+
+        summary {
+            padding: 20px;
+            cursor: pointer;
+            font-weight: 700;
+            font-size: 1.05rem;
+            list-style: none; /* Ocultar triángulo default */
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-main);
+        }
+
+        /* Icono personalizado para el acordeón */
+        summary::after {
+            content: '+';
+            font-size: 1.5rem;
+            color: var(--secondary);
+            font-weight: 300;
+            transition: transform 0.3s ease;
+        }
+
+        details[open] summary::after {
+            transform: rotate(45deg); /* Se convierte en X */
+            color: var(--danger);
+        }
+
+        summary::-webkit-details-marker { display: none; } /* Safari fix */
+
+        .faq-content {
+            padding: 0 20px 25px 20px;
+            color: var(--text-muted);
+            border-top: 1px solid var(--bg-body);
+            font-size: 0.95rem;
+            animation: fadeIn 0.4s ease;
+        }
+
+        /* LISTAS DENTRO DEL CONTENIDO */
+        .faq-list {
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+        .faq-list li { margin-bottom: 5px; }
+
+        /* ESTILOS DE ÉNFASIS */
+        .highlight-no {
+            color: var(--danger);
+            font-weight: 700;
+            background: rgba(220, 38, 38, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+
+        .highlight-yes {
+            color: var(--success);
+            font-weight: 700;
+        }
+
+        /* CTA FINAL */
+        .faq-cta {
+            text-align: center;
+            margin-top: 50px;
+            padding: 40px;
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            border: 2px dashed var(--border-color);
+        }
+
+        .btn-cta {
+            display: inline-block;
+            background: var(--primary);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 700;
+            margin-top: 15px;
+            transition: transform 0.2s;
+        }
+        .btn-cta:hover { transform: translateY(-2px); background: var(--secondary); }
+
+        /* FOOTER & FAB */
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.85rem; background: var(--dark-footer); margin-top: 60px; }
+        
+        .fab-back {
+            position: fixed; bottom: 30px; right: 30px; background: var(--secondary); color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: 700; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s; z-index: 900; font-family: 'Montserrat', sans-serif;
+        }
+        .fab-back:hover { transform: translateY(-3px); background: var(--primary); }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 768px) {
+            .faq-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">AlquilaSeguro<span>MDP</span></a>
+    </header>
+
+    <div class="faq-wrapper">
+        
+        <div class="faq-header">
+            <h1>Preguntas Frecuentes</h1>
+            <p>Todo lo que necesitás saber antes de contratar el servicio.</p>
+        </div>
+
+        <details open> <summary>🔍 ¿Qué es Alquila Seguro MDP?</summary>
+            <div class="faq-content">
+                <p>Es un servicio privado de constatación y verificación presencial de propiedades ofrecidas para alquiler temporario en Mar del Plata. Nuestro objetivo es brindarte <strong>información real y documentada</strong> antes de que transfieras dinero, actuando como tus "ojos" en la ciudad.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>🏠 ¿Son una inmobiliaria?</summary>
+            <div class="faq-content">
+                <p><span class="highlight-no">NO.</span> No somos inmobiliaria, no intermediamos operaciones, no publicamos propiedades ni cobramos comisiones por los contratos de alquiler.</p>
+                <p style="margin-top: 10px;">Somos una empresa de servicios de logística y verificación técnica. Solo verificamos hechos y documentación a pedido del cliente para reducir riesgos.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>🧾 ¿Qué verifican exactamente?</summary>
+            <div class="faq-content">
+                <p>Dependiendo del plan contratado (Básico o Blindaje Total), verificamos:</p>
+                <ul class="faq-list">
+                    <li>Existencia física y ubicación real de la propiedad.</li>
+                    <li>Prueba de acceso (que la persona tenga llave y pueda entrar).</li>
+                    <li>Presencia del supuesto propietario o intermediario.</li>
+                    <li>Coincidencia de datos básicos (DNI, documentación mostrada).</li>
+                    <li>Servicios activos (Luz, Gas, Agua).</li>
+                    <li>Videollamada en vivo desde el interior.</li>
+                </ul>
+                <p style="margin-top: 10px; font-size: 0.85rem;">* Todo se entrega en un informe técnico detallado.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>⚠️ ¿Garantizan que no voy a ser estafado?</summary>
+            <div class="faq-content">
+                <p><span class="highlight-no">No.</span> Garantizamos la veracidad de la información relevada <strong>al momento exacto de la verificación</strong>.</p>
+                <p>No podemos garantizar la conducta ética futura del propietario ni el resultado final de la operación. Nuestro servicio reduce drásticamente el riesgo al filtrar perfiles falsos y direcciones inexistentes, pero la decisión final de transferir dinero siempre es del cliente.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>💸 ¿Qué pasa si detectan un fraude?</summary>
+            <div class="faq-content">
+                <p>Si detectamos que la propiedad no existe, que el supuesto dueño no tiene llaves o es un perfil falso, te entregamos un <strong>Informe de Alerta Roja</strong> detallando las irregularidades.</p>
+                <p>El servicio se cobra por la <strong>constatación realizada y el tiempo invertido</strong>, no por el resultado positivo. De hecho, detectar un fraude es el servicio más valioso que ofrecemos, ya que te evita perder una suma mucho mayor.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>⏱️ ¿Cuánto tarda la verificación?</summary>
+            <div class="faq-content">
+                <ul class="faq-list">
+                    <li><strong>Plan Básico:</strong> Hasta 48 horas hábiles.</li>
+                    <li><strong>Blindaje Total:</strong> Prioridad, hasta 24 horas.</li>
+                    <li><strong>Servicio SOS:</strong> Salida inmediata (menos de 2 horas), sujeto a disponibilidad horaria.</li>
+                </ul>
+            </div>
+        </details>
+
+        <details>
+            <summary>📍 ¿Solo trabajan en Mar del Plata?</summary>
+            <div class="faq-content">
+                <p><span class="highlight-yes">Sí.</span> El servicio es 100% presencial y está limitado al Partido de General Pueyrredón (Mar del Plata y zonas aledañas).</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>📄 ¿El informe tiene validez legal?</summary>
+            <div class="faq-content">
+                <p>El informe es un documento técnico privado que incluye evidencia fotográfica, metadatos, geolocalización y fechas verificables.</p>
+                <p>Sirve como un respaldo informativo sólido y preventivo para el cliente, pero <strong>no reemplaza</strong> una escritura pública, un contrato notarial ni el asesoramiento de un abogado profesional.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>🔐 ¿Qué hacen con mis datos?</summary>
+            <div class="faq-content">
+                <p>Tus datos y la información de la propiedad que nos enviás se utilizan <strong>únicamente</strong> para gestionar la verificación solicitada.</p>
+                <p>No compartimos datos con terceros, inmobiliarias ni bases de datos comerciales. Todo se trata bajo estricta confidencialidad.</p>
+            </div>
+        </details>
+
+        <details>
+            <summary>📲 ¿Cómo me contacto?</summary>
+            <div class="faq-content">
+                <p>Es muy simple. Completá el formulario en la página de inicio o escribinos directamente. Un operador humano (no un robot) analizará tu caso y te responderá por WhatsApp para coordinar los pasos a seguir.</p>
+            </div>
+        </details>
+
+        <div class="faq-cta">
+            <h3>¿Tenés una duda urgente?</h3>
+            <p>Escribinos ahora y te respondemos en minutos.</p>
+            <a href="https://api.whatsapp.com/send?phone=5492230000000" class="btn-cta" target="_blank">Chat por WhatsApp</a>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2025 Alquila Seguro MDP. <br>
+        Hecho en Mar del Plata.
+    </footer>
+
+    <a href="index.html" class="fab-back">← Volver</a>
+
+</body>
+</html>

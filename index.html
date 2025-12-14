@@ -2357,6 +2357,64 @@ section {
         top: 10px;
         left: 10px;
     }
+        /* ==========================================
+           AJUSTES ESPECIALES PARA MÓVIL (LIMPIEZA)
+           ========================================== */
+        
+        @media (max-width: 768px) {
+            /* 1. Ocultar la barra de alerta negra */
+            #top-alert {
+                display: none !important;
+            }
+
+            /* 2. Ocultar el badge verde de "Sistema Operativo" */
+            .status-badge {
+                display: none !important;
+            }
+
+            /* 3. Subir el contenido para aprovechar el espacio ganado */
+            .hero-content {
+                padding-top: 40px !important; /* Subimos el texto */
+                padding-bottom: 40px !important;
+            }
+
+            /* 4. Header más flaquito */
+            header {
+                padding: 10px 0 !important;
+            }
+            
+            /* Logo un poco más chico */
+            .logo {
+                font-size: 1.1rem !important; 
+            }
+            .logo-icon {
+                width: 24px !important; 
+                height: 24px !important;
+            }
+
+            /* 5. Título principal (H1) ajustado para que no ocupe toda la pantalla */
+            .hero h1 {
+                font-size: 2rem !important; /* Tamaño más chico */
+                margin-bottom: 15px !important;
+                line-height: 1.2 !important;
+            }
+            
+            /* Texto descriptivo ajustado */
+            .hero p {
+                font-size: 0.95rem !important;
+                margin-bottom: 25px !important;
+            }
+            
+            /* Botones full width pero con margen */
+            .hero-btns {
+                gap: 10px !important;
+            }
+            
+            .hero-btns .btn {
+                width: 100% !important;
+                padding: 14px !important;
+            }
+        }
 </style>
 </head>
 <body>

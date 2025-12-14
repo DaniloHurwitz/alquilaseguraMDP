@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alquila Seguro MDP</title>
+    <title>1Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="keywords" content="verificación inmobiliaria, anti fraude, alquiler seguro, mar del plata">
     <meta name="theme-color" content="#002B49">
@@ -4122,101 +4122,96 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Centro del Mapa
+        // Centro ajustado (Plaza Colón)
+        const centroLat = -38.0000;
+        const centroLng = -57.5440;
+        
         const map = L.map('map', { 
-            center: [-38.0050, -57.5450], 
-            zoom: 12, 
+            center: [centroLat, centroLng], 
+            zoom: 13, 
             scrollWheelZoom: false 
         });
 
-        // Estilo del mapa (Limpio)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OSM &copy; CARTO', subdomains: 'abcd', maxZoom: 20
+            attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- DEFINICIÓN DEL POLÍGONO DE MAR DEL PLATA (Solo Tierra) ---
-        // Estos puntos trazan la costa real y cierran por tierra adentro
-        const limiteTierra = [
-            [-37.9317, -57.5350], // Parque Camet
-            [-37.9463, -57.5312], // Costa Norte
-            [-37.9664, -57.5381], // Constitución y Costa
-            [-37.9942, -57.5303], // La Perla / Alfonsina
-            [-38.0135, -57.5149], // Cabo Corrientes (Punta máxima al este)
-            [-38.0263, -57.5218], // Playa Grande
-            [-38.0371, -57.5259], // Escollera Norte
-            [-38.0553, -57.5362], // Punta Mogotes
-            [-38.0841, -57.5458], // Faro
-            [-38.0800, -57.6200], // Cierre Sur (Campo)
-            [-38.0000, -57.6400], // Cierre Oeste (Champagnat fondo)
-            [-37.9300, -57.6000]  // Cierre Norte (Aeropuerto aprox)
-        ];
+        // --- GENERACIÓN NATURAL ---
+        const cantidadPuntos = 500;
+        let puntosValidos = 0;
+        let seguridadLoop = 0;
 
-        // Función matemática: "Ray Casting Algorithm"
-        // Determina si un punto [lat, lng] está DENTRO del polígono
-        function estaEnTierra(lat, lng) {
-            let inside = false;
-            for (let i = 0, j = limiteTierra.length - 1; i < limiteTierra.length; j = i++) {
-                const xi = limiteTierra[i][0], yi = limiteTierra[i][1];
-                const xj = limiteTierra[j][0], yj = limiteTierra[j][1];
-                const intersect = ((yi > lng) !== (yj > lng)) &&
-                    (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
-                if (intersect) inside = !inside;
-            }
-            return inside;
+        // Función de sesgo para concentrar puntos en el centro
+        function randBias(exponente) {
+            return Math.pow(Math.random(), exponente);
         }
 
-        // --- GENERADOR DE PUNTOS ---
-        const totalPuntos = 500;
-        let generados = 0;
-        let seguridad = 0;
+        // Bucle hasta tener 500 puntos EN TIERRA
+        while (puntosValidos < cantidadPuntos && seguridadLoop < 10000) {
+            seguridadLoop++;
 
-        while (generados < totalPuntos && seguridad < 10000) {
-            seguridad++;
+            // 1. GENERACIÓN POLAR (La que te gustó de la V2)
+            const distanciaMax = 0.085; // Un poco más amplio para llegar a periférias
+            const radio = randBias(2.2) * distanciaMax; // Densidad central
+            
+            // Ángulos: Evitamos el cuadrante Este puro (Mar) para eficiencia
+            // Generamos entre 0.8 radianes (Noreste) y 5.5 radianes (Sureste) dando la vuelta por el Oeste
+            const anguloRad = (Math.random() * 4.7) + 0.8; 
 
-            // 1. Generar punto aleatorio en un cuadrado grande que cubre toda la ciudad
-            // Usamos una función cúbica para que haya MAS puntos en el centro (-38.00)
-            const rLat = (Math.random() * 2 - 1); 
-            const latOffset = (rLat * rLat * rLat) * 0.08; 
-            const lat = -38.00 + latOffset; // Latitud con sesgo central
+            // Convertir a coordenadas
+            let latOffset = Math.sin(anguloRad) * radio;
+            let lngOffset = Math.cos(anguloRad) * radio * 1.4; // Estirado horizontalmente
 
-            const rLng = (Math.random() * 2 - 1);
-            const lngOffset = (rLng * rLng * rLng) * 0.08;
-            const lng = -57.56 + lngOffset; // Longitud con sesgo al centro geográfico
+            const lat = centroLat + latOffset;
+            const lng = centroLng + lngOffset;
 
-            // 2. FILTRO MAESTRO: ¿Cae dentro del dibujo de la costa?
-            if (!estaEnTierra(lat, lng)) {
-                continue; // Si cae en el mar, lo descartamos y probamos otro
+            // 2. FILTRO DE COSTA CURVA (La Magia) 🪄
+            // En lugar de una línea recta, calculamos la curva de Mar del Plata.
+            // El punto más al Este es Cabo Corrientes (-38.015, -57.512)
+            // Cuanto más nos alejamos de esa latitud (norte o sur), la costa se mete al oeste.
+            
+            const latCabo = -38.015;
+            const lngCabo = -57.512;
+            const diferenciaLat = Math.abs(lat - latCabo);
+            
+            // Fórmula de la curva costera:
+            // Límite Este = Cabo - (Curvatura según distancia Norte/Sur)
+            // El factor 1.6 define qué tan rápido se "mete" la costa hacia adentro.
+            const limiteEstePermitido = lngCabo - (diferenciaLat * 1.6); 
+
+            // Buffer de seguridad: Restamos un poquito (0.002) para no caer en la arena/playa
+            if (lng > (limiteEstePermitido - 0.002)) {
+                continue; // Cayó al agua -> Ignorar y probar de nuevo (NO empujar)
             }
 
-            // 3. Lógica de Colores (Centro vs Periferia)
-            const esCentro = (lat > -38.02 && lat < -37.98 && lng > -57.56);
+            // 3. COLOR Y LÓGICA (Si pasó el filtro, lo dibujamos)
             const rand = Math.random();
-            let color, radius;
+            let color, text, circleRadius;
+
+            // Más verde en el centro geográfico, más rojo en la periferia
+            const esCentro = (Math.abs(lat - centroLat) < 0.02 && Math.abs(lng - centroLng) < 0.02);
 
             if (esCentro) {
-                // En el centro: Puntos más chicos, más verdes
-                radius = 25;
-                if (rand < 0.85) color = '#10B981';      // Verde
-                else if (rand < 0.95) color = '#EF4444'; // Rojo
-                else color = '#F59E0B';                  // Amarillo
+                // CENTRO: Mayoría Verde
+                if (rand < 0.80) { color = '#10B981'; text = '🛡️ Verificado'; circleRadius = 30; }
+                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ Denuncia Activa'; circleRadius = 40; }
+                else { color = '#F59E0B'; text = '✋ En proceso'; circleRadius = 30; }
             } else {
-                // Periferia: Puntos un pelín más grandes, más rojos
-                radius = 35;
-                if (rand < 0.40) color = '#10B981';      // Verde
-                else if (rand < 0.85) color = '#EF4444'; // Rojo
-                else color = '#F59E0B';                  // Amarillo
+                // PERIFERIA: Más mezcla
+                if (rand < 0.40) { color = '#10B981'; text = '🛡️ Verificado'; circleRadius = 35; }
+                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ ALERTA: Zona sin relevar'; circleRadius = 50; }
+                else { color = '#F59E0B'; text = '✋ En proceso'; circleRadius = 35; }
             }
 
-            // 4. Dibujar
             L.circle([lat, lng], {
                 color: color,
                 fillColor: color,
-                fillOpacity: 0.7,
-                radius: radius,
-                weight: 0 // Sin bordes
-            }).addTo(map);
+                fillOpacity: 0.65,
+                radius: circleRadius,
+                weight: 0, 
+            }).addTo(map).bindPopup(text);
 
-            generados++;
+            puntosValidos++;
         }
 
         // Modo oscuro

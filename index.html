@@ -555,41 +555,94 @@ html, body {
         }
 
         /* ==========================================================================
-           7. LOADER
+           7. INTRO SPLIT SCREEN (NUEVO)
            ========================================================================== */
-        #loader {
+        #intro-screen {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: 9999;
-            background: var(--bg-body);
+            z-index: 99999;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none; /* Para que no moleste al terminar */
+        }
+
+        /* Paneles blanco (Arriba y Abajo) */
+        .intro-panel {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            height: 51%; /* Un 1% extra para evitar líneas blancas en el medio */
+            background-color: #ffffff;
+            z-index: 2;
+            transition: transform 0.8s cubic-bezier(0.8, 0, 0.2, 1);
+        }
+
+        .panel-top {
+            top: 0;
+            transform-origin: top;
+        }
+
+        .panel-bottom {
+            bottom: 0;
+            transform-origin: bottom;
+        }
+
+        /* Contenido (Logo y textos) */
+        .intro-content {
+            position: relative;
+            z-index: 3;
+            text-align: center;
+            opacity: 1;
+            transition: opacity 0.5s ease;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            transition: opacity 0.5s ease;
-        }
-        
-        .spinner {
-            width: 50px;
-            height: 50px;
-            border: 5px solid var(--border-color);
-            border-top-color: var(--primary);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: var(--space-lg);
-        }
-        
-        .loader-text {
-            color: var(--primary);
-            font-weight: 700;
-            letter-spacing: 2px;
-            font-size: 0.875rem;
-            animation: pulse 1.5s ease-in-out infinite;
+            gap: 10px;
         }
 
+        .intro-logo {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 5px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .intro-slogan {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .intro-welcome {
+            font-size: 0.8rem;
+            color: var(--secondary);
+            margin-top: 15px;
+            animation: pulse 2s infinite;
+        }
+
+        /* Clases para activar la animación */
+        .split-active .panel-top {
+            transform: translateY(-100%);
+        }
+
+        .split-active .panel-bottom {
+            transform: translateY(100%);
+        }
+
+        .split-active .intro-content {
+            opacity: 0;
+        }
         /* ==========================================================================
            8. HEADER Y NAVEGACIÓN
            ========================================================================== */
@@ -2279,9 +2332,20 @@ section {
 <body>
     <!-- Skip to Content (Accesibilidad) -->
     <a href="#main-content" class="skip-to-content">Saltar al contenido principal</a><!-- Loader -->
-<div id="loader">
-    <div class="spinner"></div>
-    <div class="loader-text">CONECTANDO AL SISTEMA...</div>
+<div id="intro-screen">
+    <div class="intro-panel panel-top"></div>
+    <div class="intro-panel panel-bottom"></div>
+    
+    <div class="intro-content">
+        <div class="intro-logo">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            AlquilaSeguro<span style="color: var(--secondary);">MDP</span>
+        </div>
+        <div class="intro-slogan">Seguridad Jurídica & Fáctica</div>
+        <div class="intro-welcome">Bienvenido al sistema...</div>
+    </div>
 </div><!-- Top Alert Banner -->
 <div id="top-alert">
     ⚠️ <strong>ALERTA:</strong> 12 Perfiles falsos detectados hoy en Marketplace. Verificá antes de transferir.
@@ -3166,20 +3230,30 @@ section {
         console.log('✓ Sistema AlquilaSeguro MDP iniciado correctamente');
     });
 
-    // ==========================================
-    // 3. LOADER
+// ==========================================
+    // 3. INTRO ANIMATION (SPLIT)
     // ==========================================
     function initLoader() {
+        // Bloquear scroll al inicio
+        document.body.style.overflow = 'hidden';
+
+        // Esperar 2 segundos como pediste
         setTimeout(() => {
-            const loader = document.getElementById('loader');
-            if (loader) {
-                loader.style.opacity = '0';
+            const introScreen = document.getElementById('intro-screen');
+            
+            if (introScreen) {
+                // 1. Activar la clase que mueve los paneles
+                introScreen.classList.add('split-active');
+                
+                // 2. Devolver el scroll al body
+                document.body.style.overflow = 'auto';
+
+                // 3. Eliminar el intro del DOM cuando termine la animación (0.8s después)
                 setTimeout(() => {
-                    loader.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                }, 500);
+                    introScreen.remove();
+                }, 800);
             }
-        }, 1500);
+        }, 2000); // 2000ms = 2 segundos de espera
     }
 
     // ==========================================

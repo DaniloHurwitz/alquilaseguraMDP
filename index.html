@@ -555,37 +555,45 @@ html, body {
         }
 
 /* ==========================================================================
-   7. INTRO SPLIT SCREEN (KEYFRAMES BLINDADO)
+   7. INTRO SPLIT SCREEN (FINAL-FINAL)
    ========================================================================== */
 #intro-screen {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
+    inset: 0; /* Reemplaza top/left/width/height. Clava el div a los bordes */
     z-index: 999999;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: transparent;
+    pointer-events: none; /* Permite scroll abajo si algo falla */
 }
 
-/* Paneles blancos */
+/* PANELES BLANCOS */
 .intro-panel {
     position: absolute;
     left: 0;
-    width: 100%;
-    height: 51vh;
+    right: 0;
+    height: 51%; /* Un poco más de la mitad para solapamiento */
     background-color: #ffffff;
     z-index: 2;
-    /* Estado inicial quieto */
-    transform: translateY(0);
+    /* Propiedades para forzar GPU en PC */
+    transform: translateZ(0); 
+    will-change: transform;
+    /* La transición vive aquí siempre */
+    transition: transform 1.5s cubic-bezier(0.8, 0, 0.2, 1);
+    pointer-events: auto; /* Bloquea clicks */
 }
 
-.panel-top { top: 0; }
-.panel-bottom { bottom: 0; }
+.panel-top {
+    top: 0;
+    transform-origin: top;
+}
 
-/* Contenido */
+.panel-bottom {
+    bottom: 0;
+    transform-origin: bottom;
+}
+
+/* CONTENIDO */
 .intro-content {
     position: relative;
     z-index: 10;
@@ -593,15 +601,33 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 15px;
+    gap: 10px;
     width: 100%;
     padding: 20px;
-    opacity: 1; /* Visible al inicio */
+    opacity: 1;
+    transition: opacity 0.5s ease;
+    transform: translateZ(0); /* Fix para texto borroso */
 }
 
-/* LOGO BASE */
+/* --- CLASES DE ACTIVACIÓN (Simples y directas) --- */
+
+/* 1. Ocultar texto */
+.is-fading .intro-content {
+    opacity: 0;
+}
+
+/* 2. Mover paneles */
+.is-splitting .panel-top {
+    transform: translateY(-100%);
+}
+
+.is-splitting .panel-bottom {
+    transform: translateY(100%);
+}
+
+/* --- ESTILOS DE TEXTO (Ajustados para que no se rompan) --- */
 .intro-logo {
-    font-size: 3.5rem; 
+    font-family: 'Montserrat', sans-serif;
     font-weight: 900;
     color: var(--primary);
     text-transform: uppercase;
@@ -609,22 +635,36 @@ html, body {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    font-family: 'Montserrat', sans-serif;
     line-height: 1;
 }
 
-.intro-logo svg {
-    width: 60px;
-    height: 60px;
+/* PC: Grande */
+@media (min-width: 769px) {
+    .intro-logo { font-size: 3.5rem; }
+    .intro-logo svg { width: 60px; height: 60px; }
+    .intro-slogan { font-size: 1.2rem; letter-spacing: 3px; }
+}
+
+/* MÓVIL: Chico y apilado si es necesario */
+@media (max-width: 768px) {
+    .intro-logo { 
+        font-size: 1.8rem; 
+        flex-direction: column; /* Apila logo y texto en pantallas muy angostas */
+        gap: 10px;
+    }
+    .intro-logo svg { width: 45px; height: 45px; }
+    .intro-slogan { 
+        font-size: 0.85rem; 
+        letter-spacing: 1px; 
+        text-align: center;
+        max-width: 90%;
+    }
 }
 
 .intro-slogan {
-    font-size: 1.1rem;
     color: var(--text-muted);
-    letter-spacing: 3px;
     text-transform: uppercase;
     font-weight: 600;
-    text-align: center;
 }
 
 .intro-welcome {
@@ -632,52 +672,6 @@ html, body {
     color: var(--secondary);
     margin-top: 20px;
     font-weight: 500;
-}
-
-/* --- ANIMACIONES EXPLÍCITAS (KEYFRAMES) --- */
-
-/* Definimos el movimiento exacto */
-@keyframes slideUp {
-    to { transform: translateY(-100%); }
-}
-
-@keyframes slideDown {
-    to { transform: translateY(100%); }
-}
-
-@keyframes fadeOutContent {
-    to { opacity: 0; visibility: hidden; }
-}
-
-/* Clases activadoras */
-.trigger-fade .intro-content {
-    animation: fadeOutContent 0.8s ease forwards;
-}
-
-.trigger-split .panel-top {
-    animation: slideUp 1.2s cubic-bezier(0.8, 0, 0.2, 1) forwards;
-}
-
-.trigger-split .panel-bottom {
-    animation: slideDown 1.2s cubic-bezier(0.8, 0, 0.2, 1) forwards;
-}
-
-/* --- AJUSTE MÓVIL (Mantenemos lo que ya funcionaba) --- */
-@media (max-width: 768px) {
-    .intro-logo {
-        font-size: 1.8rem !important; 
-        flex-direction: column; 
-        gap: 10px;
-    }
-    .intro-logo svg {
-        width: 40px !important;
-        height: 40px !important;
-    }
-    .intro-slogan {
-        font-size: 0.8rem !important;
-        letter-spacing: 1px;
-        max-width: 80%; 
-    }
 }
         /* ==========================================================================
            8. HEADER Y NAVEGACIÓN
@@ -3270,31 +3264,36 @@ section {
 // 3. INTRO ANIMATION (SECUENCIAL)
 // ==========================================
 function initLoader() {
+        // Bloquear scroll
         document.body.style.overflow = 'hidden';
         const introScreen = document.getElementById('intro-screen');
         
-        // Fase 1: Lectura (3.5s)
+        // FASE 1: LECTURA (3.5 segundos quieto)
         setTimeout(() => {
             
-            // Fase 2: Fade Out (Activa la animación CSS)
-            introScreen.classList.add('trigger-fade');
-
-            // Fase 3: Split (0.6s después)
-            setTimeout(() => {
-                introScreen.classList.add('trigger-split');
+            // FASE 2: FADE OUT TEXTO
+            // Usamos requestAnimationFrame para sincronizar con el refresco de pantalla
+            requestAnimationFrame(() => {
+                introScreen.classList.add('is-fading');
                 
-                // Devolver scroll
-                document.body.style.overflow = 'auto';
-
-                // Fase 4: Limpieza final (1.2s después de iniciar split)
+                // FASE 3: SPLIT (0.5s después del fade)
                 setTimeout(() => {
-                    introScreen.remove();
-                }, 1200);
+                    requestAnimationFrame(() => {
+                        introScreen.classList.add('is-splitting');
+                        
+                        // Devolver scroll
+                        document.body.style.overflow = 'auto';
 
-            }, 600);
+                        // FASE 4: LIMPIEZA DOM (1.5s después)
+                        setTimeout(() => {
+                            if(introScreen) introScreen.remove();
+                        }, 1500);
+                    });
+                }, 500); 
+            });
 
-        }, 3500); 
-}
+        }, 3500);
+    }
     // ==========================================
     // 4. THEME SYSTEM
     // ==========================================

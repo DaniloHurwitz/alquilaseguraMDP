@@ -1026,20 +1026,18 @@ html, body {
 /* REEMPLAZAR EL BLOQUE QUE TENGA #mouth, #left-eye... POR ESTO: */
 
 #face-gauge * {
-    /* Aseguramos que cualquier cambio dentro del SVG se anime */
-    transition: all 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    transition: fill 0.3s ease, stroke 0.3s ease;
 }
 
 #mouth {
-    /* Específicamente para la boca, animamos la propiedad 'd' (el dibujo path) */
-    transition: d 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
     /* Will-change le avisa al navegador que prepare la GPU para animar esto */
     will-change: d;
 }
 
 #left-eye, #right-eye {
-    /* Para los ojos animamos su posición Y y su radio Y */
-    transition: cy 0.6s cubic-bezier(0.4, 0.0, 0.2, 1), ry 0.6s cubic-bezier(0.4, 0.0, 0.2, 1);
+    /* Los ojos sí los animamos con CSS porque son simples */
+    transition: ry 0.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                cy 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .gauge-score {
@@ -2389,23 +2387,18 @@ section {
                 </div>                <div class="gauge-box">
                    <div class="gauge-container">
     <svg id="face-gauge" viewBox="0 0 100 100">
-        <!-- Círculo de fondo -->
-        <circle cx="50" cy="50" r="45" fill="var(--bg-body)" stroke="var(--border-color)" stroke-width="2"/>
-        
-        <!-- Ojo izquierdo -->
-        <ellipse id="left-eye" cx="35" cy="35" rx="4" ry="8" fill="var(--text-main)"/>
-        
-        <!-- Ojo derecho -->
-        <ellipse id="right-eye" cx="65" cy="35" rx="4" ry="8" fill="var(--text-main)"/>
-        
-        <!-- Boca (hace morphing) -->
-     <path id="mouth" 
-      d="M 30 65 Q 50 45 70 65" 
-      stroke="var(--text-main)" 
-      stroke-width="3" 
-      fill="none" 
-      stroke-linecap="round"/>
-    </svg>
+    <circle cx="50" cy="50" r="45" fill="var(--bg-body)" stroke="var(--border-color)" stroke-width="2"/>
+    <ellipse id="left-eye" cx="35" cy="35" rx="4" ry="7" fill="var(--text-main)"/>
+    <ellipse id="right-eye" cx="65" cy="35" rx="4" ry="7" fill="var(--text-main)"/>
+    
+    <path id="mouth" 
+          d="M 30 65 Q 50 65 70 65" 
+          stroke="var(--text-main)" 
+          stroke-width="3" 
+          fill="none" 
+          stroke-linecap="round"
+          stroke-linejoin="round"/>
+</svg>
     <div class="gauge-score" id="score">0%</div>
 </div>
                     <h4 id="risk-label" style="color: var(--danger);">🚨 RIESGO ALTO</h4>
@@ -3359,58 +3352,96 @@ section {
         });
     }
 
-    function updateRiskScore() {
+    // --- VARIABLES DE ESTADO PARA ANIMACIÓN ---
+let currentMouthY = 65; // Posición inicial (neutra)
+let targetMouthY = 65;  // A dónde queremos ir
+let animationFrameId = null;
+
+// Función de animación física (suavidad absoluta)
+function animateMouth() {
+    // Interpolación lineal (LERP) para suavidad: se mueve un 10% de la distancia restante en cada frame
+    const dist = targetMouthY - currentMouthY;
+    
+    // Si estamos muy cerca, terminamos (para ahorrar CPU)
+    if (Math.abs(dist) < 0.1) {
+        currentMouthY = targetMouthY;
+        updateMouthPath(currentMouthY);
+        return; 
+    }
+
+    // Moverse un poco hacia el objetivo
+    currentMouthY += dist * 0.1; // 0.1 es la velocidad (más bajo = más lento y suave)
+    updateMouthPath(currentMouthY);
+    
+    // Seguir animando
+    animationFrameId = requestAnimationFrame(animateMouth);
+}
+
+// Función auxiliar para dibujar la boca
+function updateMouthPath(y) {
+    const mouth = document.getElementById('mouth');
+    if (mouth) {
+        // M 30 65 = Inicio a la izquierda
+        // Q 50 ${y} = Punto de control que sube o baja (la curva)
+        // 70 65 = Fin a la derecha
+        mouth.setAttribute('d', `M 30 65 Q 50 ${y} 70 65`);
+    }
+}
+
+// --- TU FUNCIÓN PRINCIPAL MEJORADA ---
+function updateRiskScore() {
     const items = document.querySelectorAll('.chk-item');
     const checkedItems = document.querySelectorAll('.chk-item.checked');
     const score = items.length > 0 ? (checkedItems.length / items.length) * 100 : 0;
 
     const scoreEl = document.getElementById('score');
     const labelEl = document.getElementById('risk-label');
-
-    // Elementos SVG de la cara
-    const mouth = document.getElementById('mouth');
+    
+    // Elementos de ojos para animar por CSS (eso sí funciona bien en CSS)
     const leftEye = document.getElementById('left-eye');
     const rightEye = document.getElementById('right-eye');
 
-    // Actualizar porcentaje
+    // Actualizar texto del porcentaje
     scoreEl.textContent = Math.round(score) + '%';
 
-    // --- MORPHING SUAVE ---
-    // La clave es que los puntos de inicio (M 30 65) y fin (70 65) SON SIEMPRE LOS MISMOS.
-    // Solo movemos el punto de control central (Q 50 YYY) hacia arriba o abajo.
-
+    // LÓGICA DE ESTADOS
     if (score >= 75) {
-        // 😊 FELIZ - El punto central baja a 85 para hacer la curva U
-        mouth.setAttribute('d', 'M 30 65 Q 50 85 70 65'); 
-        
-        // Ojos normales
-        leftEye.setAttribute('ry', '4'); rightEye.setAttribute('ry', '4');
-        leftEye.setAttribute('cy', '35'); rightEye.setAttribute('cy', '35');
-
+        // 😊 FELIZ
+        targetMouthY = 85; // Curva hacia abajo (sonrisa)
         labelEl.textContent = '✅ RIESGO BAJO';
         labelEl.style.color = 'var(--success)';
+        
+        // Ojos normales
+        leftEye.setAttribute('ry', '4'); leftEye.setAttribute('cy', '35');
+        rightEye.setAttribute('ry', '4'); rightEye.setAttribute('cy', '35');
 
     } else if (score >= 50) {
-        // 😐 NEUTRAL - El punto central está en 65, alineado con el inicio y fin (línea recta)
-        mouth.setAttribute('d', 'M 30 65 Q 50 65 70 65');
-
-        // Ojos un poco más abiertos de desconfianza
-        leftEye.setAttribute('ry', '6'); rightEye.setAttribute('ry', '6');
-        leftEye.setAttribute('cy', '35'); rightEye.setAttribute('cy', '35');
-
+        // 😐 NEUTRO
+        targetMouthY = 65; // Línea recta
         labelEl.textContent = '⚠️ RIESGO MEDIO';
         labelEl.style.color = 'var(--warning)';
+        
+        // Ojos de duda (un poco más abiertos)
+        leftEye.setAttribute('ry', '6'); leftEye.setAttribute('cy', '35');
+        rightEye.setAttribute('ry', '6'); rightEye.setAttribute('cy', '35');
 
     } else {
-        // 😢 TRISTE (Estado inicial) - El punto central sube a 45 para hacer la U invertida
-        mouth.setAttribute('d', 'M 30 65 Q 50 45 70 65');
-
-        // Ojos tristes (más largos y bajos)
-        leftEye.setAttribute('ry', '7'); rightEye.setAttribute('ry', '7');
-        leftEye.setAttribute('cy', '38'); rightEye.setAttribute('cy', '38');
-
+        // 😢 TRISTE
+        targetMouthY = 45; // Curva hacia arriba (tristeza)
         labelEl.textContent = '🚨 RIESGO ALTO';
         labelEl.style.color = 'var(--danger)';
+        
+        // Ojos tristes (más largos y bajos)
+        leftEye.setAttribute('ry', '7'); leftEye.setAttribute('cy', '38');
+        rightEye.setAttribute('ry', '7'); rightEye.setAttribute('cy', '38');
+    }
+
+    // Iniciar el loop de animación si no está corriendo
+    if (!animationFrameId) {
+        animateMouth();
+    } else {
+        cancelAnimationFrame(animationFrameId); // Resetear para evitar conflictos
+        animateMouth();
     }
 }
         

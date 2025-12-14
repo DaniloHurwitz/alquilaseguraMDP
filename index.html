@@ -555,7 +555,7 @@ html, body {
         }
 
 /* ==========================================================================
-   7. INTRO SPLIT SCREEN (FINAL AJUSTADO)
+   7. INTRO SPLIT SCREEN (KEYFRAMES BLINDADO)
    ========================================================================== */
 #intro-screen {
     position: fixed;
@@ -578,12 +578,8 @@ html, body {
     height: 51vh;
     background-color: #ffffff;
     z-index: 2;
-    transition: transform 1.5s cubic-bezier(0.85, 0, 0.15, 1); /* Curva más dramática */
-    
-    /* TRUCOS PARA FORZAR ANIMACIÓN EN PC */
-    will-change: transform;
-    backface-visibility: hidden;
-    transform: translate3d(0, 0, 0); 
+    /* Estado inicial quieto */
+    transform: translateY(0);
 }
 
 .panel-top { top: 0; }
@@ -598,13 +594,12 @@ html, body {
     align-items: center;
     justify-content: center;
     gap: 15px;
-    opacity: 1;
-    transition: opacity 0.8s ease;
     width: 100%;
     padding: 20px;
+    opacity: 1; /* Visible al inicio */
 }
 
-/* LOGO BASE (PC) */
+/* LOGO BASE */
 .intro-logo {
     font-size: 3.5rem; 
     font-weight: 900;
@@ -632,37 +627,57 @@ html, body {
     text-align: center;
 }
 
-/* --- AJUSTE ESPECÍFICO PARA MÓVIL (Soluciona el tamaño gigante) --- */
+.intro-welcome {
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-top: 20px;
+    font-weight: 500;
+}
+
+/* --- ANIMACIONES EXPLÍCITAS (KEYFRAMES) --- */
+
+/* Definimos el movimiento exacto */
+@keyframes slideUp {
+    to { transform: translateY(-100%); }
+}
+
+@keyframes slideDown {
+    to { transform: translateY(100%); }
+}
+
+@keyframes fadeOutContent {
+    to { opacity: 0; visibility: hidden; }
+}
+
+/* Clases activadoras */
+.trigger-fade .intro-content {
+    animation: fadeOutContent 0.8s ease forwards;
+}
+
+.trigger-split .panel-top {
+    animation: slideUp 1.2s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+}
+
+.trigger-split .panel-bottom {
+    animation: slideDown 1.2s cubic-bezier(0.8, 0, 0.2, 1) forwards;
+}
+
+/* --- AJUSTE MÓVIL (Mantenemos lo que ya funcionaba) --- */
 @media (max-width: 768px) {
     .intro-logo {
-        font-size: 1.8rem !important; /* Forzamos tamaño chico */
-        flex-direction: column; /* Apilamos logo y texto si hace falta */
+        font-size: 1.8rem !important; 
+        flex-direction: column; 
         gap: 10px;
     }
-    
     .intro-logo svg {
         width: 40px !important;
         height: 40px !important;
     }
-
     .intro-slogan {
         font-size: 0.8rem !important;
         letter-spacing: 1px;
-        max-width: 80%; /* Evita que toque los bordes */
+        max-width: 80%; 
     }
-}
-
-/* --- ESTADOS DE ANIMACIÓN --- */
-.intro-fade-out .intro-content {
-    opacity: 0;
-}
-
-.intro-split .panel-top {
-    transform: translate3d(0, -100%, 0);
-}
-
-.intro-split .panel-bottom {
-    transform: translate3d(0, 100%, 0);
 }
         /* ==========================================================================
            8. HEADER Y NAVEGACIÓN
@@ -3261,25 +3276,22 @@ function initLoader() {
         // Fase 1: Lectura (3.5s)
         setTimeout(() => {
             
-            // Fase 2: Fade Out del texto
-            requestAnimationFrame(() => {
-                introScreen.classList.add('intro-fade-out');
-            });
+            // Fase 2: Fade Out (Activa la animación CSS)
+            introScreen.classList.add('trigger-fade');
 
-            // Fase 3: Split (0.8s después del fade)
+            // Fase 3: Split (0.6s después)
             setTimeout(() => {
-                requestAnimationFrame(() => {
-                    introScreen.classList.add('intro-split');
-                });
+                introScreen.classList.add('trigger-split');
                 
+                // Devolver scroll
                 document.body.style.overflow = 'auto';
 
-                // Fase 4: Limpieza
+                // Fase 4: Limpieza final (1.2s después de iniciar split)
                 setTimeout(() => {
                     introScreen.remove();
-                }, 1500); // Esperamos a que termine la animación larga
+                }, 1200);
 
-            }, 800);
+            }, 600);
 
         }, 3500); 
 }

@@ -4122,92 +4122,100 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // CENTRO REAL (Casino / Plaza Colón)
-        const mapCenterLat = -38.0050;
-        const mapCenterLng = -57.5430;
-        
+        // Centro del Mapa
         const map = L.map('map', { 
-            center: [mapCenterLat, mapCenterLng], 
-            zoom: 13, 
+            center: [-38.0050, -57.5450], 
+            zoom: 12, 
             scrollWheelZoom: false 
         });
 
+        // Estilo del mapa (Limpio)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OSM &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- ZONAS CALIENTES (Hotspots) ---
-        // Definimos coordenadas exactas donde QUEREMOS mucha gente
-        const zonas = [
-            { name: "Plaza Colon/Centro", lat: -38.0010, lng: -57.5410, radio: 0.008, peso: 0.4 }, // 40% de los puntos acá
-            { name: "Güemes/Troncos",     lat: -38.0120, lng: -57.5390, radio: 0.007, peso: 0.3 }, // 30% acá
-            { name: "Macrocentro/General",lat: -38.0000, lng: -57.5550, radio: 0.025, peso: 0.3 }  // 30% dispersos
+        // --- DEFINICIÓN DEL POLÍGONO (TU DIBUJO) ---
+        // Estos puntos trazan la forma exacta que pediste, excluyendo el mar.
+        const limiteTierra = [
+            [-37.9500, -57.5900], // Noroeste (Champagnat fondo)
+            [-37.9550, -57.5400], // Norte (Camet adentro)
+            [-37.9850, -57.5300], // La Perla (Costa)
+            [-38.0135, -57.5140], // Cabo Corrientes (Punta máxima al este)
+            [-38.0280, -57.5220], // Playa Grande (Costa)
+            [-38.0450, -57.5300], // Entrada Puerto
+            [-38.0600, -57.5450], // Sur Puerto
+            [-38.0600, -57.6000]  // Suroeste (Cierre)
         ];
 
-        const cantidadPuntos = 250; 
-        let puntosValidos = 0;
-        let seguridadLoop = 0;
+        // Función matemática: "Ray Casting Algorithm"
+        // Determina si un punto [lat, lng] está DENTRO del polígono dibujado
+        function estaEnTierra(lat, lng) {
+            let inside = false;
+            for (let i = 0, j = limiteTierra.length - 1; i < limiteTierra.length; j = i++) {
+                const xi = limiteTierra[i][0], yi = limiteTierra[i][1];
+                const xj = limiteTierra[j][0], yj = limiteTierra[j][1];
+                const intersect = ((yi > lng) !== (yj > lng)) &&
+                    (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
 
-        while (puntosValidos < cantidadPuntos && seguridadLoop < 10000) {
-            seguridadLoop++;
+        // --- GENERADOR DE PUNTOS ---
+        const totalPuntos = 300; // Cantidad ajustada
+        let generados = 0;
+        let seguridad = 0;
 
-            // 1. ELEGIR ZONA (Según el "peso")
-            const rZona = Math.random();
-            let zonaElegida;
-            if (rZona < 0.4) zonaElegida = zonas[0]; // Colón
-            else if (rZona < 0.7) zonaElegida = zonas[1]; // Güemes
-            else zonaElegida = zonas[2]; // General
+        // Función para concentrar en el centro
+        function randBias(exponente) {
+             return Math.pow(Math.random(), exponente);
+        }
 
-            // 2. GENERAR PUNTO EN ESA ZONA
-            // Usamos distribución normal para que se concentren en el centro de la zona
-            const u = Math.random() + Math.random() - 1; // Aprox normal (-1 a 1)
-            const v = Math.random() + Math.random() - 1; 
-            
-            const lat = zonaElegida.lat + (u * zonaElegida.radio);
-            const lng = zonaElegida.lng + (v * zonaElegida.radio);
+        while (generados < totalPuntos && seguridad < 20000) {
+            seguridad++;
 
-            // 3. FILTRO "PERALTA RAMOS" (Ajuste Fino de Costa)
-            // Cabo Corrientes es el punto más al Este (-57.513)
-            // A medida que subimos o bajamos, cortamos la longitud hacia el Oeste.
-            const latCabo = -38.0155;
-            const lngCabo = -57.5130;
-            const distLat = Math.abs(lat - latCabo);
-            
-            // Factor 1.9: Define la inclinación de la costa. 
-            // Restamos 0.0015 (1 cuadra y media) de margen de seguridad para no tocar la arena.
-            const limiteCosta = lngCabo - (distLat * 1.9) - 0.0015;
+            // 1. Generar punto aleatorio con sesgo al centro geográfico
+            const distanciaGen = 0.07; 
+            const radio = randBias(2.5) * distanciaGen; // Sesgo medio
+            const anguloRad = (Math.random() * 6.28); 
 
-            if (lng > limiteCosta) {
-                continue; // Cayó en el agua o en la vereda de la costa -> Chau
+            const lat = -38.0050 + Math.sin(anguloRad) * radio;
+            const lng = -57.5450 + Math.cos(anguloRad) * radio * 1.3;
+
+            // 2. FILTRO MAESTRO: ¿Cae dentro del dibujo de la costa?
+            if (!estaEnTierra(lat, lng)) {
+                continue; // Si cae en el mar o fuera de tu dibujo, lo descartamos.
             }
 
-            // 4. COLOR
+            // 3. Lógica de Colores (Centro vs Periferia)
+            const esCentro = (Math.abs(lat - -38.0050) < 0.02 && Math.abs(lng - -57.5450) < 0.02);
             const rand = Math.random();
-            let color, text, circleRadius;
-            
-            // Zona Güemes/Colón = Más verde (Verificado)
-            if (zonaElegida.name !== "Macrocentro/General") {
-                circleRadius = 30;
-                if (rand < 0.85) { color = '#10B981'; text = '🛡️ <strong>Verificado</strong><br>Zona: ' + zonaElegida.name; }
-                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ <strong>Alerta</strong><br>Denuncia en revisión'; circleRadius = 40; }
+            let color, radius, text;
+
+            if (esCentro) {
+                // En el centro: Puntos más chicos, más verdes
+                radius = 25;
+                if (rand < 0.85) { color = '#10B981'; text = '🛡️ Verificado'; }
+                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ Denuncia Activa'; }
                 else { color = '#F59E0B'; text = '✋ En proceso'; }
             } else {
-                // Zona Alejada = Más mezcla
-                circleRadius = 35;
-                if (rand < 0.50) { color = '#10B981'; text = '🛡️ Verificado'; }
-                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ <strong>Zona Sin Relevar</strong>'; circleRadius = 45; }
+                // Periferia: Puntos un pelín más grandes, más rojos
+                radius = 35;
+                if (rand < 0.40) { color = '#10B981'; text = '🛡️ Verificado'; }
+                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ ALERTA: Zona sin relevar'; }
                 else { color = '#F59E0B'; text = '✋ En proceso'; }
             }
 
+            // 4. Dibujar
             L.circle([lat, lng], {
                 color: color,
                 fillColor: color,
                 fillOpacity: 0.7,
-                radius: circleRadius,
-                weight: 0, 
+                radius: radius,
+                weight: 0 // Sin bordes
             }).addTo(map).bindPopup(text);
 
-            puntosValidos++;
+            generados++;
         }
 
         // Modo oscuro

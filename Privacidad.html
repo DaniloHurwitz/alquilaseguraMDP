@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Política de Privacidad - Alquila Seguro MDP</title>
+    <meta name="theme-color" content="#002B49">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           ESTILOS (Diseño Unificado)
+           ========================================================================== */
+        :root {
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --border-color: #E5E7EB;
+            --primary: #002B49;
+            --secondary: #00A8E8;
+            --success: #059669;
+            --danger: #DC2626;
+            --dark-footer: #020617;
+            --radius-xl: 16px;
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0B1120;
+            --bg-card: #1E293B;
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --border-color: #334155;
+            --primary: #38BDF8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; font-weight: 800; color: var(--primary); }
+        [data-theme="dark"] h1, [data-theme="dark"] h2 { color: var(--text-main); }
+
+        /* Header */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .logo {
+            font-size: 1.25rem; font-weight: 900; text-decoration: none; color: var(--text-main); text-transform: uppercase;
+        }
+        .logo span { color: var(--secondary); }
+
+        /* Contenedor Principal */
+        .privacy-wrapper {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .privacy-card {
+            background: var(--bg-card);
+            padding: 40px;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 20px;
+        }
+
+        .page-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .page-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        /* Secciones de Privacidad */
+        .policy-section {
+            margin-bottom: 35px;
+        }
+
+        .policy-title {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .policy-icon {
+            font-size: 1.4rem;
+        }
+
+        .policy-text {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            padding-left: 10px; /* Indentación visual */
+        }
+
+        /* Listas personalizadas */
+        .policy-list {
+            margin: 15px 0 15px 30px;
+            list-style: none;
+        }
+
+        .policy-list li {
+            margin-bottom: 8px;
+            position: relative;
+            padding-left: 20px;
+            color: var(--text-muted);
+        }
+
+        .policy-list li::before {
+            content: '•';
+            color: var(--secondary);
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+
+        /* Caja de Alerta (Datos Sensibles) */
+        .safe-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            padding: 15px;
+            border-radius: 8px;
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 0.9rem;
+        }
+
+        /* Caja de Contacto */
+        .contact-box {
+            background: var(--bg-body);
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px dashed var(--border-color);
+            margin-top: 20px;
+        }
+
+        .contact-box a {
+            color: var(--secondary);
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        /* Footer & Botón Volver */
+        footer { text-align: center; padding: 40px; color: var(--text-muted); font-size: 0.85rem; background: var(--dark-footer); margin-top: 60px; }
+        
+        .fab-back {
+            position: fixed; bottom: 30px; right: 30px; background: var(--primary); color: white; padding: 15px 25px; border-radius: 50px; text-decoration: none; font-weight: 700; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: transform 0.2s; z-index: 900; font-family: 'Montserrat', sans-serif;
+        }
+        .fab-back:hover { transform: translateY(-3px); background: var(--secondary); }
+
+        @media (max-width: 768px) {
+            .privacy-card { padding: 25px; }
+            .page-header h1 { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">AlquilaSeguro<span>MDP</span></a>
+    </header>
+
+    <div class="privacy-wrapper">
+        <div class="privacy-card">
+            
+            <div class="page-header">
+                <h1>Política de Privacidad</h1>
+                <p>En Alquila Seguro MDP respetamos tu privacidad y protegemos tus datos personales.</p>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-title">
+                    <span class="policy-icon">📌</span> Datos que recolectamos
+                </div>
+                <div class="policy-text">
+                    <p>A través de nuestro formulario de contacto y la comunicación vía WhatsApp, podemos recopilar la siguiente información necesaria para el servicio:</p>
+                    <ul class="policy-list">
+                        <li>Nombre y apellido.</li>
+                        <li>Número de teléfono (WhatsApp).</li>
+                        <li>Dirección o link de la propiedad a verificar.</li>
+                        <li>Información adicional que decidas compartir voluntariamente para contexto.</li>
+                    </ul>
+                    <div class="safe-box">
+                        <span style="font-size: 1.2rem;">🛡️</span>
+                        No solicitamos datos bancarios, números de tarjeta, contraseñas ni información sensible personal.
+                    </div>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-title">
+                    <span class="policy-icon">📌</span> Para qué usamos tus datos
+                </div>
+                <div class="policy-text">
+                    <p>Los datos solicitados se utilizan exclusivamente con fines operativos:</p>
+                    <ul class="policy-list">
+                        <li>Evaluar la viabilidad logística del servicio solicitado (si la zona es segura, si llegamos, etc.).</li>
+                        <li>Contactarte para coordinar la verificación y el pago.</li>
+                        <li>Elaborar y entregar el informe técnico o certificado correspondiente.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-title">
+                    <span class="policy-icon">📌</span> Uso y cesión de datos
+                </div>
+                <div class="policy-text">
+                    <p>Tu información es tuya. En Alquila Seguro MDP:</p>
+                    <ul class="policy-list">
+                        <li><strong>NO vendemos</strong>, alquilamos ni cedemos datos personales a terceros, inmobiliarias ni bases de datos.</li>
+                        <li>Los datos <strong>no se utilizan</strong> con fines publicitarios masivos ni spam.</li>
+                        <li>Solo se compartiría información ante un requerimiento judicial obligatorio.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-title">
+                    <span class="policy-icon">📌</span> Conservación de datos
+                </div>
+                <div class="policy-text">
+                    <p>La información se conserva únicamente durante el tiempo necesario para cumplir con el servicio solicitado, gestionar el informe y mantener un registro operativo por razones de seguridad y garantía del servicio.</p>
+                </div>
+            </div>
+
+            <div class="policy-section">
+                <div class="policy-title">
+                    <span class="policy-icon">📌</span> Eliminación de datos
+                </div>
+                <div class="policy-text">
+                    <p>Tenés derecho a solicitar la eliminación de tus registros de nuestra base de datos interna en cualquier momento.</p>
+                    <div class="contact-box">
+                        <p>Para solicitar la baja, escribinos a:</p>
+                        <p>📩 <a href="mailto:contacto@alquilaseguromdp.com">contacto@alquilaseguromdp.com</a></p>
+                        <p style="margin-top: 10px; font-size: 0.85rem;">O solicitalo directamente por WhatsApp al número de contacto oficial.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        &copy; 2025 Alquila Seguro MDP. <br>
+        Hecho en Mar del Plata.
+    </footer>
+
+    <a href="index.html" class="fab-back">← Volver</a>
+
+</body>
+</html>

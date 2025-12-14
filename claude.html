@@ -1,0 +1,2793 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alquila Seguro MDP - Verificación Inmobiliaria Profesional</title>
+    <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
+    <meta name="keywords" content="verificación inmobiliaria, anti fraude, alquiler seguro, mar del plata">
+    <meta name="theme-color" content="#002B49">
+    <meta name="author" content="Alquila Seguro MDP">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Alquila Seguro MDP - Protección Anti-Fraude">
+    <meta property="og:description" content="Evitá estafas en alquileres temporarios. Verificación profesional de propiedades.">
+    <meta property="og:image" content="https://cf.bstatic.com/xdata/images/hotel/max1024x768/366956755.jpg">
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Montserrat:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. VARIABLES CSS (DISEÑO ATÓMICO)
+           ========================================================================== */
+        :root {
+            /* Paleta Light Theme */
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            --bg-overlay: rgba(0, 0, 0, 0.5);
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --text-light: #6B7280;
+            --border-color: #E5E7EB;
+            --border-light: #F3F4F6;
+            
+            /* Colores de Marca */
+            --primary: #002B49;
+            --primary-light: #004066;
+            --primary-dark: #001a2d;
+            --secondary: #00A8E8;
+            --secondary-light: #33BAEC;
+            --accent: #FFB703;
+            --accent-dark: #E6A500;
+            --danger: #DC2626;
+            --danger-light: #EF4444;
+            --success: #059669;
+            --success-light: #10B981;
+            --warning: #F59E0B;
+            --info: #3B82F6;
+            --dark-footer: #020617;
+            
+            /* Sombras Profesionales */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            --shadow-float: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+            --shadow-glow: 0 0 20px rgba(0, 168, 232, 0.3);
+            
+            /* Transiciones */
+            --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-base: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* Bordes y Radios */
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+            --radius-xl: 16px;
+            --radius-full: 9999px;
+            
+            /* Espaciado */
+            --space-xs: 4px;
+            --space-sm: 8px;
+            --space-md: 16px;
+            --space-lg: 24px;
+            --space-xl: 32px;
+            --space-2xl: 48px;
+            --space-3xl: 64px;
+        }
+
+        /* Dark Theme */
+        [data-theme="dark"] {
+            --bg-body: #0B1120;
+            --bg-card: #1E293B;
+            --bg-glass: rgba(15, 23, 42, 0.95);
+            --bg-overlay: rgba(0, 0, 0, 0.7);
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --text-light: #64748B;
+            --border-color: #334155;
+            --border-light: #1E293B;
+            --primary: #38BDF8;
+            --primary-light: #7DD3FC;
+            --primary-dark: #0284C7;
+            --shadow-float: 0 10px 40px -10px rgba(0, 0, 0, 0.4);
+        }
+
+        /* ==========================================================================
+           2. RESET Y BASE
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 80px;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background-color 0.3s ease, color 0.3s ease;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Montserrat', sans-serif;
+            color: var(--text-main);
+            letter-spacing: -0.5px;
+            line-height: 1.2;
+            font-weight: 800;
+        }
+        
+        a {
+            text-decoration: none;
+            color: inherit;
+            transition: var(--transition-base);
+        }
+        
+        ul, ol {
+            list-style: none;
+        }
+        
+        img {
+            max-width: 100%;
+            display: block;
+            height: auto;
+        }
+        
+        button {
+            font-family: inherit;
+            border: none;
+            cursor: pointer;
+            background: none;
+        }
+        
+        input, textarea, select {
+            font-family: inherit;
+            font-size: inherit;
+            color: inherit;
+        }
+        
+        ::selection {
+            background-color: var(--secondary);
+            color: white;
+        }
+
+        /* ==========================================================================
+           3. UTILIDADES Y LAYOUT
+           ========================================================================== */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        .container-sm {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 var(--space-lg);
+        }
+        
+        .section-padding {
+            padding: var(--space-3xl) 0;
+        }
+        
+        .text-center {
+            text-align: center;
+        }
+        
+        .text-left {
+            text-align: left;
+        }
+        
+        .text-right {
+            text-align: right;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .visible {
+            display: block !important;
+        }
+        
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border-width: 0;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        
+        @keyframes spin {
+            from {
+                transform: rotate(0deg);
+            }
+            to {
+                transform: rotate(360deg);
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.5, 0, 0, 1), 
+                        transform 0.8s cubic-bezier(0.5, 0, 0, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        .reveal-delay-1 {
+            transition-delay: 0.1s;
+        }
+        
+        .reveal-delay-2 {
+            transition-delay: 0.2s;
+        }
+        
+        .reveal-delay-3 {
+            transition-delay: 0.3s;
+        }
+
+        /* ==========================================================================
+           4. COMPONENTES - BOTONES
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--space-sm);
+            padding: 14px 28px;
+            border-radius: var(--radius-md);
+            font-weight: 700;
+            font-size: 0.875rem;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition-base);
+            font-family: 'Montserrat', sans-serif;
+            position: relative;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+        
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+        
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .btn > * {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+        
+        [data-theme="dark"] .btn-primary {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+            color: #000;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
+        }
+        
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--primary);
+            font-weight: 700;
+        }
+        
+        [data-theme="dark"] .btn-outline {
+            border-color: var(--secondary);
+            color: var(--secondary);
+        }
+        
+        .btn-outline:hover {
+            background: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        [data-theme="dark"] .btn-outline:hover {
+            background: var(--secondary);
+            color: #000;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger) 0%, var(--danger-light) 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+            animation: pulseGlow 2s infinite;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 0 15px rgba(220, 38, 38, 0);
+            }
+        }
+        
+        .btn-danger:hover {
+            transform: translateY(-2px) scale(1.05);
+            animation: shake 0.5s;
+        }
+
+        .btn-sm {
+            padding: 10px 20px;
+            font-size: 0.75rem;
+        }
+        
+        .btn-lg {
+            padding: 18px 36px;
+            font-size: 1rem;
+        }
+        
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        /* ==========================================================================
+           5. COMPONENTES - INPUTS Y FORMS
+           ========================================================================== */
+        .form-group {
+            margin-bottom: var(--space-lg);
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: var(--space-sm);
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.875rem;
+        }
+        
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 14px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-md);
+            background: var(--bg-body);
+            color: var(--text-main);
+            font-size: 0.9375rem;
+            transition: var(--transition-base);
+            outline: none;
+        }
+        
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.1);
+        }
+        
+        .form-input::placeholder {
+            color: var(--text-muted);
+        }
+        
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .form-error {
+            color: var(--danger);
+            font-size: 0.8125rem;
+            margin-top: var(--space-xs);
+            display: none;
+        }
+        
+        .form-input.error,
+        .form-select.error {
+            border-color: var(--danger);
+        }
+        
+        .form-input.error + .form-error {
+            display: block;
+        }
+
+        /* ==========================================================================
+           6. THEME TOGGLE
+           ========================================================================== */
+        .theme-toggle {
+            cursor: pointer;
+            width: 54px;
+            height: 28px;
+            background: #cbd5e1;
+            border-radius: var(--radius-full);
+            position: relative;
+            transition: background-color 0.3s ease;
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .theme-toggle::after {
+            content: '☀️';
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 24px;
+            height: 24px;
+            background: white;
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+        }
+        
+        [data-theme="dark"] .theme-toggle {
+            background: var(--secondary);
+        }
+        
+        [data-theme="dark"] .theme-toggle::after {
+            content: '🌙';
+            left: 28px;
+        }
+        
+        .theme-toggle:hover::after {
+            transform: scale(1.1);
+        }
+
+        /* ==========================================================================
+           7. LOADER
+           ========================================================================== */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 9999;
+            background: var(--bg-body);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.5s ease;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid var(--border-color);
+            border-top-color: var(--primary);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: var(--space-lg);
+        }
+        
+        .loader-text {
+            color: var(--primary);
+            font-weight: 700;
+            letter-spacing: 2px;
+            font-size: 0.875rem;
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        /* ==========================================================================
+           8. HEADER Y NAVEGACIÓN
+           ========================================================================== */
+        #top-alert {
+            background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+            color: white;
+            text-align: center;
+            padding: 12px;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            box-shadow: var(--shadow-sm);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        #top-alert::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            100% {
+                left: 100%;
+            }
+        }
+        
+        header {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 1px solid var(--border-color);
+            padding: var(--space-md) 0;
+            transition: var(--transition-base);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        header.scrolled {
+            padding: var(--space-sm) 0;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .nav-flex {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.375rem;
+            font-weight: 900;
+            color: var(--text-main);
+            display: flex;
+            align-items: center;
+            gap: var(--space-sm);
+            text-transform: uppercase;
+            transition: var(--transition-base);
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            transition: var(--transition-base);
+        }
+        
+        .logo:hover .logo-icon {
+            transform: rotate(15deg);
+        }
+        
+        .nav-controls {
+            display: flex;
+            gap: var(--space-lg);
+            align-items: center;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: var(--space-xl);
+            align-items: center;
+        }
+        
+        .nav-item {
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--text-main);
+            position: relative;
+            padding: var(--space-sm) 0;
+        }
+        
+        .nav-item::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--secondary);
+            transition: width 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+        
+        .nav-item:hover::after {
+            width: 100%;
+        }
+        
+        .nav-item:hover {
+            color: var(--secondary);
+        }
+        
+        .hamburger {
+            display: none;
+            font-size: 1.75rem;
+            cursor: pointer;
+            color: var(--text-main);
+            transition: var(--transition-base);
+            width: 40px;
+            height: 40px;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-md);
+        }
+        
+        .hamburger:hover {
+            background: var(--bg-body);
+        }
+
+        /* ==========================================================================
+           9. HERO SECTION
+           ========================================================================== */
+        .hero {
+            position: relative;
+            min-height: 90vh;
+            display: flex;
+            align-items: center;
+            background-color: #000;
+            overflow: hidden;
+        }
+        
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                linear-gradient(135deg, rgba(2,6,23,0.95) 0%, rgba(15,23,42,0.7) 50%, rgba(0,43,73,0.8) 100%),
+                url('https://cf.bstatic.com/xdata/images/hotel/max1024x768/366956755.jpg?k=f3114aa11f88a72cb3e3ae613dc26bef7a854e668d7efbaf12e7399a5fd223b8&o=');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            z-index: 0;
+        }
+        
+        .hero-bg::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 30%;
+            background: linear-gradient(to top, var(--bg-body), transparent);
+        }
+        
+        #particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.6;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 900px;
+            color: white;
+            padding: var(--space-lg);
+        }
+        
+        .status-badge {
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.5);
+            color: var(--success-light);
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            font-size: 0.8125rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: var(--space-sm);
+            margin-bottom: var(--space-lg);
+            backdrop-filter: blur(10px);
+            animation: fadeInDown 0.8s ease;
+        }
+        
+        .status-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            background: var(--success-light);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4rem);
+            line-height: 1.1;
+            margin-bottom: var(--space-lg);
+            font-weight: 900;
+            color: white;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+        
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, var(--secondary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .hero p {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            opacity: 0.95;
+            margin-bottom: var(--space-2xl);
+            font-weight: 300;
+            max-width: 650px;
+            line-height: 1.8;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+        
+        .hero-btns {
+            display: flex;
+            gap: var(--space-md);
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+        
+        .stats-bar {
+            display: flex;
+            gap: var(--space-2xl);
+            margin-top: var(--space-3xl);
+            padding-top: var(--space-xl);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeInUp 1s ease 0.8s both;
+        }
+        
+        .stat {
+            flex: 1;
+        }
+        
+        .stat h3 {
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+            color: var(--secondary);
+            margin-bottom: var(--space-xs);
+            font-weight: 900;
+        }
+        
+        .stat p {
+            font-size: 0.8125rem;
+            text-transform: uppercase;
+            opacity: 0.8;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        /* ==========================================================================
+           10. RISK CALCULATOR
+           ========================================================================== */
+        .tool-section {
+            background: var(--bg-body);
+            border-top: 1px solid var(--border-color);
+            position: relative;
+        }
+        
+        .tool-container {
+            background: var(--bg-card);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-2xl);
+            padding: var(--space-2xl);
+            margin-top: -100px;
+            position: relative;
+            z-index: 10;
+            border: 1px solid var(--border-color);
+        }
+        
+        .tool-header {
+            text-align: center;
+            margin-bottom: var(--space-2xl);
+        }
+        
+        .tool-header h2 {
+            color: var(--primary);
+            margin-bottom: var(--space-sm);
+            font-size: clamp(1.75rem, 4vw, 2.5rem);
+        }
+        
+        .tool-header p {
+            color: var(--text-muted);
+            font-size: 1rem;
+        }
+        
+        .tool-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: var(--space-2xl);
+        }
+        
+        .checkbox-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--space-md);
+        }
+        
+        .chk-item {
+            display: flex;
+            align-items: flex-start;
+            gap: var(--space-md);
+            padding: var(--space-lg);
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition-base);
+            background: var(--bg-body);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .chk-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(0, 168, 232, 0.1), transparent);
+            transition: left 0.5s;
+        }
+        
+        .chk-item:hover::before {
+            left: 100%;
+}    .chk-item:hover {
+        border-color: var(--secondary);
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-md);
+    }    .chk-item.checked {
+        background: rgba(0, 168, 232, 0.08);
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.1);
+    }    .chk-item input {
+        display: none;
+    }    .chk-checkbox {
+        width: 24px;
+        height: 24px;
+        border: 2px solid var(--border-color);
+        border-radius: var(--radius-sm);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition-base);
+        flex-shrink: 0;
+    }    .chk-item.checked .chk-checkbox {
+        background: var(--secondary);
+        border-color: var(--secondary);
+    }    .chk-checkbox::after {
+        content: '✓';
+        color: white;
+        font-weight: bold;
+        font-size: 14px;
+        opacity: 0;
+        transform: scale(0);
+        transition: var(--transition-bounce);
+    }    .chk-item.checked .chk-checkbox::after {
+        opacity: 1;
+        transform: scale(1);
+    }    .chk-content strong {
+        display: block;
+        color: var(--text-main);
+        margin-bottom: 4px;
+        font-size: 0.9375rem;
+    }    .chk-content small {
+        color: var(--text-muted);
+        font-size: 0.8125rem;
+    }    .gauge-box {
+        text-align: center;
+        padding: var(--space-xl);
+        background: var(--bg-body);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-color);
+        position: sticky;
+        top: 100px;
+    }    .gauge-circle {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        border: 16px solid var(--border-color);
+        border-top-color: var(--danger);
+        margin: 0 auto var(--space-lg);
+        position: relative;
+        transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
+    }    .gauge-circle::after {
+        content: '';
+        position: absolute;
+        top: -16px;
+        left: -16px;
+        right: -16px;
+        bottom: -16px;
+        border-radius: 50%;
+        border: 2px solid transparent;
+        transition: var(--transition-base);
+    }    .gauge-circle.high-score::after {
+        border-color: var(--success);
+        box-shadow: 0 0 20px rgba(5, 150, 105, 0.3);
+    }    .gauge-score {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 2rem;
+        font-weight: 900;
+        color: var(--text-main);
+        font-family: 'Montserrat', sans-serif;
+    }    #risk-label {
+        font-size: 1.125rem;
+        margin-bottom: var(--space-sm);
+        transition: var(--transition-base);
+    }    .gauge-description {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        margin-bottom: var(--space-lg);
+        line-height: 1.6;
+    }    /* ==========================================================================
+       11. GALERÍA DE EVIDENCIA
+       ========================================================================== */
+    .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--space-lg);
+        margin-top: var(--space-2xl);
+    }    .evidence-card {
+        position: relative;
+        height: 280px;
+        border-radius: var(--radius-lg);
+        overflow: hidden;
+        cursor: pointer;
+        box-shadow: var(--shadow-md);
+        transition: var(--transition-base);
+    }    .evidence-card:hover {
+        transform: translateY(-8px);
+        box-shadow: var(--shadow-xl);
+    }    .evidence-card img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }    .evidence-card:hover img {
+        transform: scale(1.15);
+    }    .evidence-tag {
+        position: absolute;
+        top: var(--space-md);
+        right: var(--space-md);
+        background: var(--success);
+        color: white;
+        font-size: 0.6875rem;
+        font-weight: 800;
+        padding: 6px 12px;
+        border-radius: var(--radius-sm);
+        z-index: 2;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        box-shadow: var(--shadow-md);
+        animation: fadeInDown 0.5s ease;
+    }    .evidence-info {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        padding: var(--space-xl) var(--space-lg);
+        background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.5) 50%, transparent 100%);
+        color: white;
+        transform: translateY(20px);
+        opacity: 0;
+        transition: var(--transition-base);
+    }    .evidence-card:hover .evidence-info {
+        transform: translateY(0);
+        opacity: 1;
+    }    .evidence-info h5 {
+        font-size: 1.125rem;
+        margin-bottom: var(--space-xs);
+        color: white;
+    }    .evidence-info small {
+        font-size: 0.875rem;
+        opacity: 0.9;
+    }    /* ==========================================================================
+       12. PRICING CARDS
+       ========================================================================== */
+    .pricing-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: var(--space-xl);
+        margin-top: var(--space-2xl);
+    }    .plan-card {
+        background: var(--bg-card);
+        border: 2px solid var(--border-color);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-xl);
+        position: relative;
+        transition: var(--transition-base);
+        display: flex;
+        flex-direction: column;
+        box-shadow: var(--shadow-md);
+    }    .plan-card:hover {
+        transform: translateY(-12px);
+        box-shadow: var(--shadow-2xl);
+        border-color: var(--secondary);
+    }    .plan-card.popular {
+        border: 3px solid var(--accent);
+        box-shadow: var(--shadow-xl), 0 0 40px rgba(255, 183, 3, 0.2);
+    }    .plan-card.popular::before {
+        content: '';
+        position: absolute;
+        top: -3px;
+        left: -3px;
+        right: -3px;
+        bottom: -3px;
+        background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+        border-radius: var(--radius-xl);
+        z-index: -1;
+        opacity: 0.1;
+    }    .pop-tag {
+        position: absolute;
+        top: -14px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: linear-gradient(135deg, var(--accent) 0%, var(--accent-dark) 100%);
+        color: #000;
+        font-size: 0.6875rem;
+        font-weight: 900;
+        padding: 6px 20px;
+        border-radius: var(--radius-full);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        box-shadow: var(--shadow-md);
+        animation: fadeInDown 0.6s ease;
+    }    .plan-card h3 {
+        font-size: 1.5rem;
+        margin-bottom: var(--space-md);
+        color: var(--text-main);
+    }    .plan-price {
+        font-size: 3rem;
+        font-weight: 900;
+        margin: var(--space-lg) 0;
+        color: var(--text-main);
+        font-family: 'Montserrat', sans-serif;
+    }    .plan-price small {
+        font-size: 1.125rem;
+        color: var(--text-muted);
+        font-weight: 400;
+    }    .feature-list {
+        margin: var(--space-lg) 0;
+        flex: 1;
+    }
+         .feature-list li {
+        margin-bottom: var(--space-md);
+        font-size: 0.9375rem;
+        display: flex;
+        align-items: flex-start;
+        gap: var(--space-sm);
+        color: var(--text-main);
+    }    .feature-list li::before {
+        content: '✓';
+        color: var(--success);
+        font-weight: bold;
+        font-size: 1.125rem;
+        flex-shrink: 0;
+    }    /* ==========================================================================
+       13. TESTIMONIOS
+       ========================================================================== */
+    .testi-scroller {
+        display: flex;
+        gap: var(--space-lg);
+        overflow-x: auto;
+        padding: var(--space-lg) 0;
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+    }    .testi-scroller::-webkit-scrollbar {
+        display: none;
+    }    .testi-card {
+        min-width: 350px;
+        background: var(--bg-card);
+        padding: var(--space-xl);
+        border-radius: var(--radius-lg);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-md);
+        transition: var(--transition-base);
+        scroll-snap-align: start;
+    }    .testi-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--secondary);
+    }    .user-head {
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+        margin-bottom: var(--space-md);
+    }    .u-avatar {
+        width: 52px;
+        height: 52px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--secondary), var(--primary));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 700;
+        font-size: 1.25rem;
+        flex-shrink: 0;
+        box-shadow: var(--shadow-md);
+    }    .user-info strong {
+        display: block;
+        color: var(--text-main);
+        font-size: 1rem;
+        margin-bottom: 4px;
+    }    .user-info .stars {
+        color: var(--accent);
+        font-size: 0.875rem;
+        letter-spacing: 2px;
+    }    .testi-card p {
+        font-size: 0.9375rem;
+        color: var(--text-muted);
+        line-height: 1.7;
+        font-style: italic;
+    }
+            /* ==========================================================================
+       14. CONTACT FORM
+       ========================================================================== */
+    .contact-box {
+        max-width: 750px;
+        margin: 0 auto;
+        background: var(--bg-card);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-xl);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-xl);
+    }
+    
+    .contact-box h2 {
+        margin-bottom: var(--space-sm);
+        font-size: clamp(1.75rem, 4vw, 2.25rem);
+    }
+    
+    .contact-box > p {
+        margin-bottom: var(--space-xl);
+        color: var(--text-muted);
+    }
+    
+    .success-message,
+    .error-message {
+        padding: var(--space-md);
+        border-radius: var(--radius-md);
+        margin-bottom: var(--space-lg);
+        display: none;
+        align-items: center;
+        gap: var(--space-sm);
+        animation: fadeInDown 0.5s ease;
+    }
+    
+    .success-message {
+        background: rgba(5, 150, 105, 0.1);
+        border: 1px solid var(--success);
+        color: var(--success);
+    }
+    
+    .error-message {
+        background: rgba(220, 38, 38, 0.1);
+        border: 1px solid var(--danger);
+        color: var(--danger);
+    }
+
+    /* ==========================================================================
+       15. FOOTER
+       ========================================================================== */
+    footer {
+        background: var(--dark-footer);
+        color: #9CA3AF;
+        padding: var(--space-3xl) 0 var(--space-xl);
+        margin-top: var(--space-3xl);
+        font-size: 0.9375rem;
+        position: relative;
+    }
+    
+    footer::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--secondary), transparent);
+    }
+    
+    .footer-cols {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: var(--space-2xl);
+        margin-bottom: var(--space-2xl);
+    }
+    
+    .footer-logo {
+        color: white;
+        font-weight: 900;
+        font-size: 1.375rem;
+        margin-bottom: var(--space-lg);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+    }
+    
+    .footer-col p {
+        line-height: 1.8;
+        color: #9CA3AF;
+    }
+    
+    .ft-head {
+        color: #F3F4F6;
+        font-weight: 700;
+        margin-bottom: var(--space-lg);
+        text-transform: uppercase;
+        font-size: 0.8125rem;
+        letter-spacing: 1px;
+    }
+    
+    .ft-links li {
+        margin-bottom: var(--space-md);
+    }
+    
+    .ft-links a {
+        color: #9CA3AF;
+        transition: var(--transition-base);
+        display: inline-block;
+    }
+    
+    .ft-links a:hover {
+        color: var(--secondary);
+        padding-left: var(--space-sm);
+    }
+    
+    .footer-bottom {
+        text-align: center;
+        border-top: 1px solid #374151;
+        padding-top: var(--space-xl);
+        color: #6B7280;
+        font-size: 0.875rem;
+    }
+    
+    .footer-social {
+        display: flex;
+        gap: var(--space-md);
+        margin-top: var(--space-lg);
+    }
+    
+    .social-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.05);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9CA3AF;
+        transition: var(--transition-base);
+    }
+    
+    .social-icon:hover {
+        background: var(--secondary);
+        color: white;
+        transform: translateY(-4px);
+    }
+
+    /* ==========================================================================
+       16. CHAT WIDGET
+       ========================================================================== */
+    .chat-widget {
+        position: fixed;
+        bottom: var(--space-xl);
+        right: var(--space-xl);
+        z-index: 9000;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: var(--space-md);
+    }
+    
+    .chat-btn {
+        width: 64px;
+        height: 64px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: var(--shadow-xl);
+        cursor: pointer;
+        transition: var(--transition-bounce);
+        color: white;
+        font-size: 1.75rem;
+        position: relative;
+    }
+    
+    .chat-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        border-radius: 50%;
+        background: inherit;
+        opacity: 0;
+        transform: scale(1);
+        transition: var(--transition-base);
+    }
+    
+    .chat-btn:hover::before {
+        opacity: 0.3;
+        transform: scale(1.3);
+    }
+    
+    .btn-wa {
+        background: linear-gradient(135deg, #25D366 0%, #128C7E 100%);
+    }
+    
+    .btn-bot {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+    }
+    
+    [data-theme="dark"] .btn-bot {
+        background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+    }
+    
+    .chat-btn:hover {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: var(--shadow-2xl);
+    }
+    
+    .chat-btn:active {
+        transform: scale(0.95);
+    }
+    
+    .chat-window {
+        width: 380px;
+        max-height: 600px;
+        background: var(--bg-card);
+        border-radius: var(--radius-xl);
+        box-shadow: var(--shadow-2xl);
+        overflow: hidden;
+        display: none;
+        flex-direction: column;
+        border: 1px solid var(--border-color);
+        animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    }
+    
+    .chat-window.active {
+        display: flex;
+    }
+    
+    @keyframes slideUp {
+        from {
+            opacity: 0;
+            transform: translateY(30px) scale(0.9);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    
+    .chat-header {
+        background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+        padding: var(--space-lg);
+        color: white;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    [data-theme="dark"] .chat-header {
+        background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
+        color: #000;
+    }
+    
+    .chat-header span:first-child {
+        font-weight: 700;
+        font-size: 1.0625rem;
+    }
+    
+    .chat-close {
+        cursor: pointer;
+        font-size: 1.75rem;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: var(--transition-base);
+    }
+    
+    .chat-close:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: rotate(90deg);
+    }
+    
+    .chat-body {
+        flex: 1;
+        padding: var(--space-lg);
+        overflow-y: auto;
+        background: var(--bg-body);
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .chat-body::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .chat-body::-webkit-scrollbar-track {
+        background: var(--bg-body);
+    }
+    
+    .chat-body::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: var(--radius-full);
+    }
+    
+    .chat-body::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }
+    
+    .msg {
+        padding: 12px 16px;
+        border-radius: var(--radius-lg);
+        font-size: 0.9375rem;
+        max-width: 85%;
+        animation: fadeMsg 0.4s ease;
+        line-height: 1.5;
+        word-wrap: break-word;
+    }
+    
+    @keyframes fadeMsg {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    .msg-bot {
+        background: var(--bg-card);
+        color: var(--text-main);
+        align-self: flex-start;
+        border-bottom-left-radius: 4px;
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .msg-user {
+        background: linear-gradient(135deg, var(--secondary) 0%, var(--secondary-light) 100%);
+        color: white;
+        align-self: flex-end;
+        border-bottom-right-radius: 4px;
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .chat-options {
+        display: flex;
+        flex-wrap: wrap;
+        gap: var(--space-sm);
+        margin-top: var(--space-xs);
+    }
+    
+    .opt-btn {
+        background: transparent;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+        padding: 8px 16px;
+        border-radius: var(--radius-full);
+        font-size: 0.8125rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition-base);
+    }
+    
+    .opt-btn:hover {
+        background: var(--primary);
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: var(--shadow-sm);
+    }
+    
+    .chat-input-area {
+        padding: var(--space-md);
+        border-top: 1px solid var(--border-color);
+        background: var(--bg-card);
+        display: flex;
+        gap: var(--space-sm);
+    }
+    
+    .chat-input {
+        flex: 1;
+        padding: 10px 14px;
+        border: 1px solid var(--border-color);
+        border-radius: var(--radius-lg);
+        background: var(--bg-body);
+        color: var(--text-main);
+        font-size: 0.9375rem;
+        transition: var(--transition-base);
+    }
+    
+    .chat-input:focus {
+        outline: none;
+        border-color: var(--secondary);
+        box-shadow: 0 0 0 3px rgba(0, 168, 232, 0.1);
+    }
+    
+    .chat-send {
+        width: 40px;
+        height: 40px;
+        background: var(--secondary);
+        border: none;
+        border-radius: var(--radius-md);
+        color: white;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--transition-base);
+    }
+    
+    .chat-send:hover {
+        background: var(--secondary-light);
+        transform: scale(1.05);
+    }
+
+    /* ==========================================================================
+       17. MODALES
+       ========================================================================== */
+    .modal-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--bg-overlay);
+        backdrop-filter: blur(8px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+        padding: var(--space-lg);
+        animation: fadeIn 0.3s ease;
+    }
+    
+    .modal-overlay.active {
+        display: flex;
+    }
+    
+    .modal-content {
+        background: var(--bg-card);
+        border-radius: var(--radius-xl);
+        padding: var(--space-2xl);
+        max-width: 500px;
+        width: 100%;
+        box-shadow: var(--shadow-2xl);
+        border: 1px solid var(--border-color);
+        animation: slideUp 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        max-height: 90vh;
+        overflow-y: auto;
+    }
+    
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: var(--space-xl);
+    }
+    
+    .modal-header h3 {
+        font-size: 1.5rem;
+        color: var(--text-main);
+    }
+    
+    .modal-close {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: var(--transition-base);
+        font-size: 1.5rem;
+        color: var(--text-muted);
+    }
+    
+    .modal-close:hover {
+        background: var(--bg-body);
+        color: var(--text-main);
+        transform: rotate(90deg);
+    }
+
+    /* ==========================================================================
+       18. ADMIN PANEL
+       ========================================================================== */
+    #admin-modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--bg-body);
+        z-index: 10000;
+        display: none;
+        overflow: hidden;
+    }
+    
+    #admin-modal.active {
+        display: block;
+    }
+    
+    .admin-layout {
+        display: flex;
+        height: 100vh;
+    }
+    
+    .sidebar {
+        width: 280px;
+        background: var(--bg-card);
+        border-right: 1px solid var(--border-color);
+        padding: var(--space-xl);
+        overflow-y: auto;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .sidebar h3 {
+        margin-bottom: var(--space-xl);
+        letter-spacing: 2px;
+        color: var(--primary);
+        font-size: 1.25rem;
+    }
+    
+    .adm-item {
+        padding: var(--space-md) var(--space-lg);
+        margin-bottom: var(--space-sm);
+        border-radius: var(--radius-md);
+        cursor: pointer;
+        transition: var(--transition-base);
+        display: flex;
+        align-items: center;
+        gap: var(--space-sm);
+        color: var(--text-main);
+        font-weight: 600;
+    }
+    
+    .adm-item:hover {
+        background: var(--bg-body);
+        transform: translateX(4px);
+    }
+    
+    .adm-item.active {
+        background: var(--secondary);
+        color: white;
+        box-shadow: var(--shadow-md);
+    }
+    
+    .admin-main {
+        flex: 1;
+        padding: var(--space-2xl);
+        overflow-y: auto;
+        background: var(--bg-body);
+    }
+    
+    .admin-main h2 {
+        margin-bottom: var(--space-xl);
+        color: var(--text-main);
+        font-size: clamp(1.5rem, 3vw, 2rem);
+    }
+    
+    .admin-card {
+        background: var(--bg-card);
+        padding: var(--space-2xl);
+        border-radius: var(--radius-xl);
+        border: 1px solid var(--border-color);
+        box-shadow: var(--shadow-md);
+        margin-bottom: var(--space-xl);
+    }
+    
+    .admin-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: var(--space-xl);
+    }
+    
+    .hash-output {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 600;
+        color: var(--primary);
+        word-break: break-all;
+        background: var(--bg-body);
+        padding: var(--space-md);
+        border-radius: var(--radius-md);
+        border: 1px solid var(--border-color);
+        font-size: 0.8125rem;
+    }
+    
+    .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        color: var(--text-main);
+    }
+    
+    .admin-table thead tr {
+        background: var(--bg-body);
+        text-align: left;
+    }
+    
+    .admin-table th,
+    .admin-table td {
+padding: var(--space-md);
+border-bottom: 1px solid var(--border-color);
+}
+padding: var(--space-md);
+border-bottom: 1px solid var(--border-color);
+}    .admin-table tbody tr:hover {
+        background: var(--bg-body);
+    }    .status-badge-table {
+        display: inline-block;
+        background: var(--secondary);
+        color: white;
+        padding: 4px 12px;
+        border-radius: var(--radius-sm);
+        font-size: 0.8125rem;
+        font-weight: 700;
+    }    /* ==========================================================================
+       19. LIGHTBOX PARA GALERÍA
+       ========================================================================== */
+    .lightbox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.95);
+        z-index: 10000;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: var(--space-lg);
+        animation: fadeIn 0.3s ease;
+    }    .lightbox.active {
+        display: flex;
+    }    .lightbox-content {
+        max-width: 90%;
+        max-height: 90%;
+        position: relative;
+        animation: zoomIn 0.4s ease;
+    }    @keyframes zoomIn {
+        from {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }    .lightbox img {
+        max-width: 100%;
+        max-height: 85vh;
+        border-radius: var(--radius-lg);
+        box-shadow: var(--shadow-2xl);
+    }    .lightbox-close {
+        position: absolute;
+        top: -40px;
+        right: 0;
+        width: 40px;
+        height: 40px;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 1.5rem;
+        transition: var(--transition-base);
+    }    .lightbox-close:hover {
+        transform: rotate(90deg) scale(1.1);
+        background: var(--danger);
+        color: white;
+    }    .lightbox-info {
+        position: absolute;
+        bottom: -60px;
+        left: 0;
+        right: 0;
+        text-align: center;
+        color: white;
+    }    .lightbox-info h4 {
+        font-size: 1.125rem;
+        margin-bottom: var(--space-xs);
+        color: white;
+    }    /* ==========================================================================
+       20. TOAST NOTIFICATIONS
+       ========================================================================== */
+    .toast-container {
+        position: fixed;
+        top: 100px;
+        right: var(--space-xl);
+        z-index: 9998;
+        display: flex;
+        flex-direction: column;
+        gap: var(--space-sm);
+    }    .toast {
+        background: var(--bg-card);
+        border: 1px solid var(--border-color);
+        border-left: 4px solid var(--success);
+        padding: var(--space-md) var(--space-lg);
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-xl);
+        min-width: 300px;
+        animation: slideInRight 0.4s ease;
+        display: flex;
+        align-items: center;
+        gap: var(--space-md);
+    }    .toast.error {
+        border-left-color: var(--danger);
+    }    .toast.warning {
+        border-left-color: var(--warning);
+    }    .toast.info {
+        border-left-color: var(--info);
+    }    .toast-icon {
+        font-size: 1.5rem;
+        flex-shrink: 0;
+    }    .toast-content {
+        flex: 1;
+    }    .toast-title {
+        font-weight: 700;
+        color: var(--text-main);
+        margin-bottom: 4px;
+        font-size: 0.9375rem;
+    }    .toast-message {
+        color: var(--text-muted);
+        font-size: 0.875rem;
+    }    .toast-close {
+        cursor: pointer;
+        color: var(--text-muted);
+        font-size: 1.25rem;
+        transition: var(--transition-base);
+    }    .toast-close:hover {
+        color: var(--text-main);
+    }    /* ==========================================================================
+       21. PRINT STYLES
+       ========================================================================== */
+    @media print {
+        body * {
+            visibility: hidden;
+        }        #legal-doc,
+        #legal-doc * {
+            visibility: visible;
+        }        #legal-doc {
+            display: block !important;
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin: 0;
+            padding: 0;
+            background: white;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }        @page {
+            margin: 0;
+            size: A4 portrait;
+        }
+    }    /* ==========================================================================
+       22. RESPONSIVE DESIGN
+       ========================================================================== */
+    @media (max-width: 1024px) {
+        .tool-layout {
+            grid-template-columns: 1fr;
+        }        .gauge-box {
+            position: static;
+        }        .admin-layout {
+            flex-direction: column;
+        }        .sidebar {
+            width: 100%;
+            border-right: none;
+            border-bottom: 1px solid var(--border-color);
+            height: auto;
+        }
+    }    @media (max-width: 768px) {
+        :root {
+            --space-2xl: 40px;
+            --space-3xl: 48px;
+        }        .container {
+            padding: 0 var(--space-md);
+        }        .section-padding {
+            padding: var(--space-2xl) 0;
+        }        .nav-links {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--bg-card);
+            flex-direction: column;
+            padding: var(--space-2xl);
+            transition: left 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            box-shadow: var(--shadow-xl);
+            z-index: 999;
+            gap: var(--space-lg);
+        }        .nav-links.active {
+            left: 0;
+        }        .hamburger {
+            display: flex;
+        }        .hero h1 {
+            font-size: 2rem;
+        }        .hero p {
+            font-size: 1rem;
+        }        .stats-bar {
+            flex-direction: column;
+            gap: var(--space-lg);
+        }        .hero-btns {
+            flex-direction: column;
+        }        .hero-btns .btn {
+            width: 100%;
+        }        .tool-container {
+            padding: var(--space-lg);
+            margin-top: -60px;
+        }        .checkbox-group {
+            grid-template-columns: 1fr;
+        }        .gallery-grid {
+            grid-template-columns: 1fr;
+        }        .pricing-grid {
+            grid-template-columns: 1fr;
+        }        .testi-card {
+            min-width: 280px;
+        }        .chat-widget {
+            bottom: var(--space-lg);
+            right: var(--space-lg);
+        }        .chat-window {
+            width: calc(100vw - 32px);
+            max-height: 500px;
+        }        .chat-btn {
+            width: 56px;
+            height: 56px;
+            font-size: 1.5rem;
+        }        .footer-cols {
+            grid-template-columns: 1fr;
+        }        .modal-content {
+            padding: var(--space-lg);
+        }        .toast-container {
+            right: var(--space-md);
+            left: var(--space-md);
+        }        .toast {
+            min-width: auto;
+        }
+    }    @media (max-width: 480px) {
+        .hero {
+            min-height: 100vh;
+        }        .btn {
+            padding: 12px 20px;
+            font-size: 0.8125rem;
+        }        .plan-price {
+            font-size: 2.5rem;
+        }        .admin-main {
+            padding: var(--space-lg);
+        }        .admin-card {
+            padding: var(--space-lg);
+        }
+    }    /* ==========================================================================
+       23. UTILITY ANIMATIONS
+       ========================================================================== */
+    .animate-on-scroll {
+        opacity: 0;
+        transform: translateY(30px);
+    }    .animate-on-scroll.animated {
+        animation: fadeInUp 0.8s ease forwards;
+    }    @keyframes float {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-10px);
+        }
+    }    .float-animation {
+        animation: float 3s ease-in-out infinite;
+    }    @keyframes bounce {
+        0%, 100% {
+            transform: translateY(0);
+        }
+        50% {
+            transform: translateY(-20px);
+        }
+    }    .bounce-animation {
+        animation: bounce 2s ease-in-out infinite;
+    }    /* ==========================================================================
+       24. SCROLLBAR PERSONALIZADO
+       ========================================================================== */
+    ::-webkit-scrollbar {
+        width: 12px;
+        height: 12px;
+    }    ::-webkit-scrollbar-track {
+        background: var(--bg-body);
+    }    ::-webkit-scrollbar-thumb {
+        background: var(--border-color);
+        border-radius: var(--radius-full);
+        border: 3px solid var(--bg-body);
+    }    ::-webkit-scrollbar-thumb:hover {
+        background: var(--text-muted);
+    }    /* ==========================================================================
+       25. LOADING STATES
+       ========================================================================== */
+    .skeleton {
+        background: linear-gradient(90deg, var(--bg-body) 25%, var(--border-light) 50%, var(--bg-body) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.5s infinite;
+        border-radius: var(--radius-md);
+    }    .skeleton-text {
+        height: 16px;
+        margin-bottom: var(--space-sm);
+    }    .skeleton-title {
+        height: 24px;
+        width: 60%;
+        margin-bottom: var(--space-md);
+    }    .skeleton-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+    }    /* ==========================================================================
+       26. ACCESSIBILITY
+       ========================================================================== */
+    .focus-visible:focus {
+        outline: 2px solid var(--secondary);
+        outline-offset: 2px;
+    }    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            transition-duration: 0.01ms !important;
+        }
+    }    .skip-to-content {
+        position: absolute;
+        top: -40px;
+        left: 0;
+        background: var(--primary);
+        color: white;
+        padding: 8px 16px;
+        text-decoration: none;
+        border-radius: var(--radius-md);
+        z-index: 100;
+    }    .skip-to-content:focus {
+        top: 10px;
+        left: 10px;
+    }
+</style>
+</head>
+<body>
+    <!-- Skip to Content (Accesibilidad) -->
+    <a href="#main-content" class="skip-to-content">Saltar al contenido principal</a><!-- Loader -->
+<div id="loader">
+    <div class="spinner"></div>
+    <div class="loader-text">CONECTANDO AL SISTEMA...</div>
+</div><!-- Top Alert Banner -->
+<div id="top-alert">
+    ⚠️ <strong>ALERTA:</strong> 12 Perfiles falsos detectados hoy en Marketplace. Verificá antes de transferir.
+</div><!-- Header -->
+<header id="header">
+    <div class="container nav-flex">
+        <a href="#" class="logo">
+            <svg class="logo-icon" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+            </svg>
+            AlquilaSeguro<span>MDP</span>
+        </a>        <div class="nav-controls">
+            <nav class="nav-links" id="main-nav">
+                <a href="#herramienta" class="nav-item">Diagnóstico</a>
+                <a href="#galeria" class="nav-item">Evidencia</a>
+                <a href="#precios" class="nav-item">Precios</a>
+                <a href="#testimonios" class="nav-item">Testimonios</a>
+                <a href="#contacto" class="btn btn-primary btn-sm">EXPEDIENTE</a>
+            </nav>            <div class="theme-toggle" onclick="toggleTheme()" role="button" aria-label="Cambiar tema" tabindex="0"></div>
+            <div class="hamburger" onclick="toggleMenu()" role="button" aria-label="Menú" tabindex="0">☰</div>
+        </div>
+    </div>
+</header><!-- Hero Section -->
+<section class="hero" id="main-content">
+    <div class="hero-bg"></div>
+    <canvas id="particles" aria-hidden="true"></canvas>
+    <div class="container hero-content">
+        <div class="status-badge">
+            <span>🛡️</span> SISTEMA OPERATIVO 2025
+        </div>
+        <h1 class="reveal">
+            SEGURIDAD <span class="highlight">JURÍDICA</span><br>
+            PARA TUS VACACIONES
+        </h1>
+        <p class="reveal reveal-delay-1">
+            Organismo privado de constatación fáctica. Evitá fraudes contractuales y propiedades inexistentes en Mar del Plata con nuestra verificación profesional.
+        </p>        <div class="hero-btns reveal reveal-delay-2">
+            <a href="#contacto" class="btn btn-primary btn-lg">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 11l3 3L22 4"></path>
+                    <path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"></path>
+                </svg>
+                VERIFICAR AHORA
+            </a>
+            <a href="https://api.whatsapp.com/send?phone=5492230000000&text=URGENTE%20-%20Estoy%20en%20la%20puerta%20y%20necesito%20asistencia%20inmediata" 
+               class="btn btn-danger btn-lg" target="_blank" rel="noopener">
+                🚨 ESTOY EN LA PUERTA
+            </a>
+        </div>        <div class="stats-bar reveal reveal-delay-3">
+            <div class="stat">
+                <h3 class="counter" data-target="1400">0</h3>
+                <p>Fraudes Prevenidos</p>
+            </div>
+            <div class="stat">
+                <h3>$0</h3>
+                <p>Perdido por Clientes</p>
+            </div>
+            <div class="stat">
+                <h3>24<small style="font-size: 1.25rem;">hs</small></h3>
+                <p>Respuesta Máxima</p>
+            </div>
+        </div>
+    </div>
+</section><!-- Risk Calculator Tool -->
+<section id="herramienta" class="section-padding tool-section">
+    <div class="container">
+        <div class="tool-container reveal">
+            <div class="tool-header">
+                <h2>Calculadora de Riesgo Inmobiliario</h2>
+                <p>Seleccioná las pruebas que te envió el supuesto propietario para calcular el nivel de seguridad.</p>
+            </div>            <div class="tool-layout">
+                <div>
+                    <div class="checkbox-group" id="checkboxGroup">
+                        <label class="chk-item" data-value="25">
+                            <div class="chk-checkbox"></div>
+                            <div class="chk-content">
+                                <strong>Videollamada en Vivo</strong>
+                                <small>Mostró el interior de la propiedad</small>
+                            </div>
+                        </label>
+                        <label class="chk-item" data-value="25">
+                            <div class="chk-checkbox"></div>
+                            <div class="chk-content">
+                                <strong>Coincidencia CBU</strong>
+                                <small>Titular CBU = DNI del contrato</small>
+                            </div>
+                        </label>
+                        <label class="chk-item" data-value="25">
+                            <div class="chk-checkbox"></div>
+                            <div class="chk-content">
+                                <strong>Comprobante Impuestos</strong>
+                                <small>Factura de servicios a su nombre</small>
+                            </div>
+                        </label>
+                        <label class="chk-item" data-value="25">
+                            <div class="chk-checkbox"></div>
+                            <div class="chk-content">
+                                <strong>Referencias Verificables</strong>
+                                <small>Historial comprobable de alquileres</small>
+                            </div>
+                        </label>
+                    </div>
+                </div>                <div class="gauge-box">
+                    <div class="gauge-circle" id="gauge">
+                        <div class="gauge-score" id="score">0%</div>
+                    </div>
+                    <h4 id="risk-label" style="color: var(--danger);">🚨 RIESGO ALTO</h4>
+                    <p class="gauge-description">Faltan validaciones críticas para proceder con seguridad.</p>
+                    <a href="#contacto" class="btn btn-outline" style="width: 100%;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <path d="M12 16v-4M12 8h.01"></path>
+                        </svg>
+                        SOLICITAR INSPECTOR
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Evidence Gallery -->
+<section id="galeria" class="section-padding" style="background: var(--bg-card);">
+    <div class="container reveal">
+        <h2 class="text-center" style="margin-bottom: var(--space-md);">Evidencia de Campo</h2>
+        <p class="text-center" style="color: var(--text-muted); margin-bottom: var(--space-2xl);">
+            Últimas propiedades verificadas por nuestro equipo de inspección profesional.
+        </p>
+        <div class="gallery-grid">
+            <div class="evidence-card" onclick="openLightbox(this)" data-title="Departamento Zona Güemes" data-status="Verificado">
+                <span class="evidence-tag">✓ VERIFICADO HOY</span>
+                <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=600&q=80" alt="Apartamento verificado en Zona Güemes" loading="lazy">
+                <div class="evidence-info">
+                    <h5>Zona Güemes</h5>
+                    <small>✓ Dueño Validado | Acceso Confirmado</small>
+                </div>
+            </div>
+            
+            <div class="evidence-card" onclick="openLightbox(this)" data-title="Casa Constitución" data-status="Fraude">
+                <span class="evidence-tag" style="background: var(--danger);">⚠️ FRAUDE DETECTADO</span>
+                <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=600&q=80" alt="Propiedad fraudulenta detectada" loading="lazy" style="filter: grayscale(100%);">
+                <div class="evidence-info">
+                    <h5>Constitución</h5>
+                    <small>✗ Dirección Inexistente | Estafa Confirmada</small>
+                </div>
+            </div>
+            
+            <div class="evidence-card" onclick="openLightbox(this)" data-title="Departamento Playa Grande" data-status="Verificado">
+                <span class="evidence-tag">✓ VERIFICADO AYER</span>
+                <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=600&q=80" alt="Departamento verificado en Playa Grande" loading="lazy">
+                <div class="evidence-info">
+                    <h5>Playa Grande</h5>
+                    <small>✓ Acceso Probado | Documentación OK</small>
+                </div>
+            </div>
+            
+            <div class="evidence-card" onclick="openLightbox(this)" data-title="Casa Centro" data-status="Verificado">
+                <span class="evidence-tag">✓ VERIFICADO HOY</span>
+                <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=600&q=80" alt="Casa verificada en el centro" loading="lazy">
+                <div class="evidence-info">
+                    <h5>Centro</h5>
+                    <small>✓ Titularidad Confirmada | Sin Riesgos</small>
+                </div>
+            </div>
+            
+            <div class="evidence-card" onclick="openLightbox(this)" data-title="Loft La Perla" data-status="En Proceso">
+                <span class="evidence-tag" style="background: var(--warning);">⏳ EN VERIFICACIÓN</span>
+                <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=600&q=80" alt="Propiedad en proceso de verificación" loading="lazy">
+                <div class="evidence-info">
+                    <h5>La Perla</h5>
+                    <small>⏳ Inspección Programada | 24hs</small>
+                </div>
+            </div>
+            
+            <div class="evidence-card" onclick="openLightbox(this)" data-title="Duplex Punta Mogotes" data-status="Verificado">
+                <span class="evidence-tag">✓ VERIFICADO ESTA SEMANA</span>
+                <img src="https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=600&q=80" alt="Duplex verificado en Punta Mogotes" loading="lazy">
+                <div class="evidence-info">
+                    <h5>Punta Mogotes</h5>
+                    <small>✓ Inspector en Sitio | Certificado Emitido</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Pricing Section -->
+<section id="precios" class="section-padding">
+    <div class="container reveal">
+        <h2 class="text-center" style="margin-bottom: var(--space-md);">Tarifas Oficiales 2025</h2>
+        <p class="text-center" style="color: var(--text-muted); margin-bottom: var(--space-2xl); max-width: 700px; margin-left: auto; margin-right: auto;">
+            Elegí el plan que mejor se adapte a tus necesidades. Todos incluyen informe técnico y respaldo legal.
+        </p>
+        <div class="pricing-grid">
+            <!-- Plan Básico -->
+            <div class="plan-card">
+                <h3>Ojeada Técnica</h3>
+                <div class="plan-price">
+                    $12.000 <small>ARS</small>
+                </div>
+                <ul class="feature-list">
+                    <li>Visita presencial a fachada</li>
+                    <li>Confirmación de dirección física</li>
+                    <li>Reporte fotográfico digital</li>
+                    <li>Entrega en 48hs hábiles</li>
+                    <li>Informe básico PDF</li>
+                </ul>
+                <button class="btn btn-outline" onclick="selectPlan('Basico', 12000)" style="width: 100%; margin-top: auto;">
+                    Seleccionar Plan
+                </button>
+            </div>
+            
+            <!-- Plan Premium (Popular) -->
+            <div class="plan-card popular">
+                <div class="pop-tag">⭐ MÁS ELEGIDO</div>
+                <h3>Blindaje Total</h3>
+                <div class="plan-price">
+                    $18.000 <small>ARS</small>
+                </div>
+                <ul class="feature-list">
+                    <li><strong>Prueba de acceso con llaves</strong></li>
+                    <li><strong>Validación de identidad del propietario</strong></li>
+                    <li>Videollamada en vivo desde el inmueble</li>
+                    <li>Verificación de servicios activos</li>
+                    <li>Certificado digital con hash seguro</li>
+                    <li>Prioridad 24hs</li>
+                    <li>Soporte WhatsApp directo</li>
+                </ul>
+                <button class="btn btn-primary" onclick="selectPlan('Premium', 18000)" style="width: 100%; margin-top: auto;">
+                    Proteger Mi Alquiler
+                </button>
+            </div>
+            
+            <!-- Plan SOS -->
+            <div class="plan-card" style="border-color: var(--danger);">
+                <h3 style="color: var(--danger);">🚨 SOS Urgencia</h3>
+                <div class="plan-price">
+                    $25.000 <small>ARS</small>
+                </div>
+                <p style="font-size: 0.9375rem; margin-bottom: var(--space-lg); color: var(--text-muted);">
+                    ¿Ya estás en Mar del Plata? Salida inmediata de nuestro inspector en menos de 2 horas.
+                </p>
+                <ul class="feature-list">
+                    <li><strong>Respuesta inmediata (menos de 2hs)</strong></li>
+                    <li>Inspector móvil GPS tracked</li>
+                    <li>Videollamada en tiempo real</li>
+                    <li>Informe express en el momento</li>
+                    <li>Disponible 24/7 incluso feriados</li>
+                </ul>
+                <a href="https://api.whatsapp.com/send?phone=5492230000000&text=URGENTE%20SOS%20-%20Necesito%20inspector%20inmediato" 
+                   target="_blank" rel="noopener" class="btn btn-danger" style="width: 100%; margin-top: auto;">
+                    SOLICITAR YA
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section id="testimonios" class="section-padding" style="background: var(--bg-card);">
+    <div class="container reveal">
+        <h2 class="text-center" style="margin-bottom: var(--space-2xl);">Clientes Protegidos</h2>
+        <div class="testi-scroller" id="testimonials-scroller">
+            <div class="testi-card">
+                <div class="user-head">
+                    <div class="u-avatar">MG</div>
+                    <div class="user-info">
+                        <strong>María González</strong>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                </div>
+                <p>"Me salvaron de perder $200.000. El supuesto dueño era falso, las fotos eran robadas de Airbnb. Gracias al reporte no transferí ni un peso. Servicio impecable."</p>
+            </div>
+            
+            <div class="testi-card">
+                <div class="user-head">
+                    <div class="u-avatar">CR</div>
+                    <div class="user-info">
+                        <strong>Carlos Rodríguez</strong>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                </div>
+                <p>"Excelente profesionalismo. El inspector fue hasta el departamento, hizo videollamada conmigo y verificó todo. Viajé con mi familia completamente tranquilo. Lo recomiendo 100%."</p>
+</div>            <div class="testi-card">
+                <div class="user-head">
+                    <div class="u-avatar">LM</div>
+                    <div class="user-info">
+                        <strong>Estudio Jurídico López & Martínez</strong>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                </div>
+                <p>"Como abogados, valoramos que el informe técnico tenga respaldo legal sólido. Es un servicio necesario en el contexto actual de fraudes digitales. Excelente trabajo."</p>
+            </div>            <div class="testi-card">
+                <div class="user-head">
+                    <div class="u-avatar">LP</div>
+                    <div class="user-info">
+                        <strong>Laura Pérez</strong>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                </div>
+                <p>"Contraté el plan SOS porque ya estaba en MDP. En 90 minutos tenía al inspector en la puerta confirmando que todo era legítimo. Salvaron mis vacaciones familiares. Gracias!"</p>
+            </div>            <div class="testi-card">
+                <div class="user-head">
+                    <div class="u-avatar">JM</div>
+                    <div class="user-info">
+                        <strong>Javier Martínez</strong>
+                        <div class="stars">★★★★★</div>
+                    </div>
+                </div>
+                <p>"Después de leer sobre tantas estafas, decidí verificar. El certificado digital con QR me dio total tranquilidad. El proceso fue rápido y transparente. Muy recomendable."</p>
+            </div>
+        </div>
+    </div>
+</section><!-- Contact Form -->
+<section id="contacto" class="section-padding">
+    <div class="container reveal">
+        <div class="contact-box">
+            <h2 class="text-center">Iniciar Expediente de Verificación</h2>
+            <p class="text-center">Completá el formulario y nos contactaremos en menos de 30 minutos. Tus datos están encriptados y protegidos.</p>            <div class="success-message" id="successMessage">
+                <span style="font-size: 1.5rem;">✓</span>
+                <div>
+                    <strong>¡Solicitud Recibida!</strong>
+                    <p style="margin: 0; font-size: 0.875rem;">Te contactaremos por WhatsApp en breve.</p>
+                </div>
+            </div>            <div class="error-message" id="errorMessage">
+                <span style="font-size: 1.5rem;">✗</span>
+                <div>
+                    <strong>Error en el Envío</strong>
+                    <p style="margin: 0; font-size: 0.875rem;">Por favor verificá los datos e intentá nuevamente.</p>
+                </div>
+            </div>            <form onsubmit="submitLead(event)" id="contactForm" novalidate>
+                <div class="form-group">
+                    <label class="form-label" for="nombre">Nombre Completo *</label>
+                    <input type="text" id="nombre" class="form-input" placeholder="Ej: Juan Pérez" required>
+                    <div class="form-error">Por favor ingresá tu nombre completo</div>
+                </div>                <div class="form-group">
+                    <label class="form-label" for="telefono">WhatsApp (con código de área) *</label>
+                    <input type="tel" id="telefono" class="form-input" placeholder="Ej: 11 2345-6789" required pattern="[0-9\s\-]+">
+                    <div class="form-error">Por favor ingresá un número válido</div>
+                </div>                <div class="form-group">
+                    <label class="form-label" for="propiedad">Link o Dirección de la Propiedad *</label>
+                    <input type="text" id="propiedad" class="form-input" placeholder="Ej: Av. Constitución 1234 o link de Marketplace" required>
+                    <div class="form-error">Por favor ingresá la dirección o link</div>
+                </div>                <div class="form-group">
+                    <label class="form-label" for="plan">Plan Seleccionado *</label>
+                    <select id="plan" class="form-select" required>
+                        <option value="">-- Seleccioná un plan --</option>
+                        <option value="Premium">Blindaje Total - $18.000</option>
+                        <option value="Basico">Ojeada Técnica - $12.000</option>
+                        <option value="SOS">SOS Urgencia - $25.000</option>
+                    </select>
+                    <div class="form-error">Por favor seleccioná un plan</div>
+                </div>                <div class="form-group">
+                    <label class="form-label" for="comentarios">Comentarios Adicionales (Opcional)</label>
+                    <textarea id="comentarios" class="form-textarea" placeholder="¿Algún detalle que debamos saber?"></textarea>
+                </div>                <button type="submit" class="btn btn-primary btn-lg" id="submitBtn" style="width: 100%;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 2L11 13"></path>
+                        <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                    </svg>
+                    ENVIAR SOLICITUD
+                </button>                <p style="text-align: center; margin-top: var(--space-md); font-size: 0.8125rem; color: var(--text-muted);">
+                    Al enviar, aceptás nuestros <a href="#" style="color: var(--secondary);">términos y condiciones</a>
+                </p>
+            </form>
+        </div>
+    </div>
+</section><!-- Footer -->
+<footer>
+    <div class="container">
+        <div class="footer-cols">
+            <div class="footer-col">
+                <div class="footer-logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                    AlquilaSeguro<span style="color: var(--secondary);">MDP</span>
+                </div>
+                <p>Agencia privada de constatación inmobiliaria. Protegemos tus vacaciones desde 2020. No somos inmobiliaria.</p>
+                <div class="footer-social">
+                    <a href="#" class="social-icon" aria-label="Instagram">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="#" class="social-icon" aria-label="Facebook">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="https://api.whatsapp.com/send?phone=5492230000000" class="social-icon" aria-label="WhatsApp" target="_blank" rel="noopener">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                        </svg>
+                    </a>
+                </div>
+            </div>            <div class="footer-col">
+                <h4 class="ft-head">Navegación</h4>
+                <ul class="ft-links">
+                    <li><a href="#">Inicio</a></li>
+                    <li><a href="#herramienta">Diagnóstico</a></li>
+                    <li><a href="#precios">Precios</a></li>
+                    <li><a href="#testimonios">Testimonios</a></li>
+                    <li><a href="#contacto">Contacto</a></li>
+                </ul>
+            </div>            <div class="footer-col">
+                <h4 class="ft-head">Servicios</h4>
+                <ul class="ft-links">
+                    <li><a href="#precios">Verificación Básica</a></li>
+                    <li><a href="#precios">Blindaje Total</a></li>
+                    <li><a href="#precios">Servicio SOS</a></li>
+                    <li><a href="#galeria">Evidencias</a></li>
+                </ul>
+            </div>            <div class="footer-col">
+                <h4 class="ft-head">Corporativo</h4>
+                <ul class="ft-links">
+                    <li><a href="#" onclick="event.preventDefault(); openAdminModal();">Acceso Staff</a></li>
+                    <li><a href="#">Términos Legales</a></li>
+                    <li><a href="#">Privacidad</a></li>
+                    <li><a href="#">Preguntas Frecuentes</a></li>
+                </ul>
+            </div>
+        </div>        <div class="footer-bottom">
+            &copy; 2025 Alquila Seguro MDP. Todos los derechos reservados. Servicio privado no gubernamental.
+        </div>
+    </div>
+</footer><!-- Chat Widget -->
+<div class="chat-widget">
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <span>🤖 Asistente Virtual</span>
+            <span class="chat-close" onclick="toggleChat()">×</span>
+        </div>
+        <div class="chat-body" id="chatBody">
+            <!-- Los mensajes se insertan dinámicamente -->
+        </div>
+        <div class="chat-input-area">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Escrib tu pregunta..." onkeypress="handleChatEnter(event)">
+            <button class="chat-send" onclick="sendChatMessage()">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                </svg>
+            </button>
+        </div>
+    </div>    <div class="chat-btn btn-bot" onclick="toggleChat()" title="Chat con asistente">💬</div>
+    <a href="https://api.whatsapp.com/send?phone=5492230000000&text=Hola,%20necesito%20información%20sobre%20sus%20servicios" 
+       target="_blank" rel="noopener" class="chat-btn btn-wa" title="WhatsApp directo">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+        </svg>
+    </a>
+</div>
+<!-- Modal de Login Admin -->
+<div class="modal-overlay" id="loginModal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h3>🔐 Acceso Staff</h3>
+            <div class="modal-close" onclick="closeAdminModal()">×</div>
+        </div>
+        <form onsubmit="authAdmin(event)">
+            <div class="form-group">
+                <label class="form-label" for="adm-u">Usuario</label>
+                <input type="text" id="adm-u" class="form-input" placeholder="Ingresá tu usuario" required autocomplete="username">
+            </div>
+            <div class="form-group">
+                <label class="form-label" for="adm-p">Contraseña</label>
+                <input type="password" id="adm-p" class="form-input" placeholder="Ingresá tu contraseña" required autocomplete="current-password">
+            </div>
+            <button type="submit" class="btn btn-primary" style="width: 100%;">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                    <path d="M7 11V7a5 5 0 0110 0v4"></path>
+                </svg>
+                INGRESAR AL SISTEMA
+            </button>
+        </form>
+        <p style="text-align: center; margin-top: var(--space-md); font-size: 0.875rem; color: var(--text-muted); cursor: pointer;" onclick="closeAdminModal()">Cancelar</p>
+    </div>
+</div>
+
+<!-- Panel Admin -->
+<div id="admin-modal">
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <h3>⚙️ BACKOFFICE V9</h3>
+            <div class="adm-item active" onclick="showAdminTab('gen')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                </svg>
+                Generar Certificado
+            </div>
+            <div class="adm-item" onclick="showAdminTab('leads')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+                    <circle cx="9" cy="7" r="4"></circle>
+                    <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"></path>
+                </svg>
+                Leads Recientes
+            </div>
+            <div class="adm-item" onclick="showAdminTab('validate')">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <path d="M21 21l-4.35-4.35"></path>
+                </svg>
+                Validar Hash
+            </div>
+            <div class="adm-item" onclick="closeAdminPanel()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"></path>
+                </svg>
+                Cerrar Sesión
+            </div>
+        </aside>
+        
+        <main class="admin-main">
+            <!-- Tab Generar Certificado -->
+            <div id="tab-gen">
+                <h2>📄 Generador de Certificado Seguro</h2>
+                <div class="admin-card">
+                    <div class="admin-grid">
+                        <div>
+                            <div class="form-group">
+                                <label class="form-label">Nombre del Cliente</label>
+                                <input type="text" id="r-cli" class="form-input" placeholder="Ej: Juan Pérez">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Dirección del Inmueble</label>
+                                <input type="text" id="r-dir" class="form-input" placeholder="Ej: Av. Constitución 1234">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Valor del Alquiler</label>
+                                <input type="text" id="r-val" class="form-input" placeholder="$18.000">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Veredicto Final</label>
+                                <select id="r-ver" class="form-select">
+                                    <option value="1">✅ APTO (VERIFICADO)</option>
+                                    <option value="0">❌ FRAUDE DETECTADO</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <h4 style="margin-bottom: var(--space-md); color: var(--text-main);">Matriz de Validación Técnica</h4>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: var(--space-sm); cursor: pointer;">
+                                    <input type="checkbox" id="c1" checked style="width: 18px; height: 18px;">
+                                    <span>Existencia Física Comprobada</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: var(--space-sm); cursor: pointer;">
+                                    <input type="checkbox" id="c2" checked style="width: 18px; height: 18px;">
+                                    <span>Coincidencia Visual (Fotos)</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: var(--space-sm); cursor: pointer;">
+                                    <input type="checkbox" id="c3" style="width: 18px; height: 18px;">
+                                    <span>Titularidad Validada</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: var(--space-sm); cursor: pointer;">
+                                    <input type="checkbox" id="c4" style="width: 18px; height: 18px;">
+                                    <span>Servicios Activos</span>
+                                </label>
+                            </div>
+                            <div class="form-group">
+                                <label style="display: flex; align-items: center; gap: var(--space-sm); cursor: pointer;">
+                                    <input type="checkbox" id="c5" style="width: 18px; height: 18px;">
+                                    <span>Prueba de Acceso/Llaves</span>
+                                </label>
+                            </div>
+                            
+                            <div style="margin-top: var(--space-lg); padding: var(--space-md); background: var(--bg-body); border-radius: var(--radius-md); border: 1px solid var(--border-color);">
+                                <small style="display: block; margin-bottom: var(--space-xs); color: var(--text-muted); font-weight: 600;">Hash Encriptado Generado:</small>
+                                <div id="hash-output" class="hash-output">Completá los datos y generá el certificado...</div>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-lg" onclick="generateAndPrint()" style="margin-top: var(--space-xl); width: 100%;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                            <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path>
+                            <rect x="6" y="14" width="12" height="8"></rect>
+                        </svg>
+                        GENERAR E IMPRIMIR CERTIFICADO
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Leads -->
+            <div id="tab-leads" class="hidden">
+                <h2>👥 Leads Recientes</h2>
+                <div class="admin-card">
+                    <div style="overflow-x: auto;">
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Fecha</th>
+                                    <th>Cliente</th>
+                                    <th>WhatsApp</th>
+                                    <th>Plan</th>
+                                    <th>Propiedad</th>
+                                    <th>Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="leads-body">
+                                <tr>
+                                    <td colspan="6" style="padding: var(--space-xl); text-align: center; color: var(--text-muted);">
+                                        No hay solicitudes registradas todavía.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <button class="btn btn-danger btn-sm" onclick="clear

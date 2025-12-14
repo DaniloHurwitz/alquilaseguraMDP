@@ -739,7 +739,7 @@
                 url('https://cf.bstatic.com/xdata/images/hotel/max1024x768/366956755.jpg?k=f3114aa11f88a72cb3e3ae613dc26bef7a854e668d7efbaf12e7399a5fd223b8&o=');
             background-size: cover;
             background-position: center;
-            background-attachment: fixed;
+            background-attachment: scroll;
             z-index: 0;
         }
         
@@ -749,7 +749,7 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            height: 30%;
+            height: 20%;
             background: linear-gradient(to top, var(--bg-body), transparent);
         }
         
@@ -976,46 +976,49 @@
         color: var(--text-muted);
         font-size: 0.8125rem;
     }    .gauge-box {
-        text-align: center;
-        padding: var(--space-xl);
-        background: var(--bg-body);
-        border-radius: var(--radius-lg);
-        border: 1px solid var(--border-color);
-        position: sticky;
-        top: 100px;
-    }    .gauge-circle {
-        width: 150px;
-        height: 150px;
-        border-radius: 50%;
-        border: 16px solid var(--border-color);
-        border-top-color: var(--danger);
-        margin: 0 auto var(--space-lg);
-        position: relative;
-        transition: all 1s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.05);
-    }    .gauge-circle::after {
-        content: '';
-        position: absolute;
-        top: -16px;
-        left: -16px;
-        right: -16px;
-        bottom: -16px;
-        border-radius: 50%;
-        border: 2px solid transparent;
-        transition: var(--transition-base);
-    }    .gauge-circle.high-score::after {
-        border-color: var(--success);
-        box-shadow: 0 0 20px rgba(5, 150, 105, 0.3);
-    }    .gauge-score {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 2rem;
-        font-weight: 900;
-        color: var(--text-main);
-        font-family: 'Montserrat', sans-serif;
-    }    #risk-label {
+    text-align: center;
+    padding: var(--space-xl);
+    background: var(--bg-body);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border-color);
+    position: sticky;
+    top: 100px;
+}
+
+/* REEMPLAZAR .gauge-circle por esto: */
+.gauge-container {
+    width: 150px;
+    height: 150px;
+    margin: 0 auto var(--space-lg);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#face-gauge {
+    width: 150px;
+    height: 150px;
+    transition: transform 0.3s ease;
+}
+
+#face-gauge:hover {
+    transform: scale(1.05);
+}
+
+/* Transiciones suaves para el morphing */
+#mouth, #left-eye, #right-eye {
+    transition: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.gauge-score {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--text-main);
+    font-family: 'Montserrat', sans-serif;
+    margin-top: var(--space-sm);
+}  #risk-label {
         font-size: 1.125rem;
         margin-bottom: var(--space-sm);
         transition: var(--transition-base);
@@ -2272,9 +2275,27 @@ border-bottom: 1px solid var(--border-color);
                         </label>
                     </div>
                 </div>                <div class="gauge-box">
-                    <div class="gauge-circle" id="gauge">
-                        <div class="gauge-score" id="score">0%</div>
-                    </div>
+                   <div class="gauge-container">
+    <svg id="face-gauge" viewBox="0 0 100 100">
+        <!-- Círculo de fondo -->
+        <circle cx="50" cy="50" r="45" fill="var(--bg-body)" stroke="var(--border-color)" stroke-width="2"/>
+        
+        <!-- Ojo izquierdo -->
+        <ellipse id="left-eye" cx="35" cy="35" rx="4" ry="8" fill="var(--text-main)"/>
+        
+        <!-- Ojo derecho -->
+        <ellipse id="right-eye" cx="65" cy="35" rx="4" ry="8" fill="var(--text-main)"/>
+        
+        <!-- Boca (hace morphing) -->
+        <path id="mouth" 
+              d="M 30 70 Q 50 60 70 70" 
+              stroke="var(--text-main)" 
+              stroke-width="3" 
+              fill="none" 
+              stroke-linecap="round"/>
+    </svg>
+    <div class="gauge-score" id="score">0%</div>
+</div>
                     <h4 id="risk-label" style="color: var(--danger);">🚨 RIESGO ALTO</h4>
                     <p class="gauge-description">Faltan validaciones críticas para proceder con seguridad.</p>
                     <a href="#contacto" class="btn btn-outline" style="width: 100%;">
@@ -3200,38 +3221,60 @@ border-bottom: 1px solid var(--border-color);
     }
 
     function updateRiskScore() {
-        const items = document.querySelectorAll('.chk-item');
-        const checkedItems = document.querySelectorAll('.chk-item.checked');
-        const score = (checkedItems.length / items.length) * 100;
+    const items = document.querySelectorAll('.chk-item');
+    const checkedItems = document.querySelectorAll('.chk-item.checked');
+    const score = (checkedItems.length / items.length) * 100;
+    
+    const scoreEl = document.getElementById('score');
+    const labelEl = document.getElementById('risk-label');
+    
+    // Elementos SVG de la cara
+    const mouth = document.getElementById('mouth');
+    const leftEye = document.getElementById('left-eye');
+    const rightEye = document.getElementById('right-eye');
+    
+    // Actualizar porcentaje
+    scoreEl.textContent = Math.round(score) + '%';
+    
+    // MORPHING DE LA CARA según el score
+    if (score >= 75) {
+        // 😊 FELIZ - boca sonriente hacia arriba
+        mouth.setAttribute('d', 'M 30 65 Q 50 75 70 65');
+        leftEye.setAttribute('ry', '4');
+        rightEye.setAttribute('ry', '4');
+        leftEye.setAttribute('cy', '35');
+        rightEye.setAttribute('cy', '35');
         
-        const scoreEl = document.getElementById('score');
-        const gaugeEl = document.getElementById('gauge');
-        const labelEl = document.getElementById('risk-label');
+        labelEl.textContent = '✅ RIESGO BAJO';
+        labelEl.style.color = 'var(--success)';
         
-        // Actualizar porcentaje
-        scoreEl.textContent = Math.round(score) + '%';
+    } else if (score >= 50) {
+        // 😐 NEUTRAL - boca recta
+        mouth.setAttribute('d', 'M 30 65 L 70 65');
+        leftEye.setAttribute('ry', '5');
+        rightEye.setAttribute('ry', '5');
+        leftEye.setAttribute('cy', '35');
+        rightEye.setAttribute('cy', '35');
         
-        // Actualizar color del gauge
-        if (score >= 75) {
-            gaugeEl.style.borderTopColor = 'var(--success)';
-            gaugeEl.classList.add('high-score');
-            labelEl.textContent = '✅ RIESGO BAJO';
-            labelEl.style.color = 'var(--success)';
-        } else if (score >= 50) {
-            gaugeEl.style.borderTopColor = 'var(--warning)';
-            gaugeEl.classList.remove('high-score');
-            labelEl.textContent = '⚠️ RIESGO MEDIO';
-            labelEl.style.color = 'var(--warning)';
-        } else {
-            gaugeEl.style.borderTopColor = 'var(--danger)';
-            gaugeEl.classList.remove('high-score');
-            labelEl.textContent = '🚨 RIESGO ALTO';
-            labelEl.style.color = 'var(--danger)';
-        }
+        labelEl.textContent = '⚠️ RIESGO MEDIO';
+        labelEl.style.color = 'var(--warning)';
+        
+    } else {
+        // 😢 TRISTE - boca hacia abajo
+        mouth.setAttribute('d', 'M 30 60 Q 50 55 70 60');
+        leftEye.setAttribute('ry', '8'); // ojos más alargados
+        rightEye.setAttribute('ry', '8');
+        leftEye.setAttribute('cy', '38'); // bajar un poco
+        rightEye.setAttribute('cy', '38');
+        
+        labelEl.textContent = '🚨 RIESGO ALTO';
+        labelEl.style.color = 'var(--danger)';
+    }
+}
         
         // Animar rotación
-        gaugeEl.style.transform = `rotate(${score * 1.8}deg)`;
-    }
+        // gaugeEl.style.transform = `rotate(${score * 1.8}deg)`;
+    // }
 
     // ==========================================
     // 11. LIGHTBOX GALLERY

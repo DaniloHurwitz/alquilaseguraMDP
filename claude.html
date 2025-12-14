@@ -2790,4 +2790,1170 @@ border-bottom: 1px solid var(--border-color);
                             </tbody>
                         </table>
                     </div>
-                    <button class="btn btn-danger btn-sm" onclick="clear
+<button class="btn btn-danger btn-sm" onclick="clearLeadsData()" style="margin-top: var(--space-lg);">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="3 6 5 6 21 6"></polyline>
+                            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+                        </svg>
+                        BORRAR HISTORIAL DE LEADS
+                    </button>
+                </div>
+            </div>
+
+            <!-- Tab Validar Hash -->
+            <div id="tab-validate" class="hidden">
+                <h2>🔍 Validador de Certificados</h2>
+                <div class="admin-card">
+                    <p style="color: var(--text-muted); margin-bottom: var(--space-xl);">
+                        Ingresá el hash completo del certificado para desencriptar y verificar su autenticidad.
+                    </p>
+                    <form onsubmit="desencriptarYMostrar(event)">
+                        <div class="form-group">
+                            <label class="form-label">Hash del Certificado</label>
+                            <textarea id="hash-input" class="form-textarea" placeholder="Pegá el hash completo aquí..." required style="min-height: 100px; font-family: 'JetBrains Mono', monospace;"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary" style="width: 100%;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <circle cx="11" cy="11" r="8"></circle>
+                                <path d="M21 21l-4.35-4.35"></path>
+                            </svg>
+                            VALIDAR Y DESENCRIPTAR HASH
+                        </button>
+                    </form>
+                    
+                    <div id="validate-results" style="display: none; margin-top: var(--space-2xl);">
+                        <h4 style="margin-bottom: var(--space-lg); color: var(--success);">
+                            ✓ Certificado Validado Exitosamente
+                        </h4>
+                        <div class="admin-grid">
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Nombre del Cliente</label>
+                                    <input type="text" id="v-cli" class="form-input" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Dirección del Inmueble</label>
+                                    <input type="text" id="v-dir" class="form-input" readonly>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label">Fecha de Emisión</label>
+                                    <input type="text" id="v-date" class="form-input" readonly>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <div class="form-group">
+                                    <label class="form-label">Veredicto Final</label>
+                                    <input type="text" id="v-ver" class="form-input" readonly style="font-weight: 700;">
+                                </div>
+                                <h4 style="margin-bottom: var(--space-md);">Matriz de Validación:</h4>
+                                <ul style="list-style: none; padding: 0; font-size: 0.9375rem;">
+                                    <li id="v-c1" style="margin-bottom: var(--space-sm);">🔹 Existencia Física: <strong>-</strong></li>
+                                    <li id="v-c2" style="margin-bottom: var(--space-sm);">🔹 Coincidencia Visual: <strong>-</strong></li>
+                                    <li id="v-c3" style="margin-bottom: var(--space-sm);">🔹 Titularidad: <strong>-</strong></li>
+                                    <li id="v-c4" style="margin-bottom: var(--space-sm);">🔹 Servicios Activos: <strong>-</strong></li>
+                                    <li id="v-c5" style="margin-bottom: var(--space-sm);">🔹 Prueba de Acceso: <strong>-</strong></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button class="btn btn-outline" onclick="imprimirDesdeValidate()" style="margin-top: var(--space-xl); width: 100%;">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <polyline points="6 9 6 2 18 2 18 9"></polyline>
+                                <path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"></path>
+                                <rect x="6" y="14" width="12" height="8"></rect>
+                            </svg>
+                            REIMPRIMIR CERTIFICADO
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Lightbox para Galería -->
+<div class="lightbox" id="lightbox" onclick="closeLightbox()">
+    <div class="lightbox-content" onclick="event.stopPropagation()">
+        <div class="lightbox-close" onclick="closeLightbox()">×</div>
+        <img id="lightbox-img" src="" alt="">
+        <div class="lightbox-info">
+            <h4 id="lightbox-title"></h4>
+            <p id="lightbox-status"></p>
+        </div>
+    </div>
+</div>
+
+<!-- Toast Container -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Documento Legal (Oculto para imprimir) -->
+<div id="legal-doc" style="display: none;">
+    <div style="width: 210mm; min-height: 297mm; padding: 40px; font-family: 'Inter', sans-serif; position: relative; color: #111827; background: white;">
+        
+        <!-- Header del Certificado -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #002B49; padding-bottom: 20px; margin-bottom: 40px;">
+            <div>
+                <h1 style="margin: 0; color: #002B49; font-size: 28px; text-transform: uppercase; font-weight: 900; letter-spacing: -0.5px;">Certificado de Verificación</h1>
+                <p style="margin: 8px 0 0 0; color: #00A8E8; font-size: 13px; font-weight: 600; letter-spacing: 0.5px;">UNIDAD DE PREVENCIÓN DE FRAUDES INMOBILIARIOS</p>
+            </div>
+            <div style="text-align: right;">
+                <div style="font-size: 36px; font-weight: 900; color: #002B49; letter-spacing: -1px;">AS<span style="color: #00A8E8;">MDP</span></div>
+                <div style="font-size: 11px; color: #666; margin-top: 4px; letter-spacing: 1px;">REF. SEGURIDAD</div>
+            </div>
+        </div>
+
+        <!-- Hash y Metadata -->
+        <div style="background: #F3F4F6; padding: 18px; border-radius: 8px; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #4B5563; margin-bottom: 35px; border: 1px solid #E5E7EB;">
+            <div style="margin-bottom: 8px;"><strong style="color: #111827;">HASH ENCRIPTADO:</strong> <span id="p-hash" style="word-break: break-all; color: #002B49;">-</span></div>
+            <div><strong style="color: #111827;">FECHA DE EMISIÓN:</strong> <span id="p-date" style="color: #002B49;">-</span></div>
+        </div>
+
+        <!-- Texto Introductorio -->
+        <p style="font-size: 14px; line-height: 1.8; text-align: justify; margin-bottom: 35px; color: #374151;">
+            La Dirección de Operaciones de <strong style="color: #002B49;">ALQUILA SEGURO MDP</strong> certifica que se ha realizado el procedimiento de constatación fáctica y validación técnica sobre el inmueble y los datos proporcionados por el solicitante, arrojando los siguientes resultados conforme a los protocolos establecidos:
+        </p>
+
+        <!-- Tabla de Datos -->
+        <table style="width: 100%; border-collapse: collapse; margin-bottom: 35px; font-size: 13px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+            <thead>
+                <tr style="background: linear-gradient(135deg, #002B49 0%, #004066 100%); color: white;">
+                    <th style="padding: 14px; border: 1px solid #002B49; width: 32%; font-weight: 700; text-align: left; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">PARÁMETRO</th>
+                    <th style="padding: 14px; border: 1px solid #002B49; font-weight: 700; text-align: left; text-transform: uppercase; font-size: 11px; letter-spacing: 0.5px;">RESULTADO DE LA INSPECCIÓN</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="background: white;">
+                    <td style="padding: 14px; border: 1px solid #E5E7EB; font-weight: 700; color: #002B49;">SOLICITANTE</td>
+                    <td style="padding: 14px; border: 1px solid #E5E7EB; color: #111827;" id="p-cli-out">-</td>
+                </tr>
+                <tr style="background: #F9FAFB;">
+                    <td style="padding: 14px; border: 1px solid #E5E7EB; font-weight: 700; color: #002B49;">UBICACIÓN</td>
+                    <td style="padding: 14px; border: 1px solid #E5E7EB; color: #111827;" id="p-dir-out">-</td>
+                </tr>
+                <tr style="background: white;">
+                    <td style="padding: 14px; border: 1px solid #E5E7EB; font-weight: 700; color: #002B49;">VALOR AUDITADO</td>
+                    <td style="padding: 14px; border: 1px solid #E5E7EB; color: #111827; font-weight: 600;" id="p-val-out">-</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Matriz y Veredicto -->
+        <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 25px; margin-bottom: 45px;">
+            <div style="background: linear-gradient(135deg, #F9FAFB 0%, #F3F4F6 100%); padding: 25px; border-radius: 10px; border: 1px solid #E5E7EB;">
+                <h4 style="margin: 0 0 18px 0; color: #002B49; border-bottom: 3px solid #00A8E8; display: inline-block; padding-bottom: 6px; font-size: 14px; letter-spacing: 0.5px;">MATRIZ TÉCNICA DE VALIDACIÓN</h4>
+                <ul style="list-style: none; padding: 0; font-size: 13px; line-height: 2.2;">
+                    <li style="display: flex; justify-content: space-between; padding: 4px 0;"><span>🔹 Existencia Física:</span> <strong id="p-c1" style="color: #002B49;">-</strong></li>
+                    <li style="display: flex; justify-content: space-between; padding: 4px 0;"><span>🔹 Coincidencia Visual:</span> <strong id="p-c2" style="color: #002B49;">-</strong></li>
+                    <li style="display: flex; justify-content: space-between; padding: 4px 0;"><span>🔹 Titularidad:</span> <strong id="p-c3" style="color: #002B49;">-</strong></li>
+                    <li style="display: flex; justify-content: space-between; padding: 4px 0;"><span>🔹 Servicios Activos:</span> <strong id="p-c4" style="color: #002B49;">-</strong></li>
+                    <li style="display: flex; justify-content: space-between; padding: 4px 0;"><span>🔹 Prueba de Acceso:</span> <strong id="p-c5" style="color: #002B49;">-</strong></li>
+                </ul>
+            </div>
+            
+            <div style="display: flex; flex-direction: column; justify-content: center; align-items: center; border: 3px dashed #CBD5E1; border-radius: 10px; padding: 25px; background: white;">
+                <h4 style="margin: 0 0 12px 0; font-size: 13px; color: #6B7280; text-transform: uppercase; letter-spacing: 1px;">DICTAMEN FINAL</h4>
+                <div id="p-ver-out" style="font-size: 22px; font-weight: 900; color: #000; text-transform: uppercase; text-align: center; line-height: 1.2;">-</div>
+            </div>
+        </div>
+
+        <!-- Footer con QR y Firma -->
+        <div style="position: absolute; bottom: 40px; left: 40px; right: 40px; border-top: 2px solid #E5E7EB; padding-top: 25px; display: flex; justify-content: space-between; align-items: flex-end;">
+            <div style="text-align: center;">
+                <img id="qr-code-img" src="" style="width: 110px; height: 110px; border: 2px solid #E5E7EB; border-radius: 8px; padding: 5px; background: white;">
+                <div style="font-size: 9px; margin-top: 8px; color: #6B7280; font-weight: 600; letter-spacing: 0.5px;">ESCANEAR PARA<br>VALIDAR HASH</div>
+            </div>
+            <div style="text-align: center;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/f/f8/Firma_gen%C3%A9rica.svg" style="width: 170px; opacity: 0.5; margin-bottom: 8px;">
+                <div style="border-top: 3px solid #002B49; width: 220px; margin: 0 auto 8px;"></div>
+                <div style="font-weight: 800; color: #002B49; font-size: 13px; letter-spacing: 0.5px;">DIRECCIÓN DE OPERACIONES</div>
+                <div style="font-size: 11px; color: #6B7280; margin-top: 4px;">Alquila Seguro MDP · Legajo #8821-2025</div>
+            </div>
+        </div>
+
+        <!-- Marca de agua sutil -->
+        <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) rotate(-45deg); font-size: 120px; font-weight: 900; color: rgba(0, 43, 73, 0.02); z-index: -1; pointer-events: none; user-select: none;">
+            ASMDP
+        </div>
+    </div>
+</div>
+
+<!-- ========================================================================== 
+     JAVASCRIPT
+     ========================================================================== -->
+<script>
+    'use strict';
+
+    // ==========================================
+    // 1. CONFIGURACIÓN Y CONSTANTES
+    // ==========================================
+    const CONFIG = {
+        SECRET_KEY: "AlquilaSeguroMDP2025SecretKey!@#$%",
+        ADMIN_USER: "admin",
+        ADMIN_PASS: "SEGURO2025",
+        STORAGE_KEYS: {
+            LEADS: 'asmdp_leads',
+            THEME: 'asmdp_theme'
+        },
+        ANIMATION_DELAY: 100,
+        TOAST_DURATION: 5000,
+        COUNTER_SPEED: 2000
+    };
+
+    // ==========================================
+    // 2. INICIALIZACIÓN
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        initLoader();
+        initTheme();
+        initCanvas();
+        initObserver();
+        initCounters();
+        initChatbot();
+        initScrollEffects();
+        initRiskCalculator();
+        loadLeadsData();
+        
+        console.log('✓ Sistema AlquilaSeguro MDP iniciado correctamente');
+    });
+
+    // ==========================================
+    // 3. LOADER
+    // ==========================================
+    function initLoader() {
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 500);
+            }
+        }, 1500);
+    }
+
+    // ==========================================
+    // 4. THEME SYSTEM
+    // ==========================================
+    function initTheme() {
+        const savedTheme = localStorage.getItem(CONFIG.STORAGE_KEYS.THEME) || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem(CONFIG.STORAGE_KEYS.THEME, newTheme);
+        
+        showToast('success', 'Tema Cambiado', `Modo ${newTheme === 'dark' ? 'Oscuro' : 'Claro'} activado`);
+    }
+
+    // ==========================================
+    // 5. CANVAS PARTICLES
+    // ==========================================
+    function initCanvas() {
+        const canvas = document.getElementById('particles');
+        if (!canvas) return;
+        
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+        
+        const particles = [];
+        const particleCount = window.innerWidth < 768 ? 30 : 60;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push({
+                x: Math.random() * canvas.width,
+                y: Math.random() * canvas.height,
+                vx: (Math.random() - 0.5) * 0.5,
+                vy: (Math.random() - 0.5) * 0.5,
+                radius: Math.random() * 2 + 1
+            });
+        }
+        
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
+            
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                
+                if (p.x < 0 || p.x > canvas.width) p.vx *= -1;
+                if (p.y < 0 || p.y > canvas.height) p.vy *= -1;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+    }
+
+    // ==========================================
+    // 6. INTERSECTION OBSERVER
+    // ==========================================
+    function initObserver() {
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        });
+        
+        document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    }
+
+    // ==========================================
+    // 7. COUNTERS ANIMATION
+    // ==========================================
+    function initCounters() {
+        const counters = document.querySelectorAll('.counter');
+        
+        counters.forEach(counter => {
+            const target = parseInt(counter.getAttribute('data-target'));
+            const duration = CONFIG.COUNTER_SPEED;
+            const increment = target / (duration / 16);
+            let current = 0;
+            
+            const updateCounter = () => {
+                current += increment;
+                if (current < target) {
+                    counter.textContent = Math.floor(current);
+                    requestAnimationFrame(updateCounter);
+                } else {
+                    counter.textContent = target.toLocaleString('es-AR');
+                }
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                if (entries[0].isIntersecting) {
+                    updateCounter();
+                    observer.disconnect();
+                }
+            });
+            
+            observer.observe(counter);
+        });
+    }
+
+    // ==========================================
+    // 8. SCROLL EFFECTS
+    // ==========================================
+    function initScrollEffects() {
+        const header = document.getElementById('header');
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+    }
+
+    // ==========================================
+    // 9. MOBILE MENU
+    // ==========================================
+    function toggleMenu() {
+        const nav = document.getElementById('main-nav');
+        nav.classList.toggle('active');
+        
+        // Cerrar al hacer click en un enlace
+        nav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                nav.classList.remove('active');
+            });
+        });
+    }
+
+    // ==========================================
+    // 10. RISK CALCULATOR
+    // ==========================================
+    function initRiskCalculator() {
+        const checkboxGroup = document.getElementById('checkboxGroup');
+        if (!checkboxGroup) return;
+        
+        checkboxGroup.querySelectorAll('.chk-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('checked');
+                updateRiskScore();
+            });
+        });
+    }
+
+    function updateRiskScore() {
+        const items = document.querySelectorAll('.chk-item');
+        const checkedItems = document.querySelectorAll('.chk-item.checked');
+        const score = (checkedItems.length / items.length) * 100;
+        
+        const scoreEl = document.getElementById('score');
+        const gaugeEl = document.getElementById('gauge');
+        const labelEl = document.getElementById('risk-label');
+        
+        // Actualizar porcentaje
+        scoreEl.textContent = Math.round(score) + '%';
+        
+        // Actualizar color del gauge
+        if (score >= 75) {
+            gaugeEl.style.borderTopColor = 'var(--success)';
+            gaugeEl.classList.add('high-score');
+            labelEl.textContent = '✅ RIESGO BAJO';
+            labelEl.style.color = 'var(--success)';
+        } else if (score >= 50) {
+            gaugeEl.style.borderTopColor = 'var(--warning)';
+            gaugeEl.classList.remove('high-score');
+            labelEl.textContent = '⚠️ RIESGO MEDIO';
+            labelEl.style.color = 'var(--warning)';
+        } else {
+            gaugeEl.style.borderTopColor = 'var(--danger)';
+            gaugeEl.classList.remove('high-score');
+            labelEl.textContent = '🚨 RIESGO ALTO';
+            labelEl.style.color = 'var(--danger)';
+        }
+        
+        // Animar rotación
+        gaugeEl.style.transform = `rotate(${score * 1.8}deg)`;
+    }
+
+    // ==========================================
+    // 11. LIGHTBOX GALLERY
+    // ==========================================
+    function openLightbox(card) {
+        const lightbox = document.getElementById('lightbox');
+        const img = card.querySelector('img');
+        const title = card.getAttribute('data-title');
+        const status = card.getAttribute('data-status');
+        
+        document.getElementById('lightbox-img').src = img.src;
+        document.getElementById('lightbox-title').textContent = title;
+        document.getElementById('lightbox-status').textContent = status;
+        
+        lightbox.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+        const lightbox = document.getElementById('lightbox');
+        lightbox.classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+
+    // ==========================================
+    // 12. PLAN SELECTION
+    // ==========================================
+    function selectPlan(planName, price) {
+        const planSelect = document.getElementById('plan');
+        const options = planSelect.options;
+        
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === planName) {
+                planSelect.selectedIndex = i;
+                break;
+            }
+        }
+        
+        // Scroll al formulario
+        document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+        
+        showToast('info', 'Plan Seleccionado', `Has elegido el plan ${planName} - $${price.toLocaleString('es-AR')}`);
+    }
+
+    // ==========================================
+    // 13. CONTACT FORM
+    // ==========================================
+    function submitLead(event) {
+        event.preventDefault();
+        
+        const form = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        
+        // Validación
+        const nombre = document.getElementById('nombre').value.trim();
+        const telefono = document.getElementById('telefono').value.trim();
+        const propiedad = document.getElementById('propiedad').value.trim();
+        const plan = document.getElementById('plan').value;
+        const comentarios = document.getElementById('comentarios').value.trim();
+        
+        if (!nombre || !telefono || !propiedad || !plan) {
+            showToast('error', 'Error', 'Por favor completá todos los campos obligatorios');
+            return;
+        }
+        
+        // Deshabilitar botón
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = '<span class="spinner" style="width: 20px; height: 20px; margin: 0;"></span> ENVIANDO...';
+        
+        // Simular envío
+        setTimeout(() => {
+            // Guardar lead
+            const lead = {
+                id: Date.now(),
+                date: new Date().toLocaleString('es-AR'),
+                name: nombre,
+                phone: telefono,
+                link: propiedad,
+                plan: plan,
+                comments: comentarios
+            };
+            
+            saveLead(lead);
+            
+            // Mostrar éxito
+            document.getElementById('successMessage').style.display = 'flex';
+            form.reset();
+            
+            // Reactivar botón
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 2L11 13"></path>
+                    <path d="M22 2L15 22L11 13L2 9L22 2Z"></path>
+                </svg>
+                ENVIAR SOLICITUD
+            `;
+            
+            showToast('success', '¡Solicitud Enviada!', 'Te contactaremos en breve por WhatsApp');
+            
+            // Ocultar mensaje de éxito después de 5 segundos
+            setTimeout(() => {
+                document.getElementById('successMessage').style.display = 'none';
+            }, 5000);
+            
+        }, 1500);
+    }
+
+    function saveLead(lead) {
+        const leads = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.LEADS) || '[]');
+        leads.unshift(lead);
+        localStorage.setItem(CONFIG.STORAGE_KEYS.LEADS, JSON.stringify(leads));
+    }
+
+    function loadLeadsData() {
+        const leads = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.LEADS) || '[]');
+        const tbody = document.getElementById('leads-body');
+        
+        if (!tbody) return;
+        
+        if (leads.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="padding: var(--space-2xl); text-align: center; color: var(--text-muted);">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="opacity: 0.3; margin-bottom: 16px;">
+                            <path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                        <div style="font-weight: 600; margin-bottom: 8px;">No hay solicitudes registradas</div>
+                        <div style="font-size: 0.875rem;">Las nuevas solicitudes aparecerán aquí automáticamente</div>
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+        
+        tbody.innerHTML = leads.map(lead => `<tr>
+                <td style="padding: var(--space-md); font-size: 0.875rem;">${lead.date}</td>
+                <td style="padding: var(--space-md);"><strong>${lead.name}</strong></td>
+                <td style="padding: var(--space-md);">
+                    <a href="https://api.whatsapp.com/send?phone=549${lead.phone.replace(/\D/g, '')}" target="_blank" style="color: var(--secondary);">
+                        ${lead.phone}
+                    </a>
+                </td>
+                <td style="padding: var(--space-md);">
+                    <span class="status-badge-table">${lead.plan}</span>
+                </td>
+                <td style="padding: var(--space-md); font-size: 0.875rem; max-width: 250px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                    ${lead.link}
+                </td>
+                <td style="padding: var(--space-md);">
+                    <button onclick="deleteLead(${lead.id})" class="btn btn-danger btn-sm" style="padding: 6px 12px; font-size: 0.75rem;">
+                        Eliminar
+                    </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+    function deleteLead(id) {
+    if (!confirm('¿Estás seguro de eliminar este lead?')) return;
+    
+    let leads = JSON.parse(localStorage.getItem(CONFIG.STORAGE_KEYS.LEADS) || '[]');
+    leads = leads.filter(lead => lead.id !== id);
+    localStorage.setItem(CONFIG.STORAGE_KEYS.LEADS, JSON.stringify(leads));
+    
+    loadLeadsData();
+    showToast('success', 'Lead Eliminado', 'El registro ha sido eliminado correctamente');
+}
+
+function clearLeadsData() {
+    if (!confirm('¿Estás seguro de borrar TODOS los leads? Esta acción no se puede deshacer.')) return;
+    
+    localStorage.removeItem(CONFIG.STORAGE_KEYS.LEADS);
+    loadLeadsData();
+    showToast('warning', 'Historial Borrado', 'Todos los leads han sido eliminados');
+}
+
+// ==========================================
+// 14. CHATBOT
+// ==========================================
+let chatMessages = [];
+
+function initChatbot() {
+    addBotMessage('¡Hola! 👋 Soy el asistente virtual de Alquila Seguro MDP. ¿En qué puedo ayudarte?');
+    addChatOptions([
+        '¿Cómo funciona el servicio?',
+        'Ver precios',
+        'Reportar fraude',
+        'Hablar con un humano'
+    ]);
+}
+
+function toggleChat() {
+    const chatWindow = document.getElementById('chatWindow');
+    chatWindow.classList.toggle('active');
+    
+    if (chatWindow.classList.contains('active')) {
+        scrollChatToBottom();
+    }
+}
+
+function addBotMessage(text) {
+    const chatBody = document.getElementById('chatBody');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'msg msg-bot';
+    msgDiv.textContent = text;
+    chatBody.appendChild(msgDiv);
+    scrollChatToBottom();
+}
+
+function addUserMessage(text) {
+    const chatBody = document.getElementById('chatBody');
+    const msgDiv = document.createElement('div');
+    msgDiv.className = 'msg msg-user';
+    msgDiv.textContent = text;
+    chatBody.appendChild(msgDiv);
+    scrollChatToBottom();
+}
+
+function addChatOptions(options) {
+    const chatBody = document.getElementById('chatBody');
+    const optionsDiv = document.createElement('div');
+    optionsDiv.className = 'chat-options';
+    
+    options.forEach(option => {
+        const btn = document.createElement('button');
+        btn.className = 'opt-btn';
+        btn.textContent = option;
+        btn.onclick = () => handleChatOption(option);
+        optionsDiv.appendChild(btn);
+    });
+    
+    chatBody.appendChild(optionsDiv);
+    scrollChatToBottom();
+}
+
+function handleChatOption(option) {
+    addUserMessage(option);
+    
+    // Remover opciones anteriores
+    document.querySelectorAll('.chat-options').forEach(el => el.remove());
+    
+    setTimeout(() => {
+        switch(option) {
+            case '¿Cómo funciona el servicio?':
+                addBotMessage('Nuestro servicio verifica propiedades en 3 pasos:\n\n1️⃣ Solicitás la verificación\n2️⃣ Inspector visita la propiedad\n3️⃣ Recibís certificado digital con hash seguro\n\n¿Querés ver los planes disponibles?');
+                addChatOptions(['Ver precios', 'Solicitar verificación', 'Volver al inicio']);
+                break;
+                
+            case 'Ver precios':
+                addBotMessage('Tenemos 3 planes:\n\n🔹 Ojeada Técnica: $12.000\n🔹 Blindaje Total: $18.000 (⭐ Más elegido)\n🔹 SOS Urgencia: $25.000\n\n¿Te gustaría contratar alguno?');
+                addChatOptions(['Blindaje Total', 'SOS Urgencia', 'Más información']);
+                break;
+                
+            case 'Reportar fraude':
+                addBotMessage('⚠️ Si detectaste un fraude, contactanos URGENTE:\n\n📱 WhatsApp: +54 9 223 000-0000\n\nTambién podés completar el formulario de contacto con los detalles.');
+                addChatOptions(['Ir al formulario', 'WhatsApp directo', 'Volver']);
+                break;
+                
+            case 'Hablar con un humano':
+                addBotMessage('¡Por supuesto! Te derivo a nuestro equipo:\n\n📱 WhatsApp: +54 9 223 000-0000\n📧 Email: contacto@alquilaseguro.com\n\n¿Preferís que te llamemos?');
+                addChatOptions(['WhatsApp directo', 'Llamar ahora', 'Volver']);
+                break;
+                
+            case 'Blindaje Total':
+            case 'SOS Urgencia':
+                addBotMessage(`Excelente elección. Para contratar el plan ${option}, completá el formulario de contacto o escribinos por WhatsApp. ¿Qué preferís?`);
+                addChatOptions(['Ir al formulario', 'WhatsApp directo']);
+                break;
+                
+            case 'Ir al formulario':
+                addBotMessage('Perfecto! Te llevo al formulario...');
+                setTimeout(() => {
+                    document.getElementById('contacto').scrollIntoView({ behavior: 'smooth' });
+                    toggleChat();
+                }, 1000);
+                break;
+                
+            case 'WhatsApp directo':
+                addBotMessage('Abriendo WhatsApp...');
+                setTimeout(() => {
+                    window.open('https://api.whatsapp.com/send?phone=5492230000000&text=Hola,%20necesito%20información', '_blank');
+                }, 500);
+                addChatOptions(['Volver al inicio']);
+                break;
+                
+            case 'Volver al inicio':
+            case 'Volver':
+                addBotMessage('¿En qué más puedo ayudarte?');
+                addChatOptions([
+                    '¿Cómo funciona el servicio?',
+                    'Ver precios',
+                    'Reportar fraude',
+                    'Hablar con un humano'
+                ]);
+                break;
+                
+            default:
+                addBotMessage('Disculpá, no entendí esa opción. ¿Querés que te ayude con algo más?');
+                addChatOptions(['Ver precios', 'Contactar', 'Volver al inicio']);
+        }
+    }, 800);
+}
+
+function sendChatMessage() {
+    const input = document.getElementById('chatInput');
+    const message = input.value.trim();
+    
+    if (!message) return;
+    
+    addUserMessage(message);
+    input.value = '';
+    
+    setTimeout(() => {
+        addBotMessage('Gracias por tu mensaje. Para respuestas más rápidas, elegí una de las opciones o contactanos directamente por WhatsApp.');
+        addChatOptions(['Ver precios', 'WhatsApp directo', 'Volver al inicio']);
+    }, 1000);
+}
+
+function handleChatEnter(event) {
+    if (event.key === 'Enter') {
+        sendChatMessage();
+    }
+}
+
+function scrollChatToBottom() {
+    const chatBody = document.getElementById('chatBody');
+    setTimeout(() => {
+        chatBody.scrollTop = chatBody.scrollHeight;
+    }, 100);
+}
+
+// ==========================================
+// 15. ADMIN PANEL
+// ==========================================
+function openAdminModal() {
+    document.getElementById('loginModal').classList.add('active');
+}
+
+function closeAdminModal() {
+    document.getElementById('loginModal').classList.remove('active');
+}
+
+function authAdmin(event) {
+    event.preventDefault();
+    
+    const username = document.getElementById('adm-u').value.trim();
+    const password = document.getElementById('adm-p').value;
+    
+    if (username === CONFIG.ADMIN_USER && password === CONFIG.ADMIN_PASS) {
+        closeAdminModal();
+        document.getElementById('admin-modal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+        loadLeadsData();
+        showToast('success', 'Acceso Autorizado', 'Bienvenido al panel de administración');
+    } else {
+        showToast('error', 'Acceso Denegado', 'Usuario o contraseña incorrectos');
+        document.getElementById('adm-p').value = '';
+    }
+}
+
+function closeAdminPanel() {
+    if (confirm('¿Estás seguro de cerrar el panel de administración?')) {
+        document.getElementById('admin-modal').classList.remove('active');
+        document.body.style.overflow = 'auto';
+        document.getElementById('adm-u').value = '';
+        document.getElementById('adm-p').value = '';
+    }
+}
+
+function showAdminTab(tabName) {
+    // Ocultar todos los tabs
+    document.querySelectorAll('#tab-gen, #tab-leads, #tab-validate').forEach(tab => {
+        tab.classList.add('hidden');
+    });
+    
+    // Mostrar tab seleccionado
+    document.getElementById('tab-' + tabName).classList.remove('hidden');
+    
+    // Actualizar nav activo
+    document.querySelectorAll('.adm-item').forEach(item => {
+        item.classList.remove('active');
+    });
+    event.currentTarget.classList.add('active');
+    
+    // Cargar datos si es necesario
+    if (tabName === 'leads') {
+        loadLeadsData();
+    }
+}
+
+// ==========================================
+// 16. ENCRYPTION SYSTEM
+// ==========================================
+async function encryptData(data) {
+    try {
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(CONFIG.SECRET_KEY);
+        
+        const cryptoKey = await crypto.subtle.importKey(
+            'raw',
+            keyData.slice(0, 32),
+            { name: 'AES-GCM' },
+            false,
+            ['encrypt']
+        );
+        
+        const iv = crypto.getRandomValues(new Uint8Array(12));
+        const encrypted = await crypto.subtle.encrypt(
+            { name: 'AES-GCM', iv },
+            cryptoKey,
+            encoder.encode(data)
+        );
+        
+        const result = new Uint8Array(iv.byteLength + encrypted.byteLength);
+        result.set(iv, 0);
+        result.set(new Uint8Array(encrypted), iv.byteLength);
+        
+        return btoa(String.fromCharCode(...result));
+    } catch (error) {
+        console.error('Error al encriptar:', error);
+        showToast('error', 'Error', 'No se pudo generar el hash encriptado');
+        return null;
+    }
+}
+
+async function decryptData(encryptedBase64) {
+    try {
+        const encoder = new TextEncoder();
+        const keyData = encoder.encode(CONFIG.SECRET_KEY);
+        
+        const cryptoKey = await crypto.subtle.importKey(
+            'raw',
+            keyData.slice(0, 32),
+            { name: 'AES-GCM' },
+            false,
+            ['decrypt']
+        );
+        
+        const encryptedData = Uint8Array.from(atob(encryptedBase64), c => c.charCodeAt(0));
+        const iv = encryptedData.slice(0, 12);
+        const data = encryptedData.slice(12);
+        
+        const decrypted = await crypto.subtle.decrypt(
+            { name: 'AES-GCM', iv },
+            cryptoKey,
+            data
+        );
+        
+        return new TextDecoder().decode(decrypted);
+    } catch (error) {
+        console.error('Error al desencriptar:', error);
+        return null;
+    }
+}
+
+// ==========================================
+// 17. CERTIFICATE GENERATION
+// ==========================================
+async function generateAndPrint() {
+    const cli = document.getElementById('r-cli').value.trim() || 'CONSUMIDOR FINAL';
+    const dir = document.getElementById('r-dir').value.trim() || 'NO ESPECIFICADA';
+    const val = document.getElementById('r-val').value.trim() || '0';
+    const ver = document.getElementById('r-ver').value;
+    
+    const checks = [1,2,3,4,5].map(i => 
+        document.getElementById('c'+i).checked ? '1' : '0'
+    ).join('');
+    
+    const now = new Date();
+    const fecha = now.toLocaleDateString('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+    
+    const payload = JSON.stringify({
+        cli,
+        dir,
+        val,
+        ver,
+        checks,
+        fecha,
+        timestamp: now.getTime()
+    });
+    
+    showToast('info', 'Generando Certificado', 'Encriptando datos...');
+    
+    const hashFinal = await encryptData(payload);
+    
+    if (!hashFinal) {
+        return;
+    }
+    
+    // Actualizar UI
+    document.getElementById('hash-output').textContent = hashFinal;
+    document.getElementById('p-hash').textContent = hashFinal;
+    document.getElementById('p-date').textContent = fecha;
+    document.getElementById('p-cli-out').textContent = cli.toUpperCase();
+    document.getElementById('p-dir-out').textContent = dir.toUpperCase();
+    document.getElementById('p-val-out').textContent = '$ ' + val;
+    
+    // Veredicto
+    const verEl = document.getElementById('p-ver-out');
+    verEl.textContent = ver === '1' ? '✅ APTO / VERIFICADO' : '🚫 RIESGO DE FRAUDE';
+    verEl.style.color = ver === '1' ? '#059669' : '#DC2626';
+    
+    // Matriz
+    for (let i = 1; i <= 5; i++) {
+        const isOk = document.getElementById('c'+i).checked;
+        const el = document.getElementById('p-c'+i);
+        el.textContent = isOk ? 'POSITIVO' : 'NEGATIVO';
+        el.style.color = isOk ? '#059669' : '#DC2626';
+    }
+    
+    // QR Code
+    const qrImg = document.getElementById('qr-code-img');
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(hashFinal)}&bgcolor=FFFFFF&color=002B49`;
+    
+    // Esperar que el QR cargue
+    qrImg.onload = () => {
+        document.getElementById('legal-doc').style.display = 'block';
+        showToast('success', 'Certificado Generado', 'Abriendo vista de impresión...');
+        
+        setTimeout(() => {
+            window.print();
+        }, 500);
+        
+        window.onafterprint = () => {
+            document.getElementById('legal-doc').style.display = 'none';
+        };
+    };
+    
+    qrImg.onerror = () => {
+        showToast('warning', 'Advertencia', 'No se pudo generar el QR, pero el certificado es válido');
+        document.getElementById('legal-doc').style.display = 'block';
+        setTimeout(() => window.print(), 500);
+    };
+}
+
+// ==========================================
+// 18. CERTIFICATE VALIDATION
+// ==========================================
+async function desencriptarYMostrar(event) {
+    event.preventDefault();
+    
+    const hash = document.getElementById('hash-input').value.trim();
+    
+    if (!hash) {
+        showToast('error', 'Error', 'Por favor ingresá un hash válido');
+        return;
+    }
+    
+    showToast('info', 'Validando', 'Desencriptando certificado...');
+    
+    const decrypted = await decryptData(hash);
+    
+    if (!decrypted) {
+        showToast('error', 'Hash Inválido', 'El certificado no pudo ser verificado. Puede estar corrupto o ser falso.');
+        return;
+    }
+    
+    try {
+        const data = JSON.parse(decrypted);
+        
+        // Actualizar campos
+        document.getElementById('v-cli').value = data.cli;
+        document.getElementById('v-dir').value = data.dir;
+        document.getElementById('v-date').value = data.fecha;
+        document.getElementById('v-ver').value = data.ver === '1' ? '✅ APTO (VERIFICADO)' : '❌ FRAUDE DETECTADO';
+        document.getElementById('v-ver').style.color = data.ver === '1' ? 'var(--success)' : 'var(--danger)';
+        
+        // Matriz
+        const labels = ['Existencia Física', 'Coincidencia Visual', 'Titularidad', 'Servicios Activos', 'Prueba de Acceso'];
+        for (let i = 0; i < 5; i++) {
+            const isOk = data.checks[i] === '1';
+            document.getElementById('v-c'+(i+1)).innerHTML = 
+                `🔹 ${labels[i]}: <strong style="color: ${isOk ? 'var(--success)' : 'var(--danger)'}">
+                ${isOk ? 'POSITIVO ✅' : 'NEGATIVO ❌'}</strong>`;
+        }
+        
+        // Guardar datos para reimprimir
+        window.lastValidatedCert = data;
+        window.lastValidatedHash = hash;
+        
+        // Mostrar resultados
+        document.getElementById('validate-results').style.display = 'block';
+        
+        showToast('success', 'Certificado Válido', 'Los datos han sido verificados correctamente');
+        
+    } catch (error) {
+        showToast('error', 'Error de Formato', 'El certificado no tiene un formato válido');
+    }
+}
+
+function imprimirDesdeValidate() {
+    if (!window.lastValidatedCert) {
+        showToast('error', 'Error', 'No hay certificado para imprimir');
+        return;
+    }
+    
+    const data = window.lastValidatedCert;
+    
+    // Actualizar documento para imprimir
+    document.getElementById('p-hash').textContent = window.lastValidatedHash;
+    document.getElementById('p-date').textContent = data.fecha;
+    document.getElementById('p-cli-out').textContent = data.cli.toUpperCase();
+    document.getElementById('p-dir-out').textContent = data.dir.toUpperCase();
+    document.getElementById('p-val-out').textContent = '$ ' + data.val;
+    
+    const verEl = document.getElementById('p-ver-out');
+    verEl.textContent = data.ver === '1' ? '✅ APTO / VERIFICADO' : '🚫 RIESGO DE FRAUDE';
+    verEl.style.color = data.ver === '1' ? '#059669' : '#DC2626';
+    
+    for (let i = 1; i <= 5; i++) {
+        const isOk = data.checks[i-1] === '1';
+        const el = document.getElementById('p-c'+i);
+        el.textContent = isOk ? 'POSITIVO' : 'NEGATIVO';
+        el.style.color = isOk ? '#059669' : '#DC2626';
+    }
+    
+    // QR Code
+    const qrImg = document.getElementById('qr-code-img');
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=${encodeURIComponent(window.lastValidatedHash)}&bgcolor=FFFFFF&color=002B49`;
+    
+    document.getElementById('legal-doc').style.display = 'block';
+    setTimeout(() => window.print(), 300);
+    
+    window.onafterprint = () => {
+        document.getElementById('legal-doc').style.display = 'none';
+    };
+}
+
+// ==========================================
+// 19. TOAST NOTIFICATIONS
+// ==========================================
+function showToast(type, title, message) {
+    const container = document.getElementById('toastContainer');
+    
+    const icons = {
+        success: '✓',
+        error: '✗',
+        warning: '⚠',
+        info: 'ℹ'
+    };
+    
+    const toast = document.createElement('div');
+    toast.className = `toast ${type}`;
+    toast.innerHTML = `
+        <div class="toast-icon">${icons[type]}</div>
+        <div class="toast-content">
+            <div class="toast-title">${title}</div>
+            <div class="toast-message">${message}</div>
+        </div>
+        <div class="toast-close" onclick="this.parentElement.remove()">×</div>
+    `;
+    
+    container.appendChild(toast);
+    
+    setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, CONFIG.TOAST_DURATION);
+}
+
+// ==========================================
+// 20. UTILITY FUNCTIONS
+// ==========================================
+function formatCurrency(amount) {
+    return new Intl.NumberFormat('es-AR', {
+        style: 'currency',
+        currency: 'ARS',
+        minimumFractionDigits: 0
+    }).format(amount);
+}
+
+function formatDate(date) {
+    return new Intl.DateTimeFormat('es-AR', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    }).format(date);
+}
+
+// Cerrar modales al presionar ESC
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        closeLightbox();
+        closeAdminModal();
+        const chatWindow = document.getElementById('chatWindow');
+        if (chatWindow.classList.contains('active')) {
+            toggleChat();
+        }
+    }
+});
+
+// Smooth scroll para todos los enlaces internos
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function(e) {
+        const href = this.getAttribute('href');
+        if (href !== '#' && href !== '#!') {
+            e.preventDefault();
+            const target = document.querySelector(href);
+            if (target) {
+                target.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'start'
+                });
+            }
+        }
+    });
+});
+
+console.log('%c🛡️ AlquilaSeguro MDP - Sistema V9.0', 'color: #00A8E8; font-size: 18px; font-weight: bold;');
+console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669; font-size: 12px;');
+    </script>
+</body>
+</html>

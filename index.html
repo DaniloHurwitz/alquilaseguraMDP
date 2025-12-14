@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alquila Seguro MDP</title>
+    <title>1Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="theme-color" content="#002B49">
     
@@ -230,97 +230,6 @@
         .ft-head { color: #F3F4F6; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
         .ft-links li { margin-bottom: 12px; }
         .ft-links a:hover { color: var(--secondary); padding-left: 5px; }
-
-        <div id="admin-modal" style="display: none;">
-    <div class="sidebar">
-        <h3 style="margin-bottom: 30px; letter-spacing: 1px;">BACKOFFICE V8</h3>
-        <div class="adm-item active" onclick="showTab('gen')">📄 Generar Código</div>
-        <div class="adm-item" onclick="showTab('leads')">👥 Leads</div>
-        <div class="adm-item" onclick="showTab('validate')">🔍 Validar Hash</div>
-        <div class="adm-item" onclick="document.getElementById('admin-modal').style.display='none'">🚪 Salir</div>
-    </div>
-   
-    <div class="admin-main">
-        <div id="tab-gen">
-            <h2 style="margin-bottom: 20px; color: var(--text-main);">Generador de Certificado Seguro</h2>
-            <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border: 1px solid var(--border-color);">
-                <div>
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
-                    <input type="text" id="r-cli" class="adm-input">
-                   
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
-                    <input type="text" id="r-dir" class="adm-input">
-                   
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Valor Alquiler (Mensual/Quincenal)</label>
-                    <input type="text" id="r-val" class="adm-input" placeholder="$">
-                   
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
-                    <select id="r-ver" class="adm-input">
-                        <option value="1">✅ APTO (VERIFICADO)</option>
-                        <option value="0">❌ FRAUDE (NO APTO)</option>
-                    </select>
-                </div>
-                <div>
-                    <h4 style="margin-bottom: 15px; color: var(--text-main);">Matriz de Validación (Binaria)</h4>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c1" checked> Existencia Física (A)</label>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c2" checked> Coincidencia Fotos (B)</label>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c3"> Titularidad Validada (C)</label>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c4"> Servicios Activos (D)</label>
-                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c5"> Llaves/Acceso (E)</label>
-                   
-                    <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 6px;">
-                        <small>Código Hash Generado:</small>
-                        <div id="hash-output" style="font-family: monospace; font-weight: bold; color: var(--primary); word-break: break-all;">---</div>
-                    </div>
-                </div>
-            </div>
-            <button class="btn btn-primary" onclick="generateAndPrint()" style="margin-top: 20px;">GENERAR E IMPRIMIR DOCUMENTO</button>
-        </div>
-        <div id="tab-leads" class="hidden">
-        </div>
-        <div id="tab-validate" class="hidden">
-            <h2 style="margin-bottom: 20px; color: var(--text-main);">Validador de Certificado</h2>
-            <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color);">
-                <form onsubmit="desencriptarYMostrar(event)">
-                    <label style="display:block; margin-bottom:5px; font-weight:600;">Ingresá el HASH completo:</label>
-                    <input type="text" id="hash-input" class="adm-input" placeholder="Ej: 1412202513565023323133165475001101" required>
-                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">VALIDAR HASH</button>
-                </form>
-                <div id="validate-results" style="display: none; margin-top: 30px;">
-                    <h4 style="margin-bottom: 15px; color: var(--success);">Datos Desencriptados:</h4>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                        <div>
-                            <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
-                            <input type="text" id="v-cli" class="adm-input" readonly>
-                            <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
-                            <input type="text" id="v-dir" class="adm-input" readonly>
-                            <label style="display:block; margin-bottom:5px; font-weight:600;">Fecha de Emisión</label>
-                            <input type="text" id="v-date" class="adm-input" readonly>
-                        </div>
-                        <div>
-                            <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
-                            <input type="text" id="v-ver" class="adm-input" readonly>
-                            <h4 style="margin-bottom: 10px;">Matriz de Validación:</h4>
-                            <ul style="list-style: none; padding: 0;">
-                                <li id="v-c1">Existencia Física: </li>
-                                <li id="v-c2">Coincidencia Fotos: </li>
-                                <li id="v-c3">Titularidad Validada: </li>
-                                <li id="v-c4">Servicios Activos: </li>
-                                <li id="v-c5">Llaves/Acceso: </li>
-                            </ul>
-                        </div>
-                    </div>
-                    <button class="btn btn-outline" onclick="imprimirDesdeValidate()" style="margin-top: 20px; width: 100%;">IMPRIMIR / DESCARGAR PDF</button>
-                </div>
-            </div>
-            <!-- Vista previa del certificado (se rellena y muestra aquí) -->
-            <div id="cert-preview" style="display: none; margin-top: 40px; border: 1px solid var(--border-color); padding: 20px; background: white; box-shadow: var(--shadow-float);">
-                <h4 style="text-align: center; margin-bottom: 20px;">Vista Previa del Certificado</h4>
-                <div id="legal-doc-preview"></div> <!-- Clonaremos el legal-doc aquí -->
-            </div>
-        </div>
-    </div>
-</div>
 
         /* ==========================================================================
            9. CHATBOT INTERACTIVO (FIXED)
@@ -619,7 +528,96 @@
             <p class="text-center" style="margin-top: 15px; cursor: pointer; color: var(--text-muted);" onclick="document.getElementById('login-modal').style.display='none'">Cancelar</p>
         </div>
     </div>
-
+ <div id="admin-modal" style="display: none;">
+    <div class="sidebar">
+        <h3 style="margin-bottom: 30px; letter-spacing: 1px;">BACKOFFICE V8</h3>
+        <div class="adm-item active" onclick="showTab('gen')">📄 Generar Código</div>
+        <div class="adm-item" onclick="showTab('leads')">👥 Leads</div>
+        <div class="adm-item" onclick="showTab('validate')">🔍 Validar Hash</div>
+        <div class="adm-item" onclick="document.getElementById('admin-modal').style.display='none'">🚪 Salir</div>
+    </div>
+   
+    <div class="admin-main">
+        <div id="tab-gen">
+            <h2 style="margin-bottom: 20px; color: var(--text-main);">Generador de Certificado Seguro</h2>
+            <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border: 1px solid var(--border-color);">
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
+                    <input type="text" id="r-cli" class="adm-input">
+                   
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
+                    <input type="text" id="r-dir" class="adm-input">
+                   
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Valor Alquiler (Mensual/Quincenal)</label>
+                    <input type="text" id="r-val" class="adm-input" placeholder="$">
+                   
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
+                    <select id="r-ver" class="adm-input">
+                        <option value="1">✅ APTO (VERIFICADO)</option>
+                        <option value="0">❌ FRAUDE (NO APTO)</option>
+                    </select>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 15px; color: var(--text-main);">Matriz de Validación (Binaria)</h4>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c1" checked> Existencia Física (A)</label>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c2" checked> Coincidencia Fotos (B)</label>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c3"> Titularidad Validada (C)</label>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c4"> Servicios Activos (D)</label>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c5"> Llaves/Acceso (E)</label>
+                   
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 6px;">
+                        <small>Código Hash Generado:</small>
+                        <div id="hash-output" style="font-family: monospace; font-weight: bold; color: var(--primary); word-break: break-all;">---</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="generateAndPrint()" style="margin-top: 20px;">GENERAR E IMPRIMIR DOCUMENTO</button>
+        </div>
+        <div id="tab-leads" class="hidden">
+        </div>
+        <div id="tab-validate" class="hidden">
+            <h2 style="margin-bottom: 20px; color: var(--text-main);">Validador de Certificado</h2>
+            <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color);">
+                <form onsubmit="desencriptarYMostrar(event)">
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Ingresá el HASH completo:</label>
+                    <input type="text" id="hash-input" class="adm-input" placeholder="Ej: 1412202513565023323133165475001101" required>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">VALIDAR HASH</button>
+                </form>
+                <div id="validate-results" style="display: none; margin-top: 30px;">
+                    <h4 style="margin-bottom: 15px; color: var(--success);">Datos Desencriptados:</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
+                            <input type="text" id="v-cli" class="adm-input" readonly>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
+                            <input type="text" id="v-dir" class="adm-input" readonly>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Fecha de Emisión</label>
+                            <input type="text" id="v-date" class="adm-input" readonly>
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
+                            <input type="text" id="v-ver" class="adm-input" readonly>
+                            <h4 style="margin-bottom: 10px;">Matriz de Validación:</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li id="v-c1">Existencia Física: </li>
+                                <li id="v-c2">Coincidencia Fotos: </li>
+                                <li id="v-c3">Titularidad Validada: </li>
+                                <li id="v-c4">Servicios Activos: </li>
+                                <li id="v-c5">Llaves/Acceso: </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" onclick="imprimirDesdeValidate()" style="margin-top: 20px; width: 100%;">IMPRIMIR / DESCARGAR PDF</button>
+                </div>
+            </div>
+            <!-- Vista previa del certificado (se rellena y muestra aquí) -->
+            <div id="cert-preview" style="display: none; margin-top: 40px; border: 1px solid var(--border-color); padding: 20px; background: white; box-shadow: var(--shadow-float);">
+                <h4 style="text-align: center; margin-bottom: 20px;">Vista Previa del Certificado</h4>
+                <div id="legal-doc-preview"></div> <!-- Clonaremos el legal-doc aquí -->
+            </div>
+        </div>
+    </div>
+ </div>
     <div id="admin-modal" style="display: none;">
         <div class="sidebar">
             <h3 style="margin-bottom: 30px; letter-spacing: 1px;">BACKOFFICE V8</h3>
@@ -874,148 +872,170 @@
         }
 
        // ==========================================
-// NUEVO GENERADOR DE HASH PERSONALIZADO + PDF/IMPRIMIR + DESENCRIPTADOR
+// HASH SEGURO CON AES-256 (MUCHO MÁS PROFESIONAL)
 // ==========================================
 
-// Función para convertir texto a "números cifrados" (cada letra → número de 2 dígitos según posición en abecedario + offset simple)
-function textToCipher(text) {
-    text = text.toUpperCase().replace(/[^A-ZÑÁÉÍÓÚÜ]/g, ''); // Solo letras, incluye Ñ y acentos normalizados
-    const map = {
-        'A':11,'B':12,'C':13,'D':14,'E':15,'F':16,'G':17,'H':18,'I':19,'J':20,
-        'K':21,'L':22,'M':23,'N':24,'Ñ':25,'O':26,'P':27,'Q':28,'R':29,'S':30,
-        'T':31,'U':32,'V':33,'W':34,'X':35,'Y':36,'Z':37,
-        'Á':15,'É':19,'Í':19,'Ó':26,'Ú':32,'Ü':32
-    };
-    let result = '';
-    for (let char of text) {
-        result += map[char] || '00';
-    }
-    return result || '000000';
+// Clave secreta fija (cámbiala por una tuya, 32 caracteres = 256 bits)
+const SECRET_KEY = "AlquilaSeguroMDP2025SecretKey123!"; // ¡CÁMBIALA POR UNA TUYA Y NO LA COMPARTAS!
+
+async function stringToUint8Array(str) {
+    const encoder = new TextEncoder();
+    return encoder.encode(str);
 }
 
-// Función principal: Generar hash + rellenar documento + imprimir
-function generateAndPrint() {
+async function uint8ArrayToString(arr) {
+    const decoder = new TextDecoder();
+    return decoder.decode(arr);
+}
+
+async function encryptData(data) {
+    const keyData = await stringToUint8Array(SECRET_KEY);
+    const cryptoKey = await crypto.subtle.importKey(
+        "raw",
+        keyData,
+        { name: "AES-GCM" },
+        false,
+        ["encrypt"]
+    );
+
+    const iv = crypto.getRandomValues(new Uint8Array(12));
+    const encrypted = await crypto.subtle.encrypt(
+        { name: "AES-GCM", iv: iv },
+        cryptoKey,
+        await stringToUint8Array(data)
+    );
+
+    const result = new Uint8Array(iv.byteLength + encrypted.byteLength);
+    result.set(iv, 0);
+    result.set(new Uint8Array(encrypted), iv.byteLength);
+
+    return btoa(String.fromCharCode(...result));
+}
+
+async function decryptData(encryptedBase64) {
+    try {
+        const keyData = await stringToUint8Array(SECRET_KEY);
+        const cryptoKey = await crypto.subtle.importKey(
+            "raw",
+            keyData,
+            { name: "AES-GCM" },
+            false,
+            ["decrypt"]
+        );
+
+        const encryptedData = Uint8Array.from(atob(encryptedBase64), c => c.charCodeAt(0));
+        const iv = encryptedData.slice(0, 12);
+        const data = encryptedData.slice(12);
+
+        const decrypted = await crypto.subtle.decrypt(
+            { name: "AES-GCM", iv: iv },
+            cryptoKey,
+            data
+        );
+
+        return await uint8ArrayToString(new Uint8Array(decrypted));
+    } catch (e) {
+        return null; // Hash inválido o clave incorrecta
+    }
+}
+
+// NUEVA generateAndPrint con encriptación AES
+async function generateAndPrint() {
     const cli = (document.getElementById('r-cli').value || 'CONSUMIDOR FINAL').trim();
     const dir = (document.getElementById('r-dir').value || 'NO ESPECIFICADA').trim();
     const val = document.getElementById('r-val').value || '0';
     const ver = document.getElementById('r-ver').value;
 
-    // 1. Fecha en formato DDMMYYYYHHMMSS
     const now = new Date();
-    const fecha = now.getDate().toString().padStart(2,'0') +
-                  (now.getMonth()+1).toString().padStart(2,'0') +
-                  now.getFullYear() +
-                  now.getHours().toString().padStart(2,'0') +
-                  now.getMinutes().toString().padStart(2,'0') +
-                  now.getSeconds().toString().padStart(2,'0');
+    const fecha = now.toLocaleDateString('es-AR') + ' ' + now.toLocaleTimeString('es-AR');
 
-    // 2. Datos cifrados (nombre + dirección)
-    const datosCifrados = textToCipher(cli + ' ' + dir);
-
-    // 3. Checklist binario (5 checks → 001101 por ejemplo)
     const checks = [1,2,3,4,5].map(i => document.getElementById('c'+i).checked ? '1' : '0').join('');
 
-    // 4. Hash final concatenado
-    const hashFinal = fecha + datosCifrados + checks;
+    // Datos que guardamos en el hash
+    const payload = JSON.stringify({
+        cli, dir, val, ver, checks, fecha
+    });
 
-    // Mostrar hash en el panel
+    const hashFinal = await encryptData(payload);
+
+    // Mostrar en panel
     document.getElementById('hash-output').innerText = hashFinal;
 
-    // Rellenar documento imprimible
+    // Rellenar certificado
     document.getElementById('p-hash').innerText = hashFinal;
-    document.getElementById('p-date').innerText = now.toLocaleDateString('es-AR');
+    document.getElementById('p-date').innerText = fecha;
     document.getElementById('p-cli-out').innerText = cli.toUpperCase();
     document.getElementById('p-dir-out').innerText = dir.toUpperCase();
     document.getElementById('p-val-out').innerText = "$ " + val;
 
     const verEl = document.getElementById('p-ver-out');
-    if(ver === '1') {
-        verEl.innerText = "✅ APTO / VERIFICADO";
-        verEl.style.color = "#059669";
-    } else {
-        verEl.innerText = "🚫 RIESGO DE FRAUDE";
-        verEl.style.color = "#DC2626";
-    }
+    verEl.innerText = ver === '1' ? "✅ APTO / VERIFICADO" : "🚫 RIESGO DE FRAUDE";
+    verEl.style.color = ver === '1' ? "#059669" : "#DC2626";
 
     for(let i=1; i<=5; i++) {
         const isOk = document.getElementById('c'+i).checked;
         const el = document.getElementById('p-c'+i);
-        if(el) {
-            el.innerText = isOk ? "POSITIVO" : "NEGATIVO";
-            el.style.color = isOk ? "#002B49" : "#DC2626";
-        }
+        el.innerText = isOk ? "POSITIVO" : "NEGATIVO";
+        el.style.color = isOk ? "#002B49" : "#DC2626";
     }
 
-    // QR con el hash completo
-    const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(hashFinal)}`;
+    // QR
     const qrImg = document.getElementById('qr-code-img');
-    qrImg.src = qrUrl;
+    qrImg.src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(hashFinal)}`;
 
-    // Forzar impresión cuando el QR cargue (con fallback)
     qrImg.onload = () => {
         document.getElementById('legal-doc').style.display = 'block';
         setTimeout(() => window.print(), 500);
     };
     qrImg.onerror = () => {
-        // Si falla el QR, igual imprime sin él
         document.getElementById('legal-doc').style.display = 'block';
         setTimeout(() => window.print(), 500);
     };
 
-    // Después de imprimir, ocultar de nuevo
     window.onafterprint = () => {
         document.getElementById('legal-doc').style.display = 'none';
     };
 }
 
-// ==========================================
-// DESENCRIPTADOR DE HASH (para validar certificados)
-// ==========================================
+// NUEVO validador (usa la pestaña que ya tenés)
+async function desencriptarYMostrar(e) {
+    e.preventDefault();
+    const hash = document.getElementById('hash-input').value.trim();
 
-function desencriptarHash() {
-    const hash = prompt("Pegá el HASH completo para validar el certificado:");
-    if (!hash || hash.length < 20) {
-        alert("Hash inválido o muy corto.");
+    const decrypted = await decryptData(hash);
+    if (!decrypted) {
+        alert("❌ HASH INVÁLIDO o corrupto. No se pudo desencriptar.");
         return;
     }
 
-    // Extraer partes
-    const fechaStr = hash.substring(0, 14);
-    const checks = hash.slice(-5); // últimos 5 dígitos son el checklist
+    const data = JSON.parse(decrypted);
 
-    // Convertir fecha
-    const dd = fechaStr.substring(0,2);
-    const mm = fechaStr.substring(2,4);
-    const yyyy = fechaStr.substring(4,8);
-    const hh = fechaStr.substring(8,10);
-    const mi = fechaStr.substring(10,12);
-    const ss = fechaStr.substring(12,14);
+    // Rellenar campos
+    document.getElementById('v-cli').value = data.cli;
+    document.getElementById('v-dir').value = data.dir;
+    document.getElementById('v-date').value = data.fecha;
+    document.getElementById('v-ver').value = data.ver === '1' ? '✅ APTO (VERIFICADO)' : '❌ FRAUDE (NO APTO)';
 
-    // Datos cifrados
-    const datosCifrados = hash.substring(14, hash.length - 5);
-
-    // Desencriptar texto
-    const mapInvertido = {
-        '11':'A','12':'B','13':'C','14':'D','15':'E','16':'F','17':'G','18':'H','19':'I','20':'J',
-        '21':'K','22':'L','23':'M','24':'N','25':'Ñ','26':'O','27':'P','28':'Q','29':'R','30':'S',
-        '31':'T','32':'U','33':'V','34':'W','35':'X','36':'Y','37':'Z'
-    };
-
-    let textoOriginal = '';
-    for (let i = 0; i < datosCifrados.length; i += 2) {
-        const code = datosCifrados.substring(i, i+2);
-        textoOriginal += mapInvertido[code] || '?';
+    const checkLabels = ['v-c1', 'v-c2', 'v-c3', 'v-c4', 'v-c5'];
+    for (let i = 0; i < 5; i++) {
+        const isOk = data.checks[i] === '1';
+        document.getElementById(checkLabels[i]).innerHTML = 
+            document.getElementById(checkLabels[i]).innerHTML.split(':')[0] + 
+            ': <strong>' + (isOk ? 'POSITIVO ✅' : 'NEGATIVO ❌') + '</strong>';
     }
 
-    // Mostrar resultado
-    alert(`CERTIFICADO VÁLIDO ✅
+    document.getElementById('validate-results').style.display = 'block';
 
-Fecha de emisión: ${dd}/${mm}/${yyyy} ${hh}:${mi}:${ss}
-Datos desencriptados: ${textoOriginal}
-Checklist binario: ${checks.replace(/0/g,'❌').replace(/1/g,'✅')}
-    `);
+    // Rellenar preview del certificado
+    fillCertificate(data.cli, data.dir, data.val, data.ver, data.checks);
+
+    const preview = document.getElementById('cert-preview');
+    const clone = document.getElementById('legal-doc').cloneNode(true);
+    document.getElementById('legal-doc-preview').innerHTML = '';
+    document.getElementById('legal-doc-preview').appendChild(clone);
+    preview.style.display = 'block';
+    document.getElementById('p-hash').innerText = hash; // Mostrar el hash validado
 }
-
         // ==========================================
         // 4. UTILIDADES GENERALES & UI
         // ==========================================

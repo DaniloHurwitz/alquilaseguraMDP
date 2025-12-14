@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alquila Seguro MDP</title>
+    <title>1Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="keywords" content="verificación inmobiliaria, anti fraude, alquiler seguro, mar del plata">
     <meta name="theme-color" content="#002B49">
@@ -4122,25 +4122,61 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Coordenadas MDP
-        const map = L.map('map', { center: [-38.0055, -57.5426], zoom: 13, scrollWheelZoom: false });
+        // Centro de MDP
+        const centerLat = -38.0055;
+        const centerLng = -57.5426;
+        
+        // Inicializar mapa
+        const map = L.map('map', { center: [centerLat, centerLng], zoom: 13, scrollWheelZoom: false });
 
+        // Capa base (Mapa clarito)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        const points = [
-            [-37.9700, -57.5900, '#EF4444', 1200, '⚠️ <strong>Zona ALERTA:</strong> Reportes de señas falsas.'],
-            [-38.0300, -57.5900, '#EF4444', 800, '⚠️ <strong>Precaución:</strong> Propiedades inexistentes.'],
-            [-38.0000, -57.5450, '#F59E0B', 600, '✋ <strong>Centro:</strong> Alta densidad. Verificar titularidad.'],
-            [-38.0150, -57.5300, '#F59E0B', 500, '✋ <strong>Torreón:</strong> En proceso de verificación.'],
-            [-38.0120, -57.5150, '#10B981', 400, '🛡️ <strong>Playa Grande:</strong> Zona Verificada.'],
-            [-38.0080, -57.5380, '#10B981', 300, '🛡️ <strong>Güemes:</strong> Zona Segura.']
-        ];
+        // --- GENERADOR DE PUNTITOS ---
+        const cantidadPuntos = 300; // ¡Cambiá este número si querés más o menos!
+        
+        for (let i = 0; i < cantidadPuntos; i++) {
+            // 1. Generar posición aleatoria alrededor del centro (aprox 5-7km a la redonda)
+            // Math.random() - 0.5 genera un número entre -0.5 y 0.5
+            const latOffset = (Math.random() - 0.5) * 0.07; 
+            const lngOffset = (Math.random() - 0.5) * 0.10;
+            const newLat = centerLat + latOffset;
+            const newLng = centerLng + lngOffset;
 
-        points.forEach(p => L.circle([p[0], p[1]], { color: p[2], fillColor: p[2], fillOpacity: 0.4, radius: p[3], weight: 1 }).addTo(map).bindPopup(p[4]));
+            // 2. Decidir el color (Probabilidad ponderada)
+            const rand = Math.random();
+            let color, text, radio;
 
-        // Modo oscuro automático para el mapa
+            if (rand < 0.5) { 
+                // 50% de chance: VERDE (Seguro)
+                color = '#10B981'; 
+                text = '🛡️ <strong>Propiedad Verificada:</strong> Sin riesgo detectado.';
+                radio = 40; // Puntito pequeño (40 metros)
+            } else if (rand < 0.9) { 
+                // 40% de chance (de 0.5 a 0.9): ROJO (Estafa)
+                color = '#EF4444'; 
+                text = '⚠️ <strong>ALERTA DE FRAUDE:</strong> Reportes múltiples en esta zona.';
+                radio = 50; // Un poquito más grande para que resalte
+            } else { 
+                // 10% restante: AMARILLO (En revisión)
+                color = '#F59E0B'; 
+                text = '✋ <strong>En Verificación:</strong> Proceso de validación en curso.';
+                radio = 40;
+            }
+
+            // 3. Dibujar el puntito (círculo pequeño)
+            L.circle([newLat, newLng], {
+                color: color,       // Color del borde
+                fillColor: color,   // Color del relleno
+                fillOpacity: 0.8,   // Más opaco para que se noten bien los puntos chicos
+                radius: radio,      // Tamaño pequeño
+                weight: 1           // Borde fino
+            }).addTo(map).bindPopup(text);
+        }
+
+        // Modo oscuro automático para el mapa (igual que antes)
         new MutationObserver((m) => {
             m.forEach((mu) => {
                 if (mu.attributeName === 'data-theme') {

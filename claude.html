@@ -4175,21 +4175,26 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
             }
         }
 
-        // --- DEFINICIÓN DE ZONAS SEGURAS (COORDENADAS TIERRA ADENTRO) ---
+       // --- DEFINICIÓN DE ZONAS SEGURAS (COORDENADAS AJUSTADAS) ---
         
-        // 1. MICROCENTRO (Plaza Colón / Luro) - 90 puntos
-        // Coordenada segura: -57.545 (Bien lejos del agua que está en -57.535)
-        agregarPuntosFijos(-38.0000, -57.5545, 90, 0.005, "Microcentro");
+        // 1. MICROCENTRO (Plaza Colón / Casino) - 90 puntos
+        // Ajuste: -38.0020 (Un pelín más al sur para centrar en Colón)
+        // Ajuste: -57.5480 (Bien adentro, lejos de la costa que está en -57.542)
+        agregarPuntosFijos(-38.0020, -57.5480, 90, 0.005, "Microcentro");
 
-        // 2. GÜEMES / TRONCOS - 70 puntos
-        // Coordenada segura: -57.542 (Lejos de la costa de Playa Grande)
-        agregarPuntosFijos(-38.0140, -57.5542, 70, 0.006, "Güemes");
+        // 2. GÜEMES / TRONCOS (Zona Comercial) - 70 puntos
+        // Ajuste: -38.0130 (Centrado en calle Güemes)
+        // Ajuste: -57.5430 (Lejos de la costa de Playa Grande)
+        agregarPuntosFijos(-38.0130, -57.5430, 70, 0.006, "Güemes");
 
-        // 3. LA PERLA (Independencia y Libertad) - 40 puntos
-        agregarPuntosFijos(-37.9920, -57.5520, 40, 0.005, "La Perla");
+        // 3. LA PERLA (Norte) - 40 puntos
+        // Ajuste: -37.9940 (Un poco más al sur para no tocar la curva de Alfonsina)
+        // Ajuste: -57.5540 (MÁS AL OESTE - Clave para que no toquen el agua arriba)
+        agregarPuntosFijos(-37.9940, -57.5540, 40, 0.005, "La Perla");
 
-        // 4. PERIFERIA / DISPERSOS - 40 puntos
-        // Muy adentro en la ciudad
+        // 4. PERIFERIA / MACROCENTRO (Relleno) - 40 puntos
+        // Ajuste: -38.0050 (Centro geográfico)
+        // Ajuste: -57.5650 (Bien adentro, zona Champagnat/Jara)
         agregarPuntosFijos(-38.0050, -57.5650, 40, 0.015, "Periferia");
 
 

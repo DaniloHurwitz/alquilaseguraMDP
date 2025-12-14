@@ -555,19 +555,19 @@ html, body {
         }
 
 /* ==========================================================================
-   7. INTRO SPLIT SCREEN (VERSION SEGURA)
+   7. INTRO SPLIT SCREEN (FINAL AJUSTADO)
    ========================================================================== */
 #intro-screen {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;  /* Ancho total de la ventana */
-    height: 100vh; /* Alto total de la ventana */
-    z-index: 999999; /* Por encima de TODO */
+    width: 100vw;
+    height: 100vh;
+    z-index: 999999;
     display: flex;
     justify-content: center;
     align-items: center;
-    background: transparent; /* El fondo lo dan los paneles */
+    background: transparent;
 }
 
 /* Paneles blancos */
@@ -575,38 +575,38 @@ html, body {
     position: absolute;
     left: 0;
     width: 100%;
-    height: 51vh; /* 51% del alto de ventana para solaparse un poquito */
+    height: 51vh;
     background-color: #ffffff;
     z-index: 2;
-    transition: transform 1s cubic-bezier(0.7, 0, 0.3, 1);
+    transition: transform 1.5s cubic-bezier(0.85, 0, 0.15, 1); /* Curva más dramática */
+    
+    /* TRUCOS PARA FORZAR ANIMACIÓN EN PC */
+    will-change: transform;
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0); 
 }
 
-.panel-top {
-    top: 0;
-}
-
-.panel-bottom {
-    bottom: 0;
-}
+.panel-top { top: 0; }
+.panel-bottom { bottom: 0; }
 
 /* Contenido */
 .intro-content {
     position: relative;
-    z-index: 10; /* Encima de los paneles blancos */
+    z-index: 10;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 15px;
     opacity: 1;
-    transition: opacity 0.5s ease;
-    padding: 20px;
+    transition: opacity 0.8s ease;
     width: 100%;
+    padding: 20px;
 }
 
+/* LOGO BASE (PC) */
 .intro-logo {
-    /* Clamp maneja el tamaño automágicamente entre PC y Celu */
-    font-size: clamp(2rem, 5vw, 3.5rem); 
+    font-size: 3.5rem; 
     font-weight: 900;
     color: var(--primary);
     text-transform: uppercase;
@@ -619,40 +619,50 @@ html, body {
 }
 
 .intro-logo svg {
-    width: clamp(35px, 6vw, 60px);
-    height: clamp(35px, 6vw, 60px);
+    width: 60px;
+    height: 60px;
 }
 
 .intro-slogan {
-    font-size: clamp(0.8rem, 3vw, 1.1rem);
+    font-size: 1.1rem;
     color: var(--text-muted);
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
     font-weight: 600;
     text-align: center;
 }
 
-.intro-welcome {
-    font-size: 0.85rem;
-    color: var(--secondary);
-    margin-top: 20px;
-    font-weight: 500;
+/* --- AJUSTE ESPECÍFICO PARA MÓVIL (Soluciona el tamaño gigante) --- */
+@media (max-width: 768px) {
+    .intro-logo {
+        font-size: 1.8rem !important; /* Forzamos tamaño chico */
+        flex-direction: column; /* Apilamos logo y texto si hace falta */
+        gap: 10px;
+    }
+    
+    .intro-logo svg {
+        width: 40px !important;
+        height: 40px !important;
+    }
+
+    .intro-slogan {
+        font-size: 0.8rem !important;
+        letter-spacing: 1px;
+        max-width: 80%; /* Evita que toque los bordes */
+    }
 }
 
-/* --- CLASES DE ANIMACIÓN --- */
-
-/* 1. Desaparece el texto */
+/* --- ESTADOS DE ANIMACIÓN --- */
 .intro-fade-out .intro-content {
     opacity: 0;
 }
 
-/* 2. Se abren los paneles (Acá sí usamos translate para moverlos) */
 .intro-split .panel-top {
-    transform: translateY(-100%);
+    transform: translate3d(0, -100%, 0);
 }
 
 .intro-split .panel-bottom {
-    transform: translateY(100%);
+    transform: translate3d(0, 100%, 0);
 }
         /* ==========================================================================
            8. HEADER Y NAVEGACIÓN
@@ -3245,32 +3255,33 @@ section {
 // 3. INTRO ANIMATION (SECUENCIAL)
 // ==========================================
 function initLoader() {
-        // Bloquear scroll
         document.body.style.overflow = 'hidden';
-        
         const introScreen = document.getElementById('intro-screen');
         
-        // FASE 1: Esperar 2.5 segundos de lectura
+        // Fase 1: Lectura (3.5s)
         setTimeout(() => {
             
-            // FASE 2: Desvanecer texto
-            introScreen.classList.add('intro-fade-out');
+            // Fase 2: Fade Out del texto
+            requestAnimationFrame(() => {
+                introScreen.classList.add('intro-fade-out');
+            });
 
-            // FASE 3: 500ms después, abrir cortina (Split)
+            // Fase 3: Split (0.8s después del fade)
             setTimeout(() => {
-                introScreen.classList.add('intro-split');
+                requestAnimationFrame(() => {
+                    introScreen.classList.add('intro-split');
+                });
                 
-                // Devolver scroll apenas empieza a abrirse
                 document.body.style.overflow = 'auto';
 
-                // FASE 4: 1 segundo después, borrar del DOM
+                // Fase 4: Limpieza
                 setTimeout(() => {
                     introScreen.remove();
-                }, 1000);
+                }, 1500); // Esperamos a que termine la animación larga
 
-            }, 500);
+            }, 800);
 
-        }, 2500); 
+        }, 3500); 
 }
     // ==========================================
     // 4. THEME SYSTEM

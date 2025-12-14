@@ -4122,7 +4122,7 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // 1. INICIALIZAR MAPA (Centrado en el Casino)
+        // Centro del mapa
         const map = L.map('map', { 
             center: [-38.0050, -57.5460], 
             zoom: 13, 
@@ -4133,43 +4133,68 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
             attribution: '&copy; OSM &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- FUNCIÓN GENERADORA POR ZONA ---
-        function crearCluster(latCentro, lngCentro, cantidad, radioDispercion, nombreZona) {
-            for (let i = 0; i < cantidad; i++) {
-                // Generación aleatoria alrededor del centro de la zona
-                const r = radioDispercion * Math.sqrt(Math.random());
+        // --- 1. POLÍGONO DE SEGURIDAD (Tierra Firme) ---
+        // Estos puntos definen el límite exacto. Todo lo que cae a la derecha de esto (mar), se borra.
+        const poligonoTierra = [
+            [-37.9400, -57.6000], // Noroeste Lejos
+            [-37.9400, -57.5450], // Camet Adentro
+            [-37.9900, -57.5350], // La Perla (Seguro)
+            [-38.0000, -57.5360], // Punta Iglesia (Seguro)
+            [-38.0120, -57.5220], // Cabo Corrientes (El punto clave)
+            [-38.0300, -57.5300], // Playa Grande (Seguro)
+            [-38.0500, -57.5420], // Puerto Adentro
+            [-38.0500, -57.6000]  // Sur Lejos
+        ];
+
+        // Función matemática para verificar si un punto está en tierra
+        function estaEnTierra(lat, lng) {
+            let inside = false;
+            for (let i = 0, j = poligonoTierra.length - 1; i < poligonoTierra.length; j = i++) {
+                const xi = poligonoTierra[i][0], yi = poligonoTierra[i][1];
+                const xj = poligonoTierra[j][0], yj = poligonoTierra[j][1];
+                const intersect = ((yi > lng) !== (yj > lng)) &&
+                    (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
+                if (intersect) inside = !inside;
+            }
+            return inside;
+        }
+
+        // --- 2. GENERADOR DE CLUSTERS (Grupos) ---
+        function crearCluster(latCentro, lngCentro, cantidad, radioMax, nombreZona) {
+            let generados = 0;
+            let intentos = 0;
+
+            while (generados < cantidad && intentos < 5000) {
+                intentos++;
+                
+                // Generamos punto aleatorio cerca del centro indicado
+                // Usamos raíz cuadrada para distribuir mejor en el círculo
+                const r = radioMax * Math.sqrt(Math.random());
                 const theta = Math.random() * 2 * Math.PI;
                 
-                let lat = latCentro + r * Math.cos(theta);
-                let lng = lngCentro + r * Math.sin(theta);
+                const lat = latCentro + r * Math.cos(theta);
+                const lng = lngCentro + r * Math.sin(theta);
 
-                // --- EL "MURO" ANTI-AGUA ---
-                // Si el punto se pasa de esta linea hacia el este (mar), lo corremos al oeste
-                if (lng > -57.536) { 
-                    lng -= 0.015; // Lo empujamos 15 cuadras para adentro
-                }
-                
-                // Corrección especifica para la "panza" de Cabo Corrientes
-                if (lat < -38.01 && lng > -57.525) {
-                    lng -= 0.01;
+                // FILTRO DE ORO: ¿Cayó en tierra?
+                if (!estaEnTierra(lat, lng)) {
+                    continue; // Cayó al agua -> Lo descartamos y probamos otro
                 }
 
-                // Lógica de Color (Más verde en zonas seguras, más rojo en periferia)
+                // Lógica de color
                 const rand = Math.random();
                 let color, radioPunto;
 
                 if (nombreZona === "Periferia") {
-                    // Periferia: Más rojo/amarillo y puntos grandes
-                    radioPunto = 40;
-                    if (rand < 0.3) color = '#10B981'; // Verde
-                    else if (rand < 0.8) color = '#EF4444'; // Rojo (Estafa)
-                    else color = '#F59E0B'; // Amarillo
+                    radioPunto = 35;
+                    if (rand < 0.4) color = '#10B981'; // Verde
+                    else if (rand < 0.85) color = '#EF4444'; // Rojo (Más estafa lejos)
+                    else color = '#F59E0B'; 
                 } else {
-                    // Centro/Güemes: Más verde y puntos chicos (aglomeración)
-                    radioPunto = 25;
-                    if (rand < 0.85) color = '#10B981'; // Verde
-                    else if (rand < 0.95) color = '#EF4444'; // Rojo
-                    else color = '#F59E0B'; // Amarillo
+                    // Centro/Güemes
+                    radioPunto = 28;
+                    if (rand < 0.85) color = '#10B981'; // Verde (Más seguro cerca)
+                    else if (rand < 0.95) color = '#EF4444'; 
+                    else color = '#F59E0B'; 
                 }
 
                 // Dibujar
@@ -4180,26 +4205,21 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
                     radius: radioPunto,
                     weight: 0 
                 }).addTo(map).bindPopup(`Zona: ${nombreZona}<br>${color === '#10B981' ? '🛡️ Verificado' : '⚠️ Alerta'}`);
+
+                generados++;
             }
         }
 
-        // --- DEFINICIÓN DE ZONAS (ACÁ ESTÁ LA MAGIA) ---
+        // --- 3. EJECUCIÓN (Aglomeraciones) ---
         
-        // 1. MICROCENTRO / PEATONAL / CASINO (Mucha densidad)
-        // Lat/Lng del Casino Central aprox
-        crearCluster(-38.0020, -57.5430, 90, 0.006, "Microcentro"); 
+        // MICROCENTRO (Plaza Colón / Casino) - Mucha gente
+        crearCluster(-38.0030, -57.5440, 100, 0.007, "Microcentro");
 
-        // 2. GÜEMES / LOS TRONCOS (Alta densidad)
-        // Lat/Lng de Plaza del Agua aprox
-        crearCluster(-38.0130, -57.5380, 70, 0.006, "Güemes");
+        // GÜEMES / TRONCOS - Mucha gente
+        crearCluster(-38.0130, -57.5380, 80, 0.006, "Güemes");
 
-        // 3. LA PERLA (Densidad Media)
-        // Lat/Lng Plaza España aprox
-        crearCluster(-37.9900, -57.5480, 40, 0.008, "La Perla");
-
-        // 4. MACROCENTRO / PERIFERIA (Pocos puntos y dispersos)
-        // Centrado más adentro (Av. Independencia y Luro) con radio grande
-        crearCluster(-38.0000, -57.5650, 50, 0.025, "Periferia");
+        // MACROCENTRO / PERIFERIA - Dispersos
+        crearCluster(-38.0000, -57.5600, 50, 0.025, "Periferia");
 
 
         // Modo oscuro automático

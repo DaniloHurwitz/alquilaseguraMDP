@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>1Alquila Seguro MDP</title>
+    <title>Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="keywords" content="verificación inmobiliaria, anti fraude, alquiler seguro, mar del plata">
     <meta name="theme-color" content="#002B49">
@@ -4136,26 +4136,27 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
             attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- GENERACIÓN NATURAL ---
-        const cantidadPuntos = 500;
+        // --- GENERACIÓN NATURAL AJUSTADA ---
+        const cantidadPuntos = 250; // REDUCIDO A LA MITAD
         let puntosValidos = 0;
         let seguridadLoop = 0;
 
-        // Función de sesgo para concentrar puntos en el centro
+        // Función de sesgo: Aumentado a 2.8 para mayor concentración central
         function randBias(exponente) {
             return Math.pow(Math.random(), exponente);
         }
 
-        // Bucle hasta tener 500 puntos EN TIERRA
+        // Bucle hasta tener 250 puntos EN TIERRA
         while (puntosValidos < cantidadPuntos && seguridadLoop < 10000) {
             seguridadLoop++;
 
-            // 1. GENERACIÓN POLAR (La que te gustó de la V2)
-            const distanciaMax = 0.085; // Un poco más amplio para llegar a periférias
-            const radio = randBias(2.2) * distanciaMax; // Densidad central
+            // 1. GENERACIÓN POLAR (Más concentrada)
+            // Reducido el alcance máximo para que no se vayan tan lejos
+            const distanciaMax = 0.06; 
+            // Aumentado el sesgo para que la mayoría caiga cerca del centro
+            const radio = randBias(2.8) * distanciaMax; 
             
             // Ángulos: Evitamos el cuadrante Este puro (Mar) para eficiencia
-            // Generamos entre 0.8 radianes (Noreste) y 5.5 radianes (Sureste) dando la vuelta por el Oeste
             const anguloRad = (Math.random() * 4.7) + 0.8; 
 
             // Convertir a coordenadas
@@ -4165,30 +4166,25 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
             const lat = centroLat + latOffset;
             const lng = centroLng + lngOffset;
 
-            // 2. FILTRO DE COSTA CURVA (La Magia) 🪄
-            // En lugar de una línea recta, calculamos la curva de Mar del Plata.
-            // El punto más al Este es Cabo Corrientes (-38.015, -57.512)
-            // Cuanto más nos alejamos de esa latitud (norte o sur), la costa se mete al oeste.
-            
+            // 2. FILTRO DE COSTA CURVA (Refinado) 🪄
             const latCabo = -38.015;
             const lngCabo = -57.512;
             const diferenciaLat = Math.abs(lat - latCabo);
             
-            // Fórmula de la curva costera:
-            // Límite Este = Cabo - (Curvatura según distancia Norte/Sur)
-            // El factor 1.6 define qué tan rápido se "mete" la costa hacia adentro.
+            // Fórmula de la curva costera (Misma curva suave)
             const limiteEstePermitido = lngCabo - (diferenciaLat * 1.6); 
 
-            // Buffer de seguridad: Restamos un poquito (0.002) para no caer en la arena/playa
-            if (lng > (limiteEstePermitido - 0.002)) {
-                continue; // Cayó al agua -> Ignorar y probar de nuevo (NO empujar)
+            // BUFFER DE SEGURIDAD AUMENTADO:
+            // Cambiado de 0.002 a 0.003 (aprox 3 cuadras de margen desde el agua)
+            if (lng > (limiteEstePermitido - 0.003)) {
+                continue; // Cayó muy cerca del agua -> Ignorar
             }
 
-            // 3. COLOR Y LÓGICA (Si pasó el filtro, lo dibujamos)
+            // 3. COLOR Y LÓGICA (Igual que antes, pero ahora la mayoría será "Centro")
             const rand = Math.random();
             let color, text, circleRadius;
 
-            // Más verde en el centro geográfico, más rojo en la periferia
+            // Definición de "Centro" (Radio de ~2km)
             const esCentro = (Math.abs(lat - centroLat) < 0.02 && Math.abs(lng - centroLng) < 0.02);
 
             if (esCentro) {

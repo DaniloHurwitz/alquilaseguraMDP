@@ -1,1 +1,360 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Términos y Condiciones - Alquila Seguro MDP</title>
+    <meta name="robots" content="noindex, nofollow"> <meta name="theme-color" content="#002B49">
 
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           1. ESTILOS BASE (Compatibles con tu diseño)
+           ========================================================================== */
+        :root {
+            --bg-body: #F3F4F6;
+            --bg-card: #FFFFFF;
+            --text-main: #111827;
+            --text-muted: #4B5563;
+            --border-color: #E5E7EB;
+            --primary: #002B49;
+            --secondary: #00A8E8;
+            --danger: #DC2626;
+            --dark-footer: #020617;
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        [data-theme="dark"] {
+            --bg-body: #0B1120;
+            --bg-card: #1E293B;
+            --text-main: #F1F5F9;
+            --text-muted: #94A3B8;
+            --border-color: #334155;
+            --primary: #38BDF8;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+        }
+
+        h1, h2, h3 { font-family: 'Montserrat', sans-serif; color: var(--primary); }
+
+        /* ==========================================================================
+           2. HEADER COMPACTO
+           ========================================================================== */
+        header {
+            background: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .logo {
+            font-size: 1.25rem;
+            font-weight: 900;
+            text-decoration: none;
+            color: var(--text-main);
+            text-transform: uppercase;
+        }
+        .logo span { color: var(--secondary); }
+
+        /* ==========================================================================
+           3. CONTENEDOR LEGAL (FORMATO CONTRATO)
+           ========================================================================== */
+        .legal-wrapper {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .legal-card {
+            background: var(--bg-card);
+            padding: 50px;
+            border-radius: 12px;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border-color);
+        }
+
+        .doc-header {
+            border-bottom: 2px solid var(--border-color);
+            padding-bottom: 30px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        .doc-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: -1px;
+        }
+
+        .last-update {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--bg-body);
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        /* Cláusulas */
+        .clause {
+            margin-bottom: 40px;
+        }
+
+        .clause-title {
+            font-size: 1.1rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-main);
+            border-left: 4px solid var(--secondary);
+            padding-left: 15px;
+        }
+
+        .clause-text {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            text-align: justify;
+        }
+
+        .clause-list {
+            margin: 15px 0 15px 20px;
+            list-style-type: disc;
+            color: var(--text-muted);
+        }
+
+        .clause-list li {
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+
+        /* Cajas de Alerta dentro del contrato */
+        .alert-box {
+            background: rgba(220, 38, 38, 0.05);
+            border: 1px solid var(--danger);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            color: var(--danger);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .info-box {
+            background: rgba(0, 168, 232, 0.05);
+            border: 1px solid var(--secondary);
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            color: var(--primary);
+            font-size: 0.9rem;
+        }
+
+        /* Frase Final Clave */
+        .final-disclaimer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 40px;
+            border-top: 2px dashed var(--border-color);
+        }
+
+        .final-disclaimer h4 {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        /* Botón Volver */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: var(--primary);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transition: transform 0.2s;
+            font-size: 1.5rem;
+            z-index: 200;
+        }
+        .fab:hover { transform: scale(1.1); background: var(--secondary); }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            background: var(--dark-footer);
+            margin-top: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .legal-card { padding: 25px; }
+            .doc-header h1 { font-size: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo">AlquilaSeguro<span>MDP</span></a>
+    </header>
+
+    <div class="legal-wrapper">
+        <div class="legal-card">
+            
+            <div class="doc-header">
+                <h1>Términos y Condiciones de Uso</h1>
+                <span class="last-update">ACTUALIZACIÓN: DICIEMBRE 2025 - VERSIÓN 3.0</span>
+                <p style="margin-top: 20px; font-size: 0.9rem; color: var(--text-muted);">
+                    LEA ATENTAMENTE EL SIGUIENTE ACUERDO ANTES DE CONTRATAR EL SERVICIO.
+                </p>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">1. Naturaleza del Servicio (No Inmobiliario)</div>
+                <div class="clause-text">
+                    <p><strong>Alquila Seguro MDP</strong> (en adelante, "El Prestador") declara explícitamente que:</p>
+                    <ul class="clause-list">
+                        <li>Es un servicio privado e independiente de <strong>constatación fáctica, logística y mensajería técnica</strong>.</li>
+                        <li><strong>NO es una inmobiliaria</strong>, ni una empresa de corretaje, ni actúa bajo la figura de martillero público.</li>
+                        <li><strong>NO intermedia</strong>, no comercializa, no oferta, no reserva, ni gestiona alquileres o propiedades de terceros.</li>
+                        <li>La relación con el Cliente se limita exclusivamente a la prestación de un servicio de verificación visual en una ubicación geográfica determinada.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">2. Alcance Limitado del Servicio</div>
+                <div class="clause-text">
+                    <p>El servicio contratado se circunscribe estrictamente a:</p>
+                    <ul class="clause-list">
+                        <li>La visita presencial al domicilio indicado por el Cliente.</li>
+                        <li>La verificación visual de la existencia física del inmueble (fachada e interior si corresponde).</li>
+                        <li>La prueba de acceso (tenencia de llaves) por parte del supuesto anfitrión en el momento de la visita.</li>
+                        <li>La recolección de material audiovisual (fotos/video) para ser remitido al Cliente.</li>
+                    </ul>
+                    <div class="info-box">
+                        <strong>IMPORTANTE:</strong> La verificación representa una "instantánea" de la situación en el momento exacto de la visita. No implica monitoreo continuo ni garantía de permanencia de dicha situación.
+                    </div>
+                </div>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">3. Exclusiones de Garantía y Responsabilidad</div>
+                <div class="clause-text">
+                    <p>El Cliente reconoce y acepta que El Prestador <strong>NO GARANTIZA</strong>:</p>
+                    <ul class="clause-list">
+                        <li>La titularidad dominial legal del inmueble (quién figura en el Registro de la Propiedad).</li>
+                        <li>La legitimidad o buena fe del supuesto propietario/anfitrión.</li>
+                        <li>Que no existan deudas, litigios, embargos o situaciones de ocupación ilegítima no visibles.</li>
+                        <li>El cumplimiento del contrato de alquiler pactado entre el Cliente y el tercero.</li>
+                        <li>La conducta futura del anfitrión posterior a la verificación.</li>
+                    </ul>
+                    <div class="alert-box">
+                        <strong>DESCARGO DE RESPONSABILIDAD:</strong> El informe es de carácter meramente informativo y orientativo. La decisión final de alquilar, transferir dinero o firmar contratos es exclusiva responsabilidad del Cliente. <strong>Alquila Seguro MDP no responde civil ni penalmente por pérdidas económicas, estafas o incumplimientos derivados de decisiones tomadas por el Cliente.</strong>
+                    </div>
+                </div>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">4. Honorarios y Política de No Reembolso</div>
+                <div class="clause-text">
+                    <p>El pago realizado por el Cliente corresponde a los honorarios por la <strong>logística, el tiempo y la gestión</strong> de la verificación, independientemente del resultado de la misma.</p>
+                    <ul class="clause-list">
+                        <li>Si el informe revela que la propiedad no existe, es un intento de estafa o no coincide con lo ofertado, <strong>el servicio se considera prestado exitosamente</strong> (ya que se cumplió el objetivo de prevenir un riesgo mayor) y no habrá lugar a devolución del dinero.</li>
+                        <li>Si el supuesto anfitrión no se presenta a la cita pactada o niega el acceso, el servicio se cobrará en su totalidad por el traslado y tiempo incurrido por el inspector.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">5. Verificación de Identidad</div>
+                <div class="clause-text">
+                    <p>La validación de identidad del supuesto propietario se basa en la documentación exhibida voluntariamente en el lugar (DNI, boletas de servicio). El Prestador no cuenta con facultades de policía ni acceso a bases de datos oficiales restringidas (Renaper, Veraz, etc.), por lo que no puede certificar la autenticidad de documentos que pudieran ser apócrifos de alta calidad.</p>
+                </div>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">6. Seguridad y Derecho de Admisión</div>
+                <div class="clause-text">
+                    <p>Para preservar la integridad física del personal, El Prestador se reserva el derecho de:</p>
+                    <ul class="clause-list">
+                        <li>Rechazar verificaciones en zonas consideradas de alto riesgo o peligrosidad.</li>
+                        <li>Limitar la inspección exclusivamente a la fachada exterior si el entorno o la situación se tornan hostiles o inseguros durante la visita.</li>
+                        <li>Cancelar el servicio (con reembolso) si las condiciones climáticas o de fuerza mayor impiden la libre circulación.</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">7. Privacidad de Datos</div>
+                <div class="clause-text">
+                    <p>Los datos personales proporcionados por el Cliente se utilizarán únicamente para la ejecución del servicio. No serán comercializados ni compartidos con terceros, salvo requerimiento judicial expreso.</p>
+                </div>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">8. Ley Aplicable y Jurisdicción</div>
+                <div class="clause-text">
+                    <p>El presente acuerdo se rige por las leyes de la República Argentina. Para cualquier controversia derivada de la interpretación o ejecución de este servicio, las partes se someten a la jurisdicción exclusiva de los <strong>Tribunales Ordinarios del Departamento Judicial de Mar del Plata</strong>, renunciando a cualquier otro fuero que pudiera corresponder.</p>
+                </div>
+            </div>
+
+            <div class="clause">
+                <div class="clause-title">9. Aceptación Expresa</div>
+                <div class="clause-text">
+                    <p>El envío del formulario de solicitud, el pago del servicio o el inicio de contacto vía WhatsApp implica la <strong>lectura, comprensión y aceptación total e incondicional</strong> de los presentes Términos y Condiciones.</p>
+                </div>
+            </div>
+
+            <div class="final-disclaimer">
+                <div style="font-size: 2.5rem; margin-bottom: 20px;">🛡️</div>
+                <h4>DECLARACIÓN FINAL</h4>
+                <p style="font-style: italic; color: var(--text-main); font-weight: 600;">
+                    "Alquila Seguro MDP brinda información verificada al momento de la constatación. No garantiza operaciones inmobiliarias ni resultados económicos."
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Alquila Seguro MDP. Todos los derechos reservados.</p>
+            <p style="font-size: 0.75rem; margin-top: 10px; opacity: 0.7;">
+                Este sitio no tiene afiliación con Facebook, Meta, Airbnb ni Booking.com.
+            </p>
+        </div>
+    </footer>
+
+    <a href="index.html" class="fab" title="Volver al inicio">←</a>
+
+</body>
+</html>

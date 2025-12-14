@@ -686,74 +686,54 @@
 </div>
 
        <script>
-        // ==========================================
-        // 1. INICIALIZACIÓN DEL SISTEMA
-        // ==========================================
-        document.addEventListener('DOMContentLoaded', () => {
-            // Ocultar Loader
-            setTimeout(() => {
-                const loader = document.getElementById('preloader');
-                if(loader) {
-                    loader.style.opacity = '0';
-                    setTimeout(() => loader.style.display = 'none', 500);
-                }
-            }, 1000);
-
-            initTheme();
-            initScamCounter();
-            initCanvas(); 
-            initObserver();
-            
-            // Si hay sesión activa (opcional), cargar leads
-            if(localStorage.getItem('adminLogged') === 'true') {
-                loadLeads();
+    // ==========================================
+    // 1. INICIALIZACIÓN DEL SISTEMA
+    // ==========================================
+    document.addEventListener('DOMContentLoaded', () => {
+        // Ocultar Loader (el ID es 'loader', no 'preloader')
+        setTimeout(() => {
+            const loader = document.getElementById('loader');
+            if (loader) {
+                loader.style.opacity = '0';
+                setTimeout(() => loader.style.display = 'none', 500);
             }
-        });
+        }, 1000);
 
-        // ==========================================
-        // 2. SISTEMA DE ADMIN & LOGIN (ARREGLADO)
-        // ==========================================
-        
-        // Función para abrir/cerrar modales
-        function openModal(id) {
-            document.getElementById(id).style.display = 'flex';
-        }
-        function closeModal(id) {
-            document.getElementById(id).style.display = 'none';
-        }
+        initTheme();
+        initScamCounter();
+        initCanvas();
+        initObserver();
+        loadLeads(); // Cargar leads si hay sesión o siempre
+    });
 
-        // Autenticación Admin
-        function authAdmin() {
-            const u = document.getElementById('adm-u').value;
-            const p = document.getElementById('adm-p').value;
-            
-            if(u === 'admin' && p === 'SEGURO2025') {
-                closeModal('login-modal');
-                document.getElementById('admin-overlay').style.display = 'flex';
-                showToast("Acceso Autorizado. Bienvenido Staff.", 'success');
-                loadLeads(); // Cargar datos
-                showTab('gen'); // Ir a la primera pestaña por defecto
-            } else {
-                showToast("Credenciales incorrectas", 'error');
-            }
-        }
+    // ==========================================
+    // 2. SISTEMA DE ADMIN & LOGIN (CORREGIDO)
+    // ==========================================
+    function authAdmin() {
+        const u = document.getElementById('adm-u').value.trim();
+        const p = document.getElementById('adm-p').value;
 
-        // FALTABA ESTA FUNCIÓN: Control de Pestañas del Panel
-        function showTab(tabId) {
-            // Ocultar todas las pestañas
-            document.getElementById('tab-gen').classList.add('hidden');
-            document.getElementById('tab-leads').classList.add('hidden');
-            
-            // Quitar clase active de los botones
-            const navItems = document.querySelectorAll('.admin-nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-            
-            // Mostrar la deseada
-            document.getElementById('tab-' + tabId).classList.remove('hidden');
-            
-            // Activar botón (simple lógica visual)
-            event.currentTarget.classList.add('active');
+        if (u === 'admin' && p === 'SEGURO2025') {
+            document.getElementById('login-modal').style.display = 'none';
+            document.getElementById('admin-modal').style.display = 'block';  // Mostrar panel admin
+
+            alert("Acceso Autorizado. Bienvenido Staff.");  // Toast temporal
+            loadLeads();
+            showTab('gen');  // Ir a la pestaña Generar
+        } else {
+            alert("Credenciales incorrectas");
         }
+    }
+
+    function showTab(tabId) {
+        // Ocultar tabs
+        document.querySelectorAll('#tab-gen, #tab-leads').forEach(tab => tab.classList.add('hidden'));
+        // Mostrar seleccionada
+        document.getElementById('tab-' + tabId).classList.remove('hidden');
+        // Activar botón del sidebar
+        document.querySelectorAll('.adm-item').forEach(item => item.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
 
         // Sistema de Leads (Guardar y Cargar)
         function submitLead(e) {

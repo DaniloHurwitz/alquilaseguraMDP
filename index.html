@@ -3,85 +3,382 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Alquila Seguro MDP: Verificación de propiedades de alquiler en Mar del Plata para evitar estafas.">
-    <title>Alquila Seguro MDP - Home</title>
+    <meta name="description" content="Alquila Seguro MDP: Servicio de verificación de propiedades temporarias en Mar del Plata. Evitá estafas y asegurá tus vacaciones.">
+    <title>Inicio | Alquila Seguro MDP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
     <style>
-        body { font-family: 'Roboto', sans-serif; margin: 0; padding: 0; background-color: #f4f4f4; color: #333; }
-        header { background-color: #003366; color: white; padding: 10px; position: fixed; width: 100%; top: 0; z-index: 1000; }
-        nav ul { list-style: none; display: flex; justify-content: center; margin: 0; padding: 0; }
-        nav ul li { margin: 0 15px; }
-        nav ul li a { color: white; text-decoration: none; font-weight: bold; transition: color 0.3s; }
-        nav ul li a:hover { color: #00BFFF; }
-        .hero { background-color: #00BFFF; color: white; text-align: center; padding: 100px 20px; margin-top: 60px; }
-        .hero h1 { font-size: 2.5em; }
-        .hero button { background-color: #003366; color: white; border: none; padding: 10px 20px; font-size: 1.2em; cursor: pointer; transition: background 0.3s; }
-        .hero button:hover { background-color: #005599; }
-        section { padding: 50px 20px; max-width: 1200px; margin: auto; }
-        .testimonials { background-color: white; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-        .faq { cursor: pointer; }
-        .faq-content { display: none; padding: 10px; background-color: #eee; }
-        footer { background-color: #003366; color: white; text-align: center; padding: 20px; }
-        @media (max-width: 768px) { nav ul { flex-direction: column; } .hero { padding: 80px 10px; } }
+        /* --- CSS GLOBAL --- */
+        :root {
+            --primary: #003366; /* Azul Marino */
+            --secondary: #00BFFF; /* Celeste Costa */
+            --accent: #FFD700; /* Dorado sutil para alertas */
+            --white: #ffffff;
+            --gray-light: #f4f6f8;
+            --gray-dark: #333333;
+            --text-color: #2c3e50;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            line-height: 1.6;
+            color: var(--text-color);
+            background-color: var(--gray-light);
+        }
+
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+
+        /* --- HEADER & NAV --- */
+        header {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo span { color: var(--secondary); margin-left: 5px; }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            font-weight: 500;
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            background-color: var(--secondary);
+            color: var(--primary);
+        }
+
+        /* Menu Hamburger Mobile */
+        .menu-toggle { display: none; cursor: pointer; font-size: 1.5rem; }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            background: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)), url('https://images.unsplash.com/photo-1542259682-167856333908?auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+            height: 80vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .hero-content h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background-color: var(--secondary);
+            color: var(--primary);
+            border-radius: 5px;
+            font-weight: 700;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        /* --- SECCIONES GENERALES --- */
+        section { padding: 60px 0; }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--primary);
+            font-size: 2.2rem;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background: var(--secondary);
+            margin: 10px auto 0;
+        }
+
+        /* --- BENEFICIOS (Grid) --- */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+        }
+
+        .benefit-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: var(--transition);
+        }
+
+        .benefit-card:hover { transform: translateY(-5px); }
+        .benefit-icon { font-size: 3rem; margin-bottom: 20px; color: var(--secondary); }
+
+        /* --- FAQ (Acordeón) --- */
+        .faq-container { max-width: 800px; margin: 0 auto; }
+
+        .faq-item {
+            background: var(--white);
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            overflow: hidden;
+        }
+
+        .faq-question {
+            padding: 20px;
+            background: var(--white);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 500;
+            color: var(--primary);
+        }
+
+        .faq-question:hover { background-color: #f9f9f9; }
+        .faq-question::after { content: '+'; font-size: 1.5rem; color: var(--secondary); }
+        
+        .faq-item.active .faq-question::after { content: '-'; }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            padding: 0 20px;
+            background: #fafafa;
+            color: #555;
+        }
+
+        .faq-item.active .faq-answer { padding: 20px; max-height: 500px; border-top: 1px solid #eee; }
+
+        /* --- FOOTER --- */
+        footer {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 50px 0 20px;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-col h4 { margin-bottom: 20px; color: var(--secondary); }
+        .footer-col ul li { margin-bottom: 10px; }
+        .footer-col ul li a:hover { color: var(--secondary); padding-left: 5px; }
+
+        .copyright {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.9rem;
+        }
+
+        /* --- RESPONSIVE MEDIA QUERIES --- */
+        @media (max-width: 768px) {
+            .navbar { flex-wrap: wrap; }
+            .menu-toggle { display: block; }
+            .nav-links {
+                display: none;
+                width: 100%;
+                flex-direction: column;
+                margin-top: 20px;
+                background: rgba(0,0,0,0.1);
+            }
+            .nav-links.active { display: flex; }
+            .hero-content h1 { font-size: 2rem; }
+        }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+
     <header>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="verification.html">Verificación</a></li>
-                <li><a href="about.html">Sobre Nosotros</a></li>
-                <li><a href="contact.html">Contacto</a></li>
-            </ul>
-        </nav>
+        <div class="container navbar">
+            <div class="logo">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#00BFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+                <span>AlquilaSeguroMDP</span>
+            </div>
+            <div class="menu-toggle" id="mobile-menu">☰</div>
+            <nav class="nav-links" id="nav-links">
+                <a href="index.html" class="active">Inicio</a>
+                <a href="verification.html">Verificación</a>
+                <a href="about.html">Nosotros</a>
+                <a href="contact.html">Contacto</a>
+            </nav>
+        </div>
     </header>
 
     <section class="hero">
-        <h1>Bienvenido a Alquila Seguro MDP</h1>
-        <p>Verificamos propiedades de alquiler en Mar del Plata para que tus vacaciones sean seguras y sin estafas. Evitá fraudes comunes como fotos falsas o dueños inventados.</p>
-        <button onclick="window.location.href='verification.html'">Iniciar Verificación</button>
+        <div class="container hero-content">
+            <h1>Tus ojos en Mar del Plata</h1>
+            <p>No arriesgues tus vacaciones. Verificamos la existencia de propiedades y dueños antes de que transfieras la seña.</p>
+            <a href="verification.html" class="btn">Solicitar Verificación</a>
+        </div>
     </section>
 
-    <section class="testimonials">
-        <h2>Testimonios</h2>
-        <p>"Gracias a Alquila Seguro, evité una estafa en MDP. ¡Recomendado!" - Juan P., Buenos Aires</p>
-        <p>"Servicio rápido y detallado. Ahora alquilo con confianza." - María L., Córdoba</p>
-        <!-- Agrega más testimonios para extender -->
-        <p>"Excelente atención, verificaron todo en 24 horas." - Pedro G., Rosario</p>
-        <p>"Me salvaron de perder $50.000 en una seña falsa." - Ana M., Mendoza</p>
+    <section class="container">
+        <h2 class="section-title">¿Por qué elegirnos?</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">📍</div>
+                <h3>Presencia Local</h3>
+                <p>Vivimos en Mar del Plata. Vamos personalmente a la dirección para comprobar que la propiedad existe y no es un terreno baldío.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🛡️</div>
+                <h3>Seguridad Total</h3>
+                <p>Validamos la identidad del supuesto dueño solicitando documentación y prueba de vida en el lugar.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🚀</div>
+                <h3>Reporte en 24hs</h3>
+                <p>Recibís un informe completo con fotos, videos y videollamada en tiempo real para tu tranquilidad.</p>
+            </div>
+        </div>
     </section>
 
-    <section class="faq">
-        <h2>Preguntas Frecuentes</h2>
-        <div class="faq-item">
-            <h3 onclick="toggleFAQ(this)">¿Cómo funciona el servicio?</h3>
-            <div class="faq-content">Ingresás los datos de la propiedad, nosotros verificamos físicamente y te enviamos un reporte detallado.</div>
-        </div>
-        <div class="faq-item">
-            <h3 onclick="toggleFAQ(this)">¿Cuánto cuesta?</h3>
-            <div class="faq-content">Desde $20.000 por verificación básica. Consultá precios en la página de verificación.</div>
-        </div>
-        <!-- Agrega más FAQs para extender -->
-        <div class="faq-item">
-            <h3 onclick="toggleFAQ(this)">¿Qué pasa si detectan una estafa?</h3>
-            <div class="faq-content">Te alertamos inmediatamente y te damos consejos para denunciar.</div>
-        </div>
-        <div class="faq-item">
-            <h3 onclick="toggleFAQ(this)">¿Cubren otras ciudades?</h3>
-            <div class="faq-content">Por ahora solo MDP, pero planeamos expandirnos.</div>
+    <section class="container">
+        <h2 class="section-title">Preguntas Frecuentes</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">¿Cómo sé que el dueño es real?</div>
+                <div class="faq-answer">
+                    <p>Nos encargamos de realizar un cruce de datos. Visitamos la propiedad, hablamos con quien nos recibe, pedimos servicios a su nombre y verificamos que coincida con la cuenta bancaria donde te piden depositar.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">¿Cuánto cuesta el servicio?</div>
+                <div class="faq-answer">
+                    <p>Las tarifas varían según la zona de Mar del Plata (Centro, Puerto, Constitución, etc.). Podés ver nuestros precios actualizados en la sección de contacto o realizar una cotización rápida en la pestaña de verificación.</p>
+                </div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">¿Qué pasa si resulta ser una estafa?</div>
+                <div class="faq-answer">
+                    <p>Si detectamos una estafa, te avisamos de inmediato con pruebas. Aunque la noticia no sea buena, nuestro servicio habrá valido la pena al ahorrarte perder el 100% de tu dinero de la seña.</p>
+                </div>
+            </div>
         </div>
     </section>
 
     <footer>
-        <p>&copy; 2025 Alquila Seguro MDP. Todos los derechos reservados.</p>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h4>Alquila Seguro MDP</h4>
+                    <p>Brindando seguridad y confianza a los turistas desde 2024.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Enlaces Rápidos</h4>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="verification.html">Verificar Propiedad</a></li>
+                        <li><a href="contact.html">Contacto</a></li>
+                        <li><a href="#">Términos y Condiciones</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Contacto</h4>
+                    <ul>
+                        <li>Email: info@alquilaseguromdp.com.ar</li>
+                        <li>WhatsApp: +54 223 123 4567</li>
+                        <li>Mar del Plata, Buenos Aires</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2025 Alquila Seguro MDP. Todos los derechos reservados.</p>
+            </div>
+        </div>
     </footer>
 
     <script>
-        function toggleFAQ(element) {
-            const content = element.nextElementSibling;
-            content.style.display = content.style.display === 'block' ? 'none' : 'block';
-        }
+        // --- JAVASCRIPT INDEX ---
+        
+        // Mobile Menu Toggle
+        const menuToggle = document.getElementById('mobile-menu');
+        const navLinks = document.getElementById('nav-links');
+
+        menuToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+        });
+
+        // FAQ Accordion Logic
+        const faqQuestions = document.querySelectorAll('.faq-question');
+
+        faqQuestions.forEach(question => {
+            question.addEventListener('click', () => {
+                const item = question.parentElement;
+                
+                // Close others (optional, for accordion effect)
+                document.querySelectorAll('.faq-item').forEach(i => {
+                    if (i !== item) i.classList.remove('active');
+                });
+
+                item.classList.toggle('active');
+            });
+        });
     </script>
 </body>
 </html>

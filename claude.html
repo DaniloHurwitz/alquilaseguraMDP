@@ -4122,10 +4122,9 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Centro del mapa (Ajustado un poco al Oeste para centrar la nueva zona)
-        const mapCenterLat = -38.0000;
-        // ANTES: -57.5440 -> AHORA: -57.5530 (Lo movimos ~900m a la izquierda)
-        const mapCenterLng = -57.5530; 
+        // CENTRO REAL (Casino / Plaza Colón)
+        const mapCenterLat = -38.0050;
+        const mapCenterLng = -57.5430;
         
         const map = L.map('map', { 
             center: [mapCenterLat, mapCenterLng], 
@@ -4134,73 +4133,69 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
         });
 
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 20
+            attribution: '&copy; OSM &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- PARÁMETROS ---
-        const cantidadPuntos = 250; 
-        
-        // CÍRCULO DE FILTRO (También movido a la izquierda)
-        const circuloUsuarioLat = -37.9980;
-        const circuloUsuarioLng = -57.5590; // Movido al Oeste para coincidir
-        const circuloUsuarioRadio = 0.036; 
+        // --- ZONAS CALIENTES (Hotspots) ---
+        // Definimos coordenadas exactas donde QUEREMOS mucha gente
+        const zonas = [
+            { name: "Plaza Colon/Centro", lat: -38.0010, lng: -57.5410, radio: 0.008, peso: 0.4 }, // 40% de los puntos acá
+            { name: "Güemes/Troncos",     lat: -38.0120, lng: -57.5390, radio: 0.007, peso: 0.3 }, // 30% acá
+            { name: "Macrocentro/General",lat: -38.0000, lng: -57.5550, radio: 0.025, peso: 0.3 }  // 30% dispersos
+        ];
 
+        const cantidadPuntos = 250; 
         let puntosValidos = 0;
         let seguridadLoop = 0;
 
-        function randBias(exponente) {
-            return Math.pow(Math.random(), exponente);
-        }
-
-        while (puntosValidos < cantidadPuntos && seguridadLoop < 20000) {
+        while (puntosValidos < cantidadPuntos && seguridadLoop < 10000) {
             seguridadLoop++;
 
-            // --- GENERACIÓN ---
-            const distanciaGen = 0.07; 
-            const radio = randBias(3.5) * distanciaGen; 
-            const anguloRad = (Math.random() * 4.7) + 0.8; 
+            // 1. ELEGIR ZONA (Según el "peso")
+            const rZona = Math.random();
+            let zonaElegida;
+            if (rZona < 0.4) zonaElegida = zonas[0]; // Colón
+            else if (rZona < 0.7) zonaElegida = zonas[1]; // Güemes
+            else zonaElegida = zonas[2]; // General
 
-            // Generamos desde el NUEVO centro (más alejado del mar)
-            const lat = mapCenterLat + Math.sin(anguloRad) * radio;
-            const lng = mapCenterLng + Math.cos(anguloRad) * radio * 1.4;
+            // 2. GENERAR PUNTO EN ESA ZONA
+            // Usamos distribución normal para que se concentren en el centro de la zona
+            const u = Math.random() + Math.random() - 1; // Aprox normal (-1 a 1)
+            const v = Math.random() + Math.random() - 1; 
+            
+            const lat = zonaElegida.lat + (u * zonaElegida.radio);
+            const lng = zonaElegida.lng + (v * zonaElegida.radio);
 
-            // --- FILTRO 1: COSTA CURVA (Capa de seguridad extra) ---
-            const latCabo = -38.015;
-            const lngCabo = -57.512;
-            const diferenciaLat = Math.abs(lat - latCabo);
-            const limiteEstePermitido = lngCabo - (diferenciaLat * 1.6); 
+            // 3. FILTRO "PERALTA RAMOS" (Ajuste Fino de Costa)
+            // Cabo Corrientes es el punto más al Este (-57.513)
+            // A medida que subimos o bajamos, cortamos la longitud hacia el Oeste.
+            const latCabo = -38.0155;
+            const lngCabo = -57.5130;
+            const distLat = Math.abs(lat - latCabo);
+            
+            // Factor 1.9: Define la inclinación de la costa. 
+            // Restamos 0.0015 (1 cuadra y media) de margen de seguridad para no tocar la arena.
+            const limiteCosta = lngCabo - (distLat * 1.9) - 0.0015;
 
-            // Buffer simple
-            if (lng > (limiteEstePermitido - 0.0045)) {
-                continue; 
+            if (lng > limiteCosta) {
+                continue; // Cayó en el agua o en la vereda de la costa -> Chau
             }
 
-            // --- FILTRO 2: TU CÍRCULO ---
-            const distAlCentroUsuario = Math.sqrt(
-                Math.pow(lat - circuloUsuarioLat, 2) + 
-                Math.pow(lng - circuloUsuarioLng, 2)
-            );
-
-            if (distAlCentroUsuario > circuloUsuarioRadio) {
-                continue;
-            }
-
-            // --- DIBUJAR ---
+            // 4. COLOR
             const rand = Math.random();
             let color, text, circleRadius;
             
-            // Microcentro ajustado a la nueva posición
-            const esMicroCentro = (Math.abs(lat - mapCenterLat) < 0.015 && Math.abs(lng - mapCenterLng) < 0.015);
-
-            if (esMicroCentro) {
-                circleRadius = 28; 
-                if (rand < 0.80) { color = '#10B981'; text = '🛡️ Verificado'; }
-                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ Denuncia Activa'; circleRadius = 35; }
+            // Zona Güemes/Colón = Más verde (Verificado)
+            if (zonaElegida.name !== "Macrocentro/General") {
+                circleRadius = 30;
+                if (rand < 0.85) { color = '#10B981'; text = '🛡️ <strong>Verificado</strong><br>Zona: ' + zonaElegida.name; }
+                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ <strong>Alerta</strong><br>Denuncia en revisión'; circleRadius = 40; }
                 else { color = '#F59E0B'; text = '✋ En proceso'; }
             } else {
+                // Zona Alejada = Más mezcla
                 circleRadius = 35;
-                if (rand < 0.40) { color = '#10B981'; text = '🛡️ Verificado'; }
-                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ ALERTA: Zona sin relevar'; circleRadius = 45; }
+                if (rand < 0.50) { color = '#10B981'; text = '🛡️ Verificado'; }
+                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ <strong>Zona Sin Relevar</strong>'; circleRadius = 45; }
                 else { color = '#F59E0B'; text = '✋ En proceso'; }
             }
 

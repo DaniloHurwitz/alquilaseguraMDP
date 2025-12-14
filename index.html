@@ -555,94 +555,97 @@ html, body {
         }
 
         /* ==========================================================================
-           7. INTRO SPLIT SCREEN (NUEVO)
-           ========================================================================== */
-        #intro-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 99999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            pointer-events: none; /* Para que no moleste al terminar */
-        }
+   7. INTRO SPLIT SCREEN (MEJORADO)
+   ========================================================================== */
+#intro-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 99999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-        /* Paneles blanco (Arriba y Abajo) */
-        .intro-panel {
-            position: absolute;
-            left: 0;
-            width: 100%;
-            height: 51%; /* Un 1% extra para evitar líneas blancas en el medio */
-            background-color: #ffffff;
-            z-index: 2;
-            transition: transform 0.8s cubic-bezier(0.8, 0, 0.2, 1);
-        }
+/* Paneles blancos */
+.intro-panel {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 50.5%; /* Un poco más de 50% para que no haya línea en el medio */
+    background-color: #ffffff;
+    z-index: 2;
+    /* Suavidad extrema en la transformación */
+    transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+    will-change: transform; /* Optimización de rendimiento */
+}
 
-        .panel-top {
-            top: 0;
-            transform-origin: top;
-        }
+.panel-top {
+    top: 0;
+    transform-origin: top;
+}
 
-        .panel-bottom {
-            bottom: 0;
-            transform-origin: bottom;
-        }
+.panel-bottom {
+    bottom: 0;
+    transform-origin: bottom;
+}
 
-        /* Contenido (Logo y textos) */
-        .intro-content {
-            position: relative;
-            z-index: 3;
-            text-align: center;
-            opacity: 1;
-            transition: opacity 0.5s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 10px;
-        }
+/* Contenido */
+.intro-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    /* Transición solo para la opacidad del texto */
+    transition: opacity 0.5s ease-out;
+}
 
-        .intro-logo {
-            font-size: 2.5rem;
-            font-weight: 900;
-            color: var(--primary);
-            text-transform: uppercase;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 5px;
-            font-family: 'Montserrat', sans-serif;
-        }
+.intro-logo {
+    font-size: 3rem; /* Más grande */
+    font-weight: 900;
+    color: var(--primary);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-family: 'Montserrat', sans-serif;
+}
 
-        .intro-slogan {
-            font-size: 0.9rem;
-            color: var(--text-muted);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-weight: 600;
-        }
+.intro-slogan {
+    font-size: 1rem;
+    color: var(--text-muted);
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+}
 
-        .intro-welcome {
-            font-size: 0.8rem;
-            color: var(--secondary);
-            margin-top: 15px;
-            animation: pulse 2s infinite;
-        }
+.intro-welcome {
+    font-size: 0.85rem;
+    color: var(--secondary);
+    margin-top: 20px;
+    animation: pulse 1.5s infinite;
+}
 
-        /* Clases para activar la animación */
-        .split-active .panel-top {
-            transform: translateY(-100%);
-        }
+/* ESTADOS DE ANIMACIÓN */
 
-        .split-active .panel-bottom {
-            transform: translateY(100%);
-        }
+/* 1. Desaparece el texto */
+.content-fade-out .intro-content {
+    opacity: 0;
+}
 
-        .split-active .intro-content {
-            opacity: 0;
-        }
+/* 2. Se abren los paneles */
+.panels-open .panel-top {
+    transform: translateY(-100%);
+}
+
+.panels-open .panel-bottom {
+    transform: translateY(100%);
+}
         /* ==========================================================================
            8. HEADER Y NAVEGACIÓN
            ========================================================================== */
@@ -2336,15 +2339,15 @@ section {
     <div class="intro-panel panel-top"></div>
     <div class="intro-panel panel-bottom"></div>
     
-    <div class="intro-content">
+    <div class="intro-content" id="intro-content-wrapper">
         <div class="intro-logo">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
             </svg>
             AlquilaSeguro<span style="color: var(--secondary);">MDP</span>
         </div>
-        <div class="intro-slogan">Seguridad Jurídica & Fáctica</div>
-        <div class="intro-welcome">Bienvenido al sistema...</div>
+        <div class="intro-slogan">Verificación Inmobiliaria Profesional</div>
+        <div class="intro-welcome">Cargando entorno seguro...</div>
     </div>
 </div><!-- Top Alert Banner -->
 <div id="top-alert">
@@ -3231,31 +3234,40 @@ section {
     });
 
 // ==========================================
-    // 3. INTRO ANIMATION (SPLIT)
-    // ==========================================
-    function initLoader() {
-        // Bloquear scroll al inicio
-        document.body.style.overflow = 'hidden';
+// 3. INTRO ANIMATION (SECUENCIAL)
+// ==========================================
+function initLoader() {
+    // Bloquear scroll
+    document.body.style.overflow = 'hidden';
+    
+    const introScreen = document.getElementById('intro-screen');
+    
+    if (!introScreen) return;
 
-        // Esperar 2 segundos como pediste
+    // FASE 1: ESPERA (Lectura) - 3.5 Segundos
+    setTimeout(() => {
+        
+        // FASE 2: DESVANECER TEXTO (Primero se va el logo)
+        introScreen.classList.add('content-fade-out');
+
+        // Esperamos 500ms a que el texto desaparezca para abrir el telón
         setTimeout(() => {
-            const introScreen = document.getElementById('intro-screen');
             
-            if (introScreen) {
-                // 1. Activar la clase que mueve los paneles
-                introScreen.classList.add('split-active');
-                
-                // 2. Devolver el scroll al body
-                document.body.style.overflow = 'auto';
+            // FASE 3: ABRIR PANELES (El efecto partido)
+            introScreen.classList.add('panels-open');
+            
+            // Devolver scroll
+            document.body.style.overflow = 'auto';
 
-                // 3. Eliminar el intro del DOM cuando termine la animación (0.8s después)
-                setTimeout(() => {
-                    introScreen.remove();
-                }, 800);
-            }
-        }, 2000); // 2000ms = 2 segundos de espera
-    }
+            // FASE 4: LIMPIEZA (Eliminar del DOM cuando termine la animación)
+            setTimeout(() => {
+                introScreen.remove();
+            }, 1200); // Esperamos a que termine la animación de apertura
 
+        }, 600); // Tiempo que tarda el texto en irse
+
+    }, 3500); // TIEMPO INICIAL EN PANTALLA (Aumentado para que no sea rápido)
+}
     // ==========================================
     // 4. THEME SYSTEM
     // ==========================================

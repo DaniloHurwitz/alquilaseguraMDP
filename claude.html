@@ -4124,36 +4124,33 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
     document.addEventListener('DOMContentLoaded', () => {
         // Centro del Mapa
         const map = L.map('map', { 
-            center: [-38.0050, -57.5450], 
+            center: [-38.0050, -57.5500], 
             zoom: 12, 
             scrollWheelZoom: false 
         });
 
-        // Estilo del mapa (Limpio)
         L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
             attribution: '&copy; OSM &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- DEFINICIÓN DEL POLÍGONO (TU DIBUJO) ---
-        // Estos puntos trazan la forma exacta que pediste, excluyendo el mar.
-        const limiteTierra = [
-            [-37.9500, -57.5900], // Noroeste (Champagnat fondo)
-            [-37.9550, -57.5400], // Norte (Camet adentro)
-            [-37.9850, -57.5300], // La Perla (Costa)
-            [-38.0135, -57.5140], // Cabo Corrientes (Punta máxima al este)
-            [-38.0280, -57.5220], // Playa Grande (Costa)
-            [-38.0450, -57.5300], // Entrada Puerto
-            [-38.0600, -57.5450], // Sur Puerto
-            [-38.0600, -57.6000]  // Suroeste (Cierre)
+        // --- EL DIBUJO ROJO QUE VOS HICISTE (Coordenadas exactas) ---
+        // Esto define el límite. Nada se dibuja fuera de acá.
+        const poligonoUsuario = [
+            [-37.9350, -57.5900], // Noroeste (Arriba a la izq)
+            [-37.9400, -57.5350], // Norte Costa (Constitución)
+            [-37.9900, -57.5280], // La Perla (Bien pegado pero en tierra)
+            [-38.0150, -57.5160], // Cabo Corrientes (El punto clave para no tocar agua)
+            [-38.0300, -57.5250], // Playa Grande
+            [-38.0550, -57.5400], // Puerto
+            [-38.0550, -57.6100]  // Sur Oeste (Cierre)
         ];
 
-        // Función matemática: "Ray Casting Algorithm"
-        // Determina si un punto [lat, lng] está DENTRO del polígono dibujado
-        function estaEnTierra(lat, lng) {
+        // Algoritmo "Ray Casting": Verifica si un punto está dentro del polígono
+        function estaAdentro(lat, lng) {
             let inside = false;
-            for (let i = 0, j = limiteTierra.length - 1; i < limiteTierra.length; j = i++) {
-                const xi = limiteTierra[i][0], yi = limiteTierra[i][1];
-                const xj = limiteTierra[j][0], yj = limiteTierra[j][1];
+            for (let i = 0, j = poligonoUsuario.length - 1; i < poligonoUsuario.length; j = i++) {
+                const xi = poligonoUsuario[i][0], yi = poligonoUsuario[i][1];
+                const xj = poligonoUsuario[j][0], yj = poligonoUsuario[j][1];
                 const intersect = ((yi > lng) !== (yj > lng)) &&
                     (lat < (xj - xi) * (lng - yi) / (yj - yi) + xi);
                 if (intersect) inside = !inside;
@@ -4161,58 +4158,64 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
             return inside;
         }
 
-        // --- GENERADOR DE PUNTOS ---
-        const totalPuntos = 300; // Cantidad ajustada
+        // --- GENERADOR ---
+        const cantidadPuntos = 300; 
         let generados = 0;
         let seguridad = 0;
 
-        // Función para concentrar en el centro
+        // Función para que haya más puntos en el centro
         function randBias(exponente) {
              return Math.pow(Math.random(), exponente);
         }
 
-        while (generados < totalPuntos && seguridad < 20000) {
+        // Bucle infinito hasta conseguir 300 puntos VÁLIDOS
+        while (generados < cantidadPuntos && seguridad < 50000) {
             seguridad++;
 
-            // 1. Generar punto aleatorio con sesgo al centro geográfico
-            const distanciaGen = 0.07; 
-            const radio = randBias(2.5) * distanciaGen; // Sesgo medio
-            const anguloRad = (Math.random() * 6.28); 
+            // 1. Generamos un punto en un cuadrado grande que engloba la ciudad
+            // Usamos el sesgo (bias) para que tienda a ir al centro geográfico (-38.00, -57.55)
+            const latBase = -38.0000;
+            const lngBase = -57.5500;
+            const dispersion = 0.07; // Qué tan lejos pueden ir
 
-            const lat = -38.0050 + Math.sin(anguloRad) * radio;
-            const lng = -57.5450 + Math.cos(anguloRad) * radio * 1.3;
+            const rLat = (Math.random() * 2 - 1); // -1 a 1
+            const rLng = (Math.random() * 2 - 1); // -1 a 1
+            
+            // Aplicamos sesgo cúbico para concentrar en el medio
+            const lat = latBase + (rLat * rLat * rLat) * dispersion;
+            const lng = lngBase + (rLng * rLng * rLng) * dispersion;
 
-            // 2. FILTRO MAESTRO: ¿Cae dentro del dibujo de la costa?
-            if (!estaEnTierra(lat, lng)) {
-                continue; // Si cae en el mar o fuera de tu dibujo, lo descartamos.
+            // 2. FILTRO DE ORO: ¿Está dentro de TU dibujo?
+            if (!estaAdentro(lat, lng)) {
+                continue; // Si cae afuera (mar o campo), lo tiramos a la basura.
             }
 
-            // 3. Lógica de Colores (Centro vs Periferia)
-            const esCentro = (Math.abs(lat - -38.0050) < 0.02 && Math.abs(lng - -57.5450) < 0.02);
+            // 3. COLOR Y LÓGICA
+            const esMicroCentro = (Math.abs(lat - -38.0000) < 0.015 && Math.abs(lng - -57.5450) < 0.015);
             const rand = Math.random();
             let color, radius, text;
 
-            if (esCentro) {
-                // En el centro: Puntos más chicos, más verdes
+            if (esMicroCentro) {
+                // CENTRO: Puntos chicos, muy verdes
                 radius = 25;
-                if (rand < 0.85) { color = '#10B981'; text = '🛡️ Verificado'; }
-                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ Denuncia Activa'; }
+                if (rand < 0.85) { color = '#10B981'; text = '🛡️ <strong>Verificado</strong><br>Zona Centro'; }
+                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ <strong>Alerta</strong><br>Denuncia Activa'; }
                 else { color = '#F59E0B'; text = '✋ En proceso'; }
             } else {
-                // Periferia: Puntos un pelín más grandes, más rojos
+                // PERIFERIA: Puntos más grandes, más rojos
                 radius = 35;
                 if (rand < 0.40) { color = '#10B981'; text = '🛡️ Verificado'; }
-                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ ALERTA: Zona sin relevar'; }
+                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ <strong>Zona Sin Relevar</strong><br>Riesgo Alto'; }
                 else { color = '#F59E0B'; text = '✋ En proceso'; }
             }
 
-            // 4. Dibujar
+            // 4. DIBUJAR
             L.circle([lat, lng], {
                 color: color,
                 fillColor: color,
                 fillOpacity: 0.7,
                 radius: radius,
-                weight: 0 // Sin bordes
+                weight: 0 
             }).addTo(map).bindPopup(text);
 
             generados++;

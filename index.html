@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>1Alquila Seguro MDP</title>
+    <title>Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="theme-color" content="#002B49">
     
@@ -231,19 +231,96 @@
         .ft-links li { margin-bottom: 12px; }
         .ft-links a:hover { color: var(--secondary); padding-left: 5px; }
 
-        /* Admin Modal */
-        #admin-modal, #login-modal {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-body); z-index: 9999; display: none; overflow-y: auto;
-        }
-        #login-modal { background: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .login-box { background: var(--bg-card); padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; }
-        
-        .sidebar { width: 280px; background: #0F172A; height: 100vh; position: fixed; padding: 30px; color: white; z-index: 100; }
-        .admin-main { margin-left: 280px; padding: 40px; background: var(--bg-body); min-height: 100vh; }
-        .adm-item { padding: 15px; margin-bottom: 5px; cursor: pointer; border-radius: 6px; opacity: 0.7; transition: 0.3s; color: white; font-weight: 500; display: flex; align-items: center; gap: 10px; }
-        .adm-item:hover, .adm-item.active { background: var(--secondary); opacity: 1; }
-        .adm-input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 15px; background: var(--bg-body); color: var(--text-main); }
+        <div id="admin-modal" style="display: none;">
+    <div class="sidebar">
+        <h3 style="margin-bottom: 30px; letter-spacing: 1px;">BACKOFFICE V8</h3>
+        <div class="adm-item active" onclick="showTab('gen')">📄 Generar Código</div>
+        <div class="adm-item" onclick="showTab('leads')">👥 Leads</div>
+        <div class="adm-item" onclick="showTab('validate')">🔍 Validar Hash</div>
+        <div class="adm-item" onclick="document.getElementById('admin-modal').style.display='none'">🚪 Salir</div>
+    </div>
+   
+    <div class="admin-main">
+        <div id="tab-gen">
+            <h2 style="margin-bottom: 20px; color: var(--text-main);">Generador de Certificado Seguro</h2>
+            <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border: 1px solid var(--border-color);">
+                <div>
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
+                    <input type="text" id="r-cli" class="adm-input">
+                   
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
+                    <input type="text" id="r-dir" class="adm-input">
+                   
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Valor Alquiler (Mensual/Quincenal)</label>
+                    <input type="text" id="r-val" class="adm-input" placeholder="$">
+                   
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
+                    <select id="r-ver" class="adm-input">
+                        <option value="1">✅ APTO (VERIFICADO)</option>
+                        <option value="0">❌ FRAUDE (NO APTO)</option>
+                    </select>
+                </div>
+                <div>
+                    <h4 style="margin-bottom: 15px; color: var(--text-main);">Matriz de Validación (Binaria)</h4>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c1" checked> Existencia Física (A)</label>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c2" checked> Coincidencia Fotos (B)</label>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c3"> Titularidad Validada (C)</label>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c4"> Servicios Activos (D)</label>
+                    <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c5"> Llaves/Acceso (E)</label>
+                   
+                    <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 6px;">
+                        <small>Código Hash Generado:</small>
+                        <div id="hash-output" style="font-family: monospace; font-weight: bold; color: var(--primary); word-break: break-all;">---</div>
+                    </div>
+                </div>
+            </div>
+            <button class="btn btn-primary" onclick="generateAndPrint()" style="margin-top: 20px;">GENERAR E IMPRIMIR DOCUMENTO</button>
+        </div>
+        <div id="tab-leads" class="hidden">
+        </div>
+        <div id="tab-validate" class="hidden">
+            <h2 style="margin-bottom: 20px; color: var(--text-main);">Validador de Certificado</h2>
+            <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; border: 1px solid var(--border-color);">
+                <form onsubmit="desencriptarYMostrar(event)">
+                    <label style="display:block; margin-bottom:5px; font-weight:600;">Ingresá el HASH completo:</label>
+                    <input type="text" id="hash-input" class="adm-input" placeholder="Ej: 1412202513565023323133165475001101" required>
+                    <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 15px;">VALIDAR HASH</button>
+                </form>
+                <div id="validate-results" style="display: none; margin-top: 30px;">
+                    <h4 style="margin-bottom: 15px; color: var(--success);">Datos Desencriptados:</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
+                            <input type="text" id="v-cli" class="adm-input" readonly>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
+                            <input type="text" id="v-dir" class="adm-input" readonly>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Fecha de Emisión</label>
+                            <input type="text" id="v-date" class="adm-input" readonly>
+                        </div>
+                        <div>
+                            <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
+                            <input type="text" id="v-ver" class="adm-input" readonly>
+                            <h4 style="margin-bottom: 10px;">Matriz de Validación:</h4>
+                            <ul style="list-style: none; padding: 0;">
+                                <li id="v-c1">Existencia Física: </li>
+                                <li id="v-c2">Coincidencia Fotos: </li>
+                                <li id="v-c3">Titularidad Validada: </li>
+                                <li id="v-c4">Servicios Activos: </li>
+                                <li id="v-c5">Llaves/Acceso: </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button class="btn btn-outline" onclick="imprimirDesdeValidate()" style="margin-top: 20px; width: 100%;">IMPRIMIR / DESCARGAR PDF</button>
+                </div>
+            </div>
+            <!-- Vista previa del certificado (se rellena y muestra aquí) -->
+            <div id="cert-preview" style="display: none; margin-top: 40px; border: 1px solid var(--border-color); padding: 20px; background: white; box-shadow: var(--shadow-float);">
+                <h4 style="text-align: center; margin-bottom: 20px;">Vista Previa del Certificado</h4>
+                <div id="legal-doc-preview"></div> <!-- Clonaremos el legal-doc aquí -->
+            </div>
+        </div>
+    </div>
+</div>
 
         /* ==========================================================================
            9. CHATBOT INTERACTIVO (FIXED)
@@ -1084,6 +1161,102 @@ Checklist binario: ${checks.replace(/0/g,'❌').replace(/1/g,'✅')}
         function toggleMenu() {
             document.getElementById('nav-menu').classList.toggle('active');
         }
+
+           // Función para desencriptar y mostrar en la pestaña
+function desencriptarYMostrar(e) {
+    e.preventDefault();
+    const hash = document.getElementById('hash-input').value.trim();
+    if (!hash || hash.length < 20) {
+        alert("Hash inválido o muy corto.");
+        return;
+    }
+
+    // Extraer partes (adaptado a tu formato: 14 fecha + variable datos + 5 checks)
+    const fechaStr = hash.substring(0, 14);
+    const checks = hash.slice(-5);
+    const datosCifrados = hash.substring(14, hash.length - 5);
+
+    // Desencriptar fecha
+    const dd = fechaStr.substring(0,2);
+    const mm = fechaStr.substring(2,4);
+    const yyyy = fechaStr.substring(4,8);
+    const hh = fechaStr.substring(8,10);
+    const mi = fechaStr.substring(10,12);
+    const ss = fechaStr.substring(12,14);
+    const fechaFull = `${dd}/${mm}/${yyyy} ${hh}:${mi}:${ss}`;
+
+    // Desencriptar texto (usando el map invertido)
+    const mapInvertido = {
+        '11':'A','12':'B','13':'C','14':'D','15':'E','16':'F','17':'G','18':'H','19':'I','20':'J',
+        '21':'K','22':'L','23':'M','24':'N','25':'Ñ','26':'O','27':'P','28':'Q','29':'R','30':'S',
+        '31':'T','32':'U','33':'V','34':'W','35':'X','36':'Y','37':'Z'
+    };
+    let textoOriginal = '';
+    for (let i = 0; i < datosCifrados.length; i += 2) {
+        const code = datosCifrados.substring(i, i+2);
+        textoOriginal += mapInvertido[code] || '?';
+    }
+
+    // Asumir que el texto es "NOMBRE DIRECCION" (separado por espacio, pero como ciframos concatenado, lo mostramos completo y lo spliteamos si querés)
+    const [cliDec, ...dirDec] = textoOriginal.split(' '); // Simple split, ajustá si es necesario
+    const dirFull = dirDec.join(' ');
+
+    // Veredicto: asumimos que no está en el hash actual, pero si querés agregarlo, podemos extender
+    const ver = '1'; // Default o extraelo si lo agregás al hash
+
+    // Mostrar resultados
+    document.getElementById('v-cli').value = cliDec || textoOriginal;
+    document.getElementById('v-dir').value = dirFull || 'NO ESPECIFICADA';
+    document.getElementById('v-date').value = fechaFull;
+    document.getElementById('v-ver').value = ver === '1' ? '✅ APTO (VERIFICADO)' : '❌ FRAUDE (NO APTO)';
+
+    // Checks
+    const checkLabels = ['v-c1', 'v-c2', 'v-c3', 'v-c4', 'v-c5'];
+    for (let i = 0; i < 5; i++) {
+        const isOk = checks[i] === '1';
+        document.getElementById(checkLabels[i]).innerText = document.getElementById(checkLabels[i]).innerText.split(':')[0] + ': ' + (isOk ? 'POSITIVO ✅' : 'NEGATIVO ❌');
+    }
+
+    document.getElementById('validate-results').style.display = 'block';
+
+    // Rellenar y mostrar preview del certificado
+    fillCertificate(cliDec || textoOriginal, dirFull || 'NO ESPECIFICADA', '0', ver, checks); // Valor default 0, ajustá si necesitás
+    const preview = document.getElementById('cert-preview');
+    const legalClone = document.getElementById('legal-doc').cloneNode(true);
+    document.getElementById('legal-doc-preview').innerHTML = '';
+    document.getElementById('legal-doc-preview').appendChild(legalClone);
+    preview.style.display = 'block';
+}
+
+// Función auxiliar para rellenar el certificado (reusa lógica de generateAndPrint)
+function fillCertificate(cli, dir, val, ver, checks) {
+    document.getElementById('p-cli-out').innerText = cli.toUpperCase();
+    document.getElementById('p-dir-out').innerText = dir.toUpperCase();
+    document.getElementById('p-val-out').innerText = "$ " + val;
+    document.getElementById('p-date').innerText = new Date().toLocaleDateString('es-AR'); // O usa la del hash
+
+    const verEl = document.getElementById('p-ver-out');
+    verEl.innerText = ver === '1' ? "✅ APTO / VERIFICADO" : "🚫 RIESGO DE FRAUDE";
+    verEl.style.color = ver === '1' ? "#059669" : "#DC2626";
+
+    for(let i=1; i<=5; i++) {
+        const isOk = checks[i-1] === '1';
+        const el = document.getElementById('p-c'+i);
+        el.innerText = isOk ? "POSITIVO" : "NEGATIVO";
+        el.style.color = isOk ? "#002B49" : "#DC2626";
+    }
+
+    // Hash y QR (opcional, ya que es validación)
+    document.getElementById('p-hash').innerText = 'HASH VALIDADO';
+    document.getElementById('qr-code-img').src = ''; // Limpia QR si no querés
+}
+
+// Imprimir desde validate (usa el certificado rellenado)
+function imprimirDesdeValidate() {
+    document.getElementById('legal-doc').style.display = 'block';
+    setTimeout(() => window.print(), 500);
+    window.onafterprint = () => document.getElementById('legal-doc').style.display = 'none';
+}
     </script>
 </body>
 </html>

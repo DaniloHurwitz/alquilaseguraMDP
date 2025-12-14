@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alquila Seguro MDP | Central de Verificación Inmobiliaria</title>
-    <meta name="description" content="Organismo técnico de constatación inmobiliaria en la Costa Atlántica. Seguridad jurídica, fáctica y bancaria para inquilinos temporarios.">
+    <title>Alquila Seguro MDP | Certificación de Inmuebles Turísticos</title>
+    <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="theme-color" content="#002B49">
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,45 +12,42 @@
 
     <style>
         /* ==========================================================================
-           1. CORE STYLES & VARIABLES
+           1. CORE VARIABLES (THEMING ENGINE)
            ========================================================================== */
         :root {
-            /* Colores Corporativos */
-            --bg-body: #F0F2F5;
+            /* Light Theme */
+            --bg-body: #F3F4F6;
             --bg-card: #FFFFFF;
             --bg-glass: rgba(255, 255, 255, 0.98);
             --text-main: #111827;
-            --text-muted: #6B7280;
+            --text-muted: #4B5563;
             --border-color: #E5E7EB;
             
+            /* Colores de Marca */
             --primary: #002B49;        /* Azul Institucional */
-            --primary-dark: #001A2C;
-            --secondary: #00A8E8;      /* Cyan Identidad */
+            --primary-light: #004066;
+            --secondary: #00A8E8;      /* Cyan Tecnológico */
             --accent: #FFB703;         /* Dorado Certificación */
             --danger: #DC2626;         /* Rojo Alerta */
             --success: #059669;        /* Verde Aprobado */
+            --dark-footer: #020617;    /* Footer siempre oscuro */
             
-            /* Footer Dark Theme por defecto */
-            --footer-bg: #0F172A;
-            --footer-text: #94A3B8;
-
-            /* Efectos */
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            /* UI Config */
             --radius: 8px;
+            --shadow-float: 0 10px 40px -10px rgba(0,0,0,0.15);
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
-        /* Dark Mode */
+        /* Dark Theme */
         [data-theme="dark"] {
             --bg-body: #0B1120;
             --bg-card: #1E293B;
-            --bg-glass: rgba(30, 41, 59, 0.95);
-            --text-main: #F8FAFC;
+            --bg-glass: rgba(15, 23, 42, 0.98);
+            --text-main: #F1F5F9;
             --text-muted: #94A3B8;
             --border-color: #334155;
-            --primary: #38BDF8;
-            --primary-dark: #0284C7;
+            --primary: #38BDF8; /* Azul claro para contraste en oscuro */
+            --primary-light: #7DD3FC;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; outline: none; }
@@ -59,280 +56,306 @@
             font-family: 'Inter', sans-serif;
             background-color: var(--bg-body);
             color: var(--text-main);
-            line-height: 1.5;
+            line-height: 1.6;
             overflow-x: hidden;
-            transition: background 0.3s, color 0.3s;
+            transition: background-color 0.3s, color 0.3s;
         }
 
-        h1, h2, h3, h4, h5 { font-family: 'Montserrat', sans-serif; color: var(--text-main); line-height: 1.1; letter-spacing: -0.5px; }
+        h1, h2, h3, h4 { font-family: 'Montserrat', sans-serif; color: var(--text-main); letter-spacing: -0.5px; }
         a { text-decoration: none; color: inherit; transition: var(--transition); }
         ul { list-style: none; }
         img { max-width: 100%; display: block; }
-        
-        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        .section-padding { padding: 80px 0; } /* Ajustado para mejor ritmo visual */
-        .text-center { text-align: center; }
+
+        /* Layout */
+        .container { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+        .section-padding { padding: 80px 0; }
         .hidden { display: none !important; }
         
-        /* Animaciones */
-        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s ease; }
+        /* Animations */
+        .reveal { opacity: 0; transform: translateY(30px); transition: all 0.8s cubic-bezier(0.5, 0, 0, 1); }
         .reveal.active { opacity: 1; transform: translateY(0); }
 
         /* ==========================================================================
-           2. UI KIT (BOTONES & SWITCHES)
+           2. COMPONENTES (BOTONES, SWITCHES, LOADERS)
            ========================================================================== */
         .btn {
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
             padding: 12px 24px; border-radius: 6px; font-weight: 700; cursor: pointer; border: none;
-            transition: var(--transition); font-family: 'Montserrat', sans-serif; text-transform: uppercase; font-size: 0.85rem;
-            position: relative; overflow: hidden; letter-spacing: 0.5px;
+            transition: var(--transition); font-family: 'Montserrat', sans-serif; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px;
+            position: relative; overflow: hidden;
         }
-        .btn:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-        
         .btn-primary { background: #002B49; color: white; } 
         [data-theme="dark"] .btn-primary { background: var(--secondary); color: #000; }
-        
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 168, 232, 0.4); }
+
         .btn-outline { background: transparent; border: 2px solid var(--primary); color: var(--primary); }
         [data-theme="dark"] .btn-outline { border-color: var(--secondary); color: var(--secondary); }
         .btn-outline:hover { background: var(--primary); color: white; border-color: var(--primary); }
-        
-        .btn-danger { background: var(--danger); color: white; animation: pulse 2s infinite; }
-        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
 
-        /* Dark Mode Switch */
-        .theme-switch-wrapper { display: flex; align-items: center; }
-        .theme-switch { display: inline-block; height: 24px; position: relative; width: 48px; }
-        .theme-switch input { display: none; }
-        .slider { background-color: #cbd5e1; bottom: 0; cursor: pointer; left: 0; position: absolute; right: 0; top: 0; transition: .4s; border-radius: 34px; }
-        .slider:before { background-color: white; bottom: 4px; content: ""; height: 16px; left: 4px; position: absolute; transition: .4s; width: 16px; border-radius: 50%; }
-        input:checked + .slider { background-color: var(--secondary); }
-        input:checked + .slider:before { transform: translateX(24px); }
+        .btn-danger { background: var(--danger); color: white; animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.7); } 70% { box-shadow: 0 0 0 10px rgba(220, 38, 38, 0); } 100% { box-shadow: 0 0 0 0 rgba(220, 38, 38, 0); } }
+
+        /* Theme Switch */
+        .theme-toggle {
+            cursor: pointer; width: 50px; height: 26px; background: #cbd5e1; border-radius: 50px;
+            position: relative; transition: 0.3s;
+        }
+        .theme-toggle::after {
+            content: ''; position: absolute; top: 3px; left: 3px; width: 20px; height: 20px;
+            background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        [data-theme="dark"] .theme-toggle { background: var(--secondary); }
+        [data-theme="dark"] .theme-toggle::after { left: 27px; }
 
         /* Loader */
-        #preloader {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #002B49; z-index: 99999; display: flex; align-items: center; justify-content: center;
-            flex-direction: column; transition: opacity 0.5s ease;
+        #loader {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999;
+            background: var(--bg-body); display: flex; flex-direction: column; align-items: center; justify-content: center;
+            transition: opacity 0.5s;
         }
-        .spinner {
-            width: 60px; height: 60px; border: 4px solid rgba(255,255,255,0.1); border-left-color: var(--secondary);
-            border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
-        }
+        .spinner { width: 40px; height: 40px; border: 4px solid #ddd; border-top-color: var(--primary); border-radius: 50%; animation: spin 1s infinite linear; margin-bottom: 20px;}
         @keyframes spin { 100% { transform: rotate(360deg); } }
 
         /* ==========================================================================
-           3. HEADER & HERO
+           3. HEADER
            ========================================================================== */
-        #top-bar { background: #020617; color: white; padding: 10px 0; font-size: 0.8rem; text-align: center; font-weight: 600; letter-spacing: 0.5px; }
+        #top-alert { background: #0F172A; color: white; text-align: center; padding: 10px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.5px; }
         
         header {
-            background: var(--bg-glass); backdrop-filter: blur(10px);
-            position: sticky; top: 0; z-index: 5000;
+            background: var(--bg-glass); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000;
             border-bottom: 1px solid var(--border-color); padding: 15px 0;
         }
-        .nav-container { display: flex; justify-content: space-between; align-items: center; }
-        .logo { font-size: 1.5rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px; }
+        .nav-flex { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.3rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
         .logo span { color: var(--secondary); }
         
-        .nav-menu { display: flex; gap: 20px; align-items: center; }
-        .nav-link { font-weight: 600; font-size: 0.9rem; color: var(--text-main); position: relative; }
-        .nav-link:hover { color: var(--secondary); }
+        .nav-links { display: flex; gap: 25px; align-items: center; }
+        .nav-item { font-size: 0.9rem; font-weight: 600; color: var(--text-main); position: relative; }
+        .nav-item::after { content: ''; display: block; width: 0; height: 2px; background: var(--secondary); transition: 0.3s; }
+        .nav-item:hover::after { width: 100%; }
 
+        .hamburger { display: none; font-size: 1.5rem; cursor: pointer; color: var(--text-main); }
+
+        /* ==========================================================================
+           4. HERO (FONDO CORREGIDO + PARTÍCULAS)
+           ========================================================================== */
         .hero {
-            position: relative; height: 85vh; overflow: hidden; display: flex; align-items: center;
-            background: #000; color: white;
+            position: relative; height: 90vh; display: flex; align-items: center;
+            background-color: #000; overflow: hidden;
         }
-        #hero-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0.4; z-index: 1; }
         .hero-bg {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(90deg, rgba(0, 43, 73, 0.95) 0%, rgba(0, 43, 73, 0.6) 100%), 
+            /* IMAGEN ESPECÍFICA SOLICITADA */
+            background: linear-gradient(90deg, rgba(2,6,23,0.9) 0%, rgba(15,23,42,0.7) 100%), 
                         url('https://cf.bstatic.com/xdata/images/hotel/max1024x768/366956755.jpg?k=f3114aa11f88a72cb3e3ae613dc26bef7a854e668d7efbaf12e7399a5fd223b8&o=');
             background-size: cover; background-position: center; z-index: 0;
         }
-        .hero-content { position: relative; z-index: 2; max-width: 800px; padding: 20px; }
-        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; font-weight: 900; }
-        .hero p { font-size: 1.25rem; margin-bottom: 40px; opacity: 0.9; max-width: 600px; }
+        #particles { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; opacity: 0.4; }
         
-        .hero-stats { display: flex; gap: 40px; margin-top: 50px; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.2); }
-        .h-stat strong { font-size: 2.5rem; display: block; color: var(--secondary); font-family: 'JetBrains Mono'; }
-        .h-stat span { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; opacity: 0.8; }
+        .hero-content { position: relative; z-index: 2; max-width: 800px; color: white; padding: 20px; }
+        .status-badge { background: rgba(16, 185, 129, 0.2); border: 1px solid #10B981; color: #10B981; padding: 5px 12px; border-radius: 50px; font-size: 0.75rem; font-weight: 700; display: inline-block; margin-bottom: 20px; backdrop-filter: blur(4px); }
+        
+        .hero h1 { font-size: 3.5rem; line-height: 1.1; margin-bottom: 20px; font-weight: 800; color: white; }
+        .hero p { font-size: 1.2rem; opacity: 0.9; margin-bottom: 40px; font-weight: 300; max-width: 600px; }
+        
+        .hero-btns { display: flex; gap: 15px; flex-wrap: wrap; }
+        
+        /* Stats */
+        .stats-bar { display: flex; gap: 40px; margin-top: 60px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 30px; }
+        .stat h3 { font-size: 2rem; color: var(--secondary); margin-bottom: 5px; }
+        .stat p { font-size: 0.8rem; text-transform: uppercase; opacity: 0.7; letter-spacing: 1px; }
 
         /* ==========================================================================
-           4. SECTIONS (RISK, PRICING, GALLERY)
+           5. RISK CALCULATOR
            ========================================================================== */
-        .tool-box {
-            background: var(--bg-card); border-radius: 12px; box-shadow: var(--shadow-lg);
+        .tool-section { background: var(--bg-card); border-top: 1px solid var(--border-color); }
+        .tool-container {
+            background: var(--bg-card); border-radius: 16px; box-shadow: var(--shadow-float);
             padding: 50px; margin-top: -80px; position: relative; z-index: 10; border: 1px solid var(--border-color);
         }
-        .tool-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
-        .custom-checkbox {
-            display: flex; align-items: center; padding: 15px; background: var(--bg-body); 
-            border: 2px solid transparent; border-radius: 8px; cursor: pointer; transition: 0.2s; margin-bottom: 10px;
-        }
-        .custom-checkbox:hover { border-color: var(--secondary); }
-        .custom-checkbox.checked { background: rgba(0, 168, 232, 0.1); border-color: var(--secondary); }
-        .custom-checkbox input { display: none; }
+        .tool-layout { display: grid; grid-template-columns: 2fr 1fr; gap: 40px; }
         
-        .risk-meter { background: var(--bg-body); padding: 30px; border-radius: 12px; text-align: center; border: 1px solid var(--border-color); }
-        .gauge { width: 150px; height: 150px; border-radius: 50%; border: 15px solid #E5E7EB; border-top-color: var(--danger); margin: 0 auto 20px; transition: transform 1s; }
-
-        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
-        .price-card {
-            background: var(--bg-card); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color);
-            position: relative; transition: 0.3s;
+        .checkbox-group { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 15px; margin-top: 20px; }
+        .chk-item {
+            display: flex; align-items: center; padding: 15px; border: 1px solid var(--border-color);
+            border-radius: 8px; cursor: pointer; transition: 0.2s; background: var(--bg-body);
         }
-        .price-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-lg); border-color: var(--secondary); }
-        .price-card.popular { border: 2px solid var(--accent); transform: scale(1.05); z-index: 5; }
-        .tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; padding: 4px 12px; font-weight: 700; font-size: 0.75rem; border-radius: 20px; }
-        .price { font-size: 3rem; font-weight: 800; color: var(--text-main); margin: 15px 0; }
-        .features li { margin-bottom: 10px; display: flex; align-items: center; gap: 10px; color: var(--text-muted); font-size: 0.9rem; }
+        .chk-item:hover { border-color: var(--secondary); }
+        .chk-item.checked { background: rgba(0, 168, 232, 0.1); border-color: var(--secondary); }
+        .chk-item input { display: none; }
         
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; margin-top: 40px; }
-        .g-item { height: 200px; background: #ddd; border-radius: 8px; position: relative; overflow: hidden; cursor: pointer; }
-        .g-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .g-item:hover img { transform: scale(1.1); }
-        .g-badge { position: absolute; top: 10px; right: 10px; background: var(--success); color: white; padding: 4px 8px; font-size: 0.7rem; font-weight: bold; border-radius: 4px; }
+        .gauge-box { text-align: center; padding: 20px; background: var(--bg-body); border-radius: 12px; border: 1px solid var(--border-color); }
+        .gauge-circle { width: 120px; height: 120px; border-radius: 50%; border: 12px solid #e2e8f0; border-top-color: var(--danger); margin: 0 auto 20px; position: relative; transition: transform 1s; }
+        .gauge-score { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 1.5rem; font-weight: 800; color: var(--text-main); }
 
         /* ==========================================================================
-           5. TESTIMONIALS & FAQ
+           6. GALERÍA DE EVIDENCIA (NUEVO)
            ========================================================================== */
-        .testimonials-wrapper { display: flex; gap: 20px; overflow-x: auto; padding: 20px 0; scrollbar-width: none; }
-        .t-card { min-width: 300px; background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--shadow-sm); }
-        .t-user { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
-        .t-avatar { width: 45px; height: 45px; border-radius: 50%; background: #ccc; }
-
-        .faq-item { border-bottom: 1px solid var(--border-color); }
-        .faq-q { padding: 20px 0; cursor: pointer; font-weight: 600; display: flex; justify-content: space-between; }
-        .faq-a { max-height: 0; overflow: hidden; transition: 0.3s; color: var(--text-muted); padding-bottom: 0; }
-        .faq-item.active .faq-a { padding-bottom: 20px; max-height: 300px; }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-top: 40px; }
+        .evidence-card { position: relative; height: 250px; border-radius: 12px; overflow: hidden; cursor: pointer; }
+        .evidence-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .evidence-card:hover img { transform: scale(1.1); }
+        .evidence-tag { position: absolute; top: 15px; right: 15px; background: var(--success); color: white; font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; font-weight: 700; z-index: 2; }
+        .evidence-info { position: absolute; bottom: 0; left: 0; width: 100%; padding: 20px; background: linear-gradient(to top, black, transparent); color: white; }
 
         /* ==========================================================================
-           6. FOOTER (DARK THEME FIXED) & MODALS
+           7. PRECIOS & TESTIMONIOS
            ========================================================================== */
-        footer { background: var(--footer-bg); color: var(--footer-text); padding: 60px 0 20px; font-size: 0.9rem; margin-top: 50px; }
-        .f-col h4 { color: #F8FAFC; margin-bottom: 20px; font-size: 0.85rem; text-transform: uppercase; letter-spacing: 1px; }
-        .f-col a { display: block; margin-bottom: 10px; transition: 0.2s; }
-        .f-col a:hover { color: var(--secondary); padding-left: 5px; }
-
-        /* Modals */
-        #admin-overlay, #login-modal, #sos-modal { 
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: rgba(0,0,0,0.85); z-index: 9999; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; margin-top: 40px; }
+        .plan-card {
+            background: var(--bg-card); border: 1px solid var(--border-color); padding: 40px 30px; border-radius: 12px;
+            position: relative; transition: 0.3s; display: flex; flex-direction: column;
         }
+        .plan-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-float); border-color: var(--secondary); }
+        .plan-card.popular { border: 2px solid var(--accent); }
+        .pop-tag { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--accent); color: #000; font-size: 0.7rem; font-weight: 800; padding: 4px 15px; border-radius: 20px; }
         
-        /* SOS Modal Specifics */
-        .sos-box { 
-            background: #FFF; border-top: 8px solid var(--danger); padding: 40px; 
-            border-radius: 12px; text-align: center; max-width: 500px; width: 90%; animation: shake 0.5s; 
-        }
-        @keyframes shake { 0%, 100% { transform: translateX(0); } 10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); } 20%, 40%, 60%, 80% { transform: translateX(5px); } }
-
-        /* Admin Dashboard (Full Screen) */
-        #admin-overlay { background: var(--bg-body); display: none; align-items: flex-start; }
-        .sidebar { width: 280px; background: #0F172A; height: 100vh; position: fixed; padding: 30px; color: white; }
-        .admin-content { margin-left: 280px; padding: 40px; width: 100%; min-height: 100vh; overflow-y: auto; }
-        .admin-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-        .admin-input { width: 100%; padding: 12px; background: white; border: 1px solid #ccc; border-radius: 6px; font-family: 'JetBrains Mono'; font-size: 0.9rem; }
+        .plan-price { font-size: 2.5rem; font-weight: 800; margin: 20px 0; color: var(--text-main); }
+        .plan-price small { font-size: 1rem; color: var(--text-muted); font-weight: 400; }
+        .feature-list li { margin-bottom: 12px; font-size: 0.9rem; display: flex; gap: 10px; color: var(--text-muted); }
+        
+        /* Testimonios Scroll */
+        .testi-scroller { display: flex; gap: 20px; overflow-x: auto; padding-bottom: 20px; -ms-overflow-style: none; scrollbar-width: none; }
+        .testi-card { min-width: 320px; background: var(--bg-card); padding: 25px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .user-head { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
+        .u-avatar { width: 45px; height: 45px; border-radius: 50%; background: #ccc; }
 
         /* ==========================================================================
-           7. CHATBOT V2
+           8. ADMIN & FOOTER
            ========================================================================== */
-        .floater { position: fixed; bottom: 30px; right: 30px; z-index: 9000; display: flex; flex-direction: column; gap: 15px; align-items: flex-end; }
-        .chat-btn { width: 60px; height: 60px; border-radius: 50%; background: var(--primary); color: white; display: flex; justify-content: center; align-items: center; cursor: pointer; box-shadow: 0 5px 20px rgba(0,0,0,0.3); transition: 0.3s; }
-        .chat-btn:hover { transform: scale(1.1); }
-        
-        .chat-ui { 
-            position: fixed; bottom: 100px; right: 30px; width: 350px; height: 500px; 
-            background: var(--bg-card); border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0.2); 
-            display: flex; flex-direction: column; overflow: hidden; z-index: 8999;
-            transform: translateY(20px); opacity: 0; pointer-events: none; transition: 0.3s; border: 1px solid var(--border-color);
-        }
-        .chat-ui.active { transform: translateY(0); opacity: 1; pointer-events: all; }
-        .chat-msgs { flex: 1; padding: 15px; overflow-y: auto; background: var(--bg-body); }
-        .msg { padding: 10px 15px; border-radius: 15px; margin-bottom: 10px; max-width: 85%; font-size: 0.9rem; }
-        .msg.bot { background: white; border: 1px solid var(--border-color); border-bottom-left-radius: 2px; }
-        .msg.user { background: var(--secondary); color: white; border-bottom-right-radius: 2px; align-self: flex-end; margin-left: auto; }
-        .chat-opts { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 10px; }
-        .opt-btn { padding: 5px 12px; border: 1px solid var(--secondary); color: var(--secondary); background: transparent; border-radius: 20px; font-size: 0.8rem; cursor: pointer; }
-        .opt-btn:hover { background: var(--secondary); color: white; }
+        /* Footer Oscuro Corregido */
+        footer { background-color: var(--dark-footer); color: #9CA3AF; padding: 80px 0 30px; margin-top: 50px; font-size: 0.9rem; }
+        .footer-cols { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 50px; }
+        .footer-logo { color: white; font-weight: 800; font-size: 1.2rem; margin-bottom: 20px; display: block; }
+        .ft-head { color: #F3F4F6; font-weight: 700; margin-bottom: 20px; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 1px; }
+        .ft-links li { margin-bottom: 12px; }
+        .ft-links a:hover { color: var(--secondary); padding-left: 5px; }
 
-        /* Hide elements */
-        @media print { body * { visibility: hidden; } #legal-doc, #legal-doc * { visibility: visible; display: block; position: absolute; top: 0; left: 0; width: 100%; } }
+        /* Admin Modal */
+        #admin-modal, #login-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-body); z-index: 9999; display: none; overflow-y: auto;
+        }
+        #login-modal { background: rgba(0,0,0,0.9); align-items: center; justify-content: center; backdrop-filter: blur(5px); }
+        .login-box { background: var(--bg-card); padding: 40px; border-radius: 12px; width: 100%; max-width: 400px; }
+        
+        .sidebar { width: 280px; background: #0F172A; height: 100vh; position: fixed; padding: 30px; color: white; z-index: 100; }
+        .admin-main { margin-left: 280px; padding: 40px; background: var(--bg-body); min-height: 100vh; }
+        .adm-item { padding: 15px; margin-bottom: 5px; cursor: pointer; border-radius: 6px; opacity: 0.7; transition: 0.3s; color: white; font-weight: 500; display: flex; align-items: center; gap: 10px; }
+        .adm-item:hover, .adm-item.active { background: var(--secondary); opacity: 1; }
+        .adm-input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 6px; margin-bottom: 15px; background: var(--bg-body); color: var(--text-main); }
+
+        /* ==========================================================================
+           9. CHATBOT INTERACTIVO (FIXED)
+           ========================================================================== */
+        .chat-widget { position: fixed; bottom: 30px; right: 30px; z-index: 9000; display: flex; flex-direction: column; align-items: flex-end; gap: 15px; }
+        .chat-btn { width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 5px 20px rgba(0,0,0,0.2); cursor: pointer; transition: 0.3s; color: white; font-size: 1.5rem; }
+        .btn-wa { background: #25D366; }
+        .btn-bot { background: var(--primary); }
+        .btn-bot:hover, .btn-wa:hover { transform: scale(1.1); }
+
+        .chat-window {
+            width: 350px; height: 500px; background: var(--bg-card); border-radius: 16px; box-shadow: 0 20px 50px rgba(0,0,0,0.2);
+            overflow: hidden; display: none; flex-direction: column; border: 1px solid var(--border-color);
+            animation: slideUp 0.3s cubic-bezier(0.165, 0.84, 0.44, 1);
+        }
+        .chat-window.active { display: flex; }
+        .chat-header { background: var(--primary); padding: 15px; color: white; display: flex; justify-content: space-between; align-items: center; }
+        .chat-body { flex: 1; padding: 15px; overflow-y: auto; background: var(--bg-body); display: flex; flex-direction: column; gap: 10px; }
+        .msg { padding: 10px 15px; border-radius: 12px; font-size: 0.9rem; max-width: 85%; animation: fadeMsg 0.3s; }
+        .msg-bot { background: var(--bg-card); color: var(--text-main); align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid var(--border-color); }
+        .msg-user { background: var(--secondary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .opt-btn { background: transparent; border: 1px solid var(--primary); color: var(--primary); padding: 6px 12px; border-radius: 20px; font-size: 0.8rem; cursor: pointer; margin: 3px; display: inline-block; }
+        .opt-btn:hover { background: var(--primary); color: white; }
+
+        @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        @keyframes fadeMsg { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Media Queries */
+        @media (max-width: 992px) { .sidebar { display: none; } .admin-main { margin: 0; } .tool-layout { grid-template-columns: 1fr; } }
+        @media (max-width: 768px) {
+            .nav-menu { position: fixed; top: 70px; left: -100%; width: 100%; height: calc(100vh - 70px); background: var(--bg-card); flex-direction: column; padding: 40px; transition: 0.3s; }
+            .nav-menu.active { left: 0; }
+            .hamburger { display: block; }
+            .hero-stats { flex-direction: column; gap: 20px; }
+        }
+        
+        /* Print Styles */
+        @media print { body * { visibility: hidden; } #legal-doc, #legal-doc * { visibility: visible; } #legal-doc { position: absolute; top: 0; left: 0; width: 100%; } }
     </style>
 </head>
 <body>
 
-    <div id="preloader">
+    <div id="loader">
         <div class="spinner"></div>
-        <h4 style="color: white; letter-spacing: 2px;">CONECTANDO CON CENTRAL...</h4>
+        <h4 style="color: var(--primary); letter-spacing: 2px;">CONECTANDO AL SISTEMA...</h4>
     </div>
 
-    <div id="top-bar">🚨 ALERTA: 18 intentos de fraude detectados en las últimas 24hs en Marketplace.</div>
-
+    <div id="top-alert">⚠️ ESTADO DE ALERTA: 12 Perfiles falsos detectados hoy en Marketplace.</div>
     <header>
-        <div class="container nav-container">
+        <div class="container nav-flex">
             <div class="logo">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
                 AlquilaSeguro<span>MDP</span>
             </div>
+            
             <div style="display: flex; gap: 20px; align-items: center;">
-                <nav class="nav-menu">
-                    <a href="#herramienta" class="nav-link">Riesgo</a>
-                    <a href="#precios" class="nav-link">Precios</a>
-                    <a href="#contacto" class="btn btn-primary">INICIAR TRÁMITE</a>
+                <nav class="nav-links" id="main-nav">
+                    <a href="#herramienta" class="nav-item">Diagnóstico</a>
+                    <a href="#galeria" class="nav-item">Evidencia</a>
+                    <a href="#precios" class="nav-item">Precios</a>
+                    <a href="#contacto" class="btn btn-primary">EXPEDIENTE</a>
                 </nav>
-                <div class="theme-switch-wrapper">
-                    <label class="theme-switch">
-                        <input type="checkbox" id="checkbox" onchange="toggleTheme()">
-                        <div class="slider"></div>
-                    </label>
-                    <span style="margin-left: 5px;">🌙</span>
-                </div>
+                
+                <div class="theme-toggle" onclick="toggleTheme()"></div>
+                <div class="hamburger" onclick="document.getElementById('main-nav').classList.toggle('active')">☰</div>
             </div>
         </div>
     </header>
 
     <section class="hero">
         <div class="hero-bg"></div>
-        <canvas id="hero-canvas"></canvas>
+        <canvas id="particles"></canvas>
         <div class="container hero-content">
-            <div class="hero-badge reveal">🛡️ OPERATIVO OFICIAL 2025</div>
-            <h1 class="reveal">PROTEGEMOS TU ALQUILER<br>EN LA COSTA</h1>
-            <p class="reveal">Organismo privado de constatación fáctica. Evitá terrenos baldíos, llaves falsas y dueños inexistentes.</p>
-            <div class="reveal" style="display: flex; gap: 15px; margin-top: 20px;">
-                <a href="#contacto" class="btn btn-primary" style="padding: 15px 30px;">SOLICITAR INSPECTOR</a>
-                <button onclick="openModal('sos-modal')" class="btn btn-danger">🚨 SOS URGENCIA</button>
+            <div class="status-badge">🛡️ SISTEMA HABILITADO 2025</div>
+            <h1 class="reveal">SEGURIDAD JURÍDICA<br>PARA TUS VACACIONES</h1>
+            <p class="reveal">Organismo privado de constatación fáctica. Evitá fraudes contractuales y propiedades inexistentes en Mar del Plata.</p>
+            
+            <div class="hero-btns reveal">
+                <a href="#contacto" class="btn btn-primary" style="padding: 16px 32px; font-size: 1rem;">VERIFICAR AHORA</a>
+                <a href="https://api.whatsapp.com/send?phone=5492230000000&text=URGENTE%20ESTOY%20EN%20LA%20PUERTA%20SOS" class="btn btn-danger">🚨 ESTOY EN LA PUERTA</a>
             </div>
-            <div class="hero-stats reveal">
-                <div class="h-stat"><strong id="scam-count">1420</strong><span>FRAUDES PREVENIDOS</span></div>
-                <div class="h-stat"><strong>100%</strong><span>EFECTIVIDAD</span></div>
+
+            <div class="stats-bar reveal">
+                <div class="stat"><h3>1.4K</h3><p>Reportes de Fraude</p></div>
+                <div class="stat"><h3>$0</h3><p>Perdido por Clientes</p></div>
+                <div class="stat"><h3>24hs</h3><p>Respuesta Máxima</p></div>
             </div>
         </div>
     </section>
 
     <section id="herramienta" class="section-padding">
         <div class="container">
-            <div class="tool-box reveal">
-                <h2 class="text-center" style="margin-bottom: 40px;">Matriz de Riesgo Preliminar</h2>
-                <div class="tool-grid">
+            <div class="tool-container reveal">
+                <div class="text-center" style="margin-bottom: 40px;">
+                    <h2 class="text-primary">Diagnóstico de Riesgo</h2>
+                    <p style="color: var(--text-muted);">Seleccioná las pruebas que te ha enviado el supuesto dueño.</p>
+                </div>
+                
+                <div class="tool-layout">
                     <div>
-                        <label class="custom-checkbox" onclick="toggleRisk(this)">
-                            <input type="checkbox" value="25">
-                            <div><strong>Videollamada Interior</strong><br><small>Mostró baño/cocina en vivo</small></div>
-                        </label>
-                        <label class="custom-checkbox" onclick="toggleRisk(this)">
-                            <input type="checkbox" value="25">
-                            <div><strong>Coincidencia Bancaria</strong><br><small>Nombre DNI = Titular CBU</small></div>
-                        </label>
-                        <label class="custom-checkbox" onclick="toggleRisk(this)">
-                            <input type="checkbox" value="25">
-                            <div><strong>Prueba de Dominio</strong><br><small>Mostró escritura o impuesto</small></div>
-                        </label>
+                        <div class="checkbox-group">
+                            <label class="chk-item" onclick="toggleChk(this)"><input type="checkbox" value="25"> <div><strong>Videollamada</strong><br><small>Mostró interior en vivo</small></div></label>
+                            <label class="chk-item" onclick="toggleChk(this)"><input type="checkbox" value="25"> <div><strong>Coincidencia CBU</strong><br><small>Titular CBU = DNI</small></div></label>
+                            <label class="chk-item" onclick="toggleChk(this)"><input type="checkbox" value="25"> <div><strong>Impuestos</strong><br><small>Factura servicio a su nombre</small></div></label>
+                            <label class="chk-item" onclick="toggleChk(this)"><input type="checkbox" value="25"> <div><strong>Referencia</strong><br><small>Historial comprobable</small></div></label>
+                        </div>
                     </div>
-                    <div class="risk-meter">
-                        <div class="gauge" id="gauge"></div>
-                        <h3 id="risk-text" style="color: var(--danger);">RIESGO ALTO</h3>
-                        <p class="text-muted">Se recomienda intervención profesional.</p>
+                    <div class="gauge-box">
+                        <div class="gauge-circle" id="gauge"><div class="gauge-score" id="score">0%</div></div>
+                        <h4 id="risk-label" style="color: var(--danger);">RIESGO ALTO</h4>
+                        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 15px;">Faltan validaciones esenciales.</p>
+                        <a href="#contacto" class="btn btn-outline" style="width: 100%;">SOLICITAR INSPECTOR</a>
                     </div>
                 </div>
             </div>
@@ -340,82 +363,109 @@
     </section>
 
     <section id="galeria" class="section-padding" style="background: var(--bg-card);">
-        <div class="container">
-            <h2 class="text-center reveal">Evidencia de Campo</h2>
-            <p class="text-center text-muted reveal" style="margin-bottom: 40px;">Operativos recientes realizados por nuestros inspectores.</p>
+        <div class="container reveal">
+            <h2 class="text-center">Evidencia de Campo</h2>
+            <p class="text-center" style="color: var(--text-muted); margin-bottom: 40px;">Últimas propiedades verificadas por nuestro equipo.</p>
             <div class="gallery-grid">
-                <div class="g-item reveal">
-                    <span class="g-badge">HOY</span>
-                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400" alt="Apto">
+                <div class="evidence-card">
+                    <span class="evidence-tag">VERIFICADO HOY</span>
+                    <img src="https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=500&q=80" alt="Apto">
+                    <div class="evidence-info"><h5>Zona Güemes</h5><small>Dueño Validado</small></div>
                 </div>
-                <div class="g-item reveal">
-                    <span class="g-badge">AYER</span>
-                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400" alt="Casa">
+                <div class="evidence-card">
+                    <span class="evidence-tag" style="background: var(--danger);">FRAUDE DETECTADO</span>
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=500&q=80" alt="Casa" style="filter: grayscale(1);">
+                    <div class="evidence-info"><h5>Constitución</h5><small>Dirección inexistente</small></div>
                 </div>
-                <div class="g-item reveal">
-                    <span class="g-badge" style="background: var(--danger);">FRAUDE DETECTADO</span>
-                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=400" style="filter: grayscale(1);">
+                <div class="evidence-card">
+                    <span class="evidence-tag">VERIFICADO AYER</span>
+                    <img src="https://images.unsplash.com/photo-1493809842364-78817add7ffb?w=500&q=80" alt="Depto">
+                    <div class="evidence-info"><h5>Playa Grande</h5><small>Acceso Probado</small></div>
                 </div>
             </div>
         </div>
     </section>
 
     <section id="precios" class="section-padding">
-        <div class="container">
-            <h2 class="text-center reveal" style="margin-bottom: 50px;">Honorarios Profesionales</h2>
+        <div class="container reveal">
+            <h2 class="text-center">Tarifas Oficiales 2025</h2>
             <div class="pricing-grid">
-                <div class="price-card reveal">
+                <div class="plan-card">
                     <h3>Ojeada Técnica</h3>
-                    <div class="price">$12.000</div>
-                    <ul class="features">
-                        <li>✅ Constatación de Fachada</li>
-                        <li>✅ Validación de Dirección</li>
-                        <li>✅ Reporte Fotográfico</li>
-                        <li>✅ 48hs Hábiles</li>
+                    <div class="plan-price">$12.000 <small>ARS</small></div>
+                    <ul class="feature-list">
+                        <li>✅ Visita a fachada</li>
+                        <li>✅ Confirmación de dirección</li>
+                        <li>✅ Reporte fotográfico</li>
+                        <li>✅ 48hs hábiles</li>
                     </ul>
-                    <button class="btn btn-outline" onclick="location.href='#contacto'">Seleccionar</button>
+                    <button class="btn btn-outline" onclick="selectPlan('Basico')">Seleccionar</button>
                 </div>
-                <div class="price-card popular reveal">
-                    <div class="tag">RECOMENDADO</div>
+                <div class="plan-card popular">
+                    <div class="pop-tag">MÁS ELEGIDO</div>
                     <h3>Blindaje Total</h3>
-                    <div class="price">$18.000</div>
-                    <ul class="features">
-                        <li>✅ <strong>Prueba de Llaves/Acceso</strong></li>
-                        <li>✅ Validación de Identidad (DNI)</li>
-                        <li>✅ Videollamada Satelital</li>
+                    <div class="plan-price">$18.000 <small>ARS</small></div>
+                    <ul class="feature-list">
+                        <li>✅ <strong>Prueba de Acceso/Llaves</strong></li>
+                        <li>✅ Validación de Identidad</li>
+                        <li>✅ Videollamada en Vivo</li>
                         <li>✅ Prioridad 24hs</li>
                     </ul>
-                    <button class="btn btn-primary" onclick="location.href='#contacto'">Seleccionar</button>
+                    <button class="btn btn-primary" onclick="selectPlan('Premium')">Proteger Alquiler</button>
                 </div>
-                <div class="price-card reveal" style="border-color: var(--danger);">
+                <div class="plan-card" style="border-color: var(--danger);">
                     <h3 style="color: var(--danger);">SOS Urgencia</h3>
-                    <div class="price">$25.000</div>
-                    <p class="text-muted">Salida inmediata de unidad.</p>
-                    <button class="btn btn-danger" onclick="openModal('sos-modal')">ACTIVAR SOS</button>
+                    <div class="plan-price">$25.000 <small>ARS</small></div>
+                    <p style="font-size: 0.9rem; margin-bottom: 20px;">Salida inmediata del inspector.</p>
+                    <a href="https://api.whatsapp.com/send?phone=5492230000000&text=URGENTE%20SOS" class="btn btn-danger">SOLICITAR YA</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="contacto" class="section-padding" style="background: var(--bg-body);">
-        <div class="container">
-            <div class="contact-box reveal" style="max-width: 600px; margin: 0 auto;">
-                <h2 class="text-center">Solicitud de Verificación</h2>
-                <p class="text-center text-muted" style="margin-bottom: 30px;">Sus datos serán tratados con confidencialidad.</p>
-                <form onsubmit="event.preventDefault(); alert('Solicitud Ingresada. Nro Ticket: #9923');">
-                    <div class="input-group">
-                        <label class="input-label">Solicitante</label>
-                        <input type="text" class="input-control" required>
+    <section class="section-padding" style="background: var(--bg-card);">
+        <div class="container reveal">
+            <h2 class="text-center" style="margin-bottom: 40px;">Clientes Protegidos</h2>
+            <div class="testi-scroller">
+                <div class="testi-card">
+                    <div class="user-head">
+                        <div class="u-avatar"></div>
+                        <div><strong>María G.</strong><br><small>★★★★★</small></div>
                     </div>
-                    <div class="input-group">
-                        <label class="input-label">WhatsApp</label>
-                        <input type="tel" class="input-control" required>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">"Me salvaron de perder 200 mil pesos. El dueño era falso. Gracias al reporte no transferí."</p>
+                </div>
+                <div class="testi-card">
+                    <div class="user-head">
+                        <div class="u-avatar"></div>
+                        <div><strong>Carlos R.</strong><br><small>★★★★★</small></div>
                     </div>
-                    <div class="input-group">
-                        <label class="input-label">Ubicación Inmueble</label>
-                        <input type="text" class="input-control" required>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">"Excelente servicio. El inspector fue hasta el depto e hizo videollamada. Viajé tranquilo."</p>
+                </div>
+                <div class="testi-card">
+                    <div class="user-head">
+                        <div class="u-avatar"></div>
+                        <div><strong>Estudio Jurídico L&M</strong><br><small>★★★★★</small></div>
                     </div>
-                    <button class="btn btn-primary" style="width: 100%;">ENVIAR REQUERIMIENTO</button>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">"El informe técnico tiene validez y seriedad. Es un seguro necesario hoy en día."</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto" class="section-padding">
+        <div class="container reveal">
+            <div class="contact-box" style="max-width: 700px; margin: 0 auto; background: var(--bg-card); padding: 40px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: var(--shadow-float);">
+                <h2 class="text-center">Iniciar Expediente</h2>
+                <p class="text-center" style="margin-bottom: 30px; color: var(--text-muted);">Tus datos están encriptados y protegidos.</p>
+                <form onsubmit="submitLead(event)">
+                    <input type="text" class="adm-input" placeholder="Nombre Completo" required>
+                    <input type="tel" class="adm-input" placeholder="WhatsApp (con código área)" required>
+                    <input type="text" class="adm-input" placeholder="Link o Dirección de la Propiedad" required>
+                    <select id="plan-select" class="adm-input">
+                        <option value="Premium">Blindaje Total ($18.000)</option>
+                        <option value="Basico">Ojeada Técnica ($12.000)</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">ENVIAR SOLICITUD</button>
                 </form>
             </div>
         </div>
@@ -423,365 +473,305 @@
 
     <footer>
         <div class="container">
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; margin-bottom: 40px;">
-                <div class="f-col">
-                    <h4 style="color: white; margin-bottom: 15px;">ALQUILA SEGURO MDP</h4>
-                    <p>Agencia técnica de prevención de fraudes inmobiliarios.</p>
+            <div class="footer-cols">
+                <div>
+                    <div class="logo" style="margin-bottom: 20px; color: white;">AlquilaSeguro<span>MDP</span></div>
+                    <p>Agencia privada de constatación. No somos inmobiliaria.</p>
                 </div>
-                <div class="f-col">
-                    <h4>SERVICIOS</h4>
-                    <ul>
-                        <li><a href="#">Verificación Presencial</a></li>
-                        <li><a href="#">Validación Dominial</a></li>
-                        <li><a href="#">Auditoría Remota</a></li>
+                <div>
+                    <h4 class="ft-head">Navegación</h4>
+                    <ul class="ft-links">
+                        <li><a href="#">Inicio</a></li>
+                        <li><a href="#precios">Precios</a></li>
+                        <li><a href="#contacto">Contacto</a></li>
                     </ul>
                 </div>
-                <div class="f-col">
-                    <h4>INTERNO</h4>
-                    <ul>
-                        <li><a href="#" onclick="event.preventDefault(); openModal('login-modal');">Acceso Staff (Admin)</a></li>
+                <div>
+                    <h4 class="ft-head">Corporativo</h4>
+                    <ul class="ft-links">
+                        <li><a href="#" onclick="event.preventDefault(); document.getElementById('login-modal').style.display='flex';">Acceso Staff</a></li>
                         <li><a href="#">Términos Legales</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="text-center" style="border-top: 1px solid #334155; padding-top: 20px;">
-                &copy; 2025 Alquila Seguro MDP. Todos los derechos reservados.
+            <div class="text-center" style="border-top: 1px solid #374151; padding-top: 30px; color: #6B7280;">
+                &copy; 2025 Alquila Seguro MDP. Derechos Reservados.
             </div>
         </div>
     </footer>
 
+    <div class="chat-widget">
+        <div class="chat-window" id="chat-window">
+            <div class="chat-header">
+                <span>Asistente Virtual</span>
+                <span style="cursor: pointer;" onclick="toggleChat()">×</span>
+            </div>
+            <div class="chat-body" id="chat-body">
+                </div>
+        </div>
+
+        <div class="chat-btn btn-bot" onclick="toggleChat()">💬</div>
+        <a href="https://api.whatsapp.com/send?phone=5492230000000" target="_blank" class="chat-btn btn-wa">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        </a>
+    </div>
+
     <div id="login-modal">
-        <div class="contact-box" style="width: 350px;">
-            <h3 class="text-center">Acceso Staff</h3>
-            <input type="text" id="adm-u" placeholder="ID Agente" class="input-control" style="margin: 15px 0;">
-            <input type="password" id="adm-p" placeholder="Clave de Acceso" class="input-control" style="margin-bottom: 20px;">
-            <button onclick="authAdmin()" class="btn btn-primary" style="width: 100%;">INGRESAR</button>
-            <p class="text-center" style="margin-top: 15px; cursor: pointer;" onclick="closeModal('login-modal')">Cerrar</p>
+        <div class="login-box">
+            <h3 class="text-center" style="margin-bottom: 20px; color: var(--text-main);">Acceso Staff</h3>
+            <input type="text" id="adm-u" class="adm-input" placeholder="Usuario">
+            <input type="password" id="adm-p" class="adm-input" placeholder="Contraseña">
+            <button onclick="authAdmin()" class="btn btn-primary" style="width: 100%;">ENTRAR</button>
+            <p class="text-center" style="margin-top: 15px; cursor: pointer; color: var(--text-muted);" onclick="document.getElementById('login-modal').style.display='none'">Cancelar</p>
         </div>
     </div>
 
-    <div id="sos-modal">
-        <div class="sos-box">
-            <h2 style="color: var(--danger);">¡PROTOCOLO DE URGENCIA!</h2>
-            <p style="margin: 15px 0;">Utilice esta opción <strong>SOLO</strong> si se encuentra en la puerta de la propiedad o está a punto de transferir dinero bajo presión.</p>
-            <div style="background: #FEE2E2; padding: 15px; border-radius: 8px; margin: 20px 0; color: #991B1B;">
-                <strong>PRIORIDAD MÁXIMA ACTIVADA</strong><br>Un operador humano atenderá su caso inmediatamente.
-            </div>
-            <a href="https://wa.me/?text=URGENCIA_ESTAFA_EN_PROCESO" class="btn btn-danger" style="width: 100%; justify-content: center; font-size: 1.2rem;">WHATSAPP PRIORITARIO</a>
-            <button onclick="closeModal('sos-modal')" class="btn btn-outline" style="width: 100%; margin-top: 10px; justify-content: center;">Cancelar Alerta</button>
-        </div>
-    </div>
-
-    <div id="admin-overlay">
+    <div id="admin-modal" style="display: none;">
         <div class="sidebar">
-            <h3 style="color:white; margin-bottom: 30px; padding-bottom: 20px; border-bottom: 1px solid #334155;">CENTRAL DE MANDO</h3>
-            <div style="color: #94A3B8; margin-bottom: 10px; font-size: 0.8rem;">HERRAMIENTAS</div>
-            <div class="admin-nav-item" style="color:white; padding: 10px; background: var(--secondary); border-radius: 6px;">📄 Emitir Certificado</div>
-            <div class="admin-nav-item" style="color:white; padding: 10px; margin-top: 5px;">👥 Base de Datos Leads</div>
-            <div class="admin-nav-item" style="color:white; padding: 10px; margin-top: 5px;">⛔ Lista Negra CBU</div>
-            <div style="margin-top: auto; padding-top: 200px;">
-                <button onclick="closeModal('admin-overlay')" class="btn btn-danger" style="width: 100%;">CERRAR SESIÓN</button>
-            </div>
+            <h3 style="margin-bottom: 30px; letter-spacing: 1px;">BACKOFFICE V8</h3>
+            <div class="adm-item active" onclick="showTab('gen')">📄 Generar Código</div>
+            <div class="adm-item" onclick="showTab('leads')">👥 Leads</div>
+            <div class="adm-item" onclick="document.getElementById('admin-modal').style.display='none'">🚪 Salir</div>
         </div>
-        
-        <div class="admin-content">
-            <h2 style="margin-bottom: 30px;">Generación de Certificado Pericial</h2>
-            <div style="background: white; padding: 40px; border-radius: 8px; box-shadow: var(--shadow-lg);">
-                
-                <h4 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 20px;">1. Datos de la Operación</h4>
-                <div class="admin-row">
+        <div class="admin-main">
+            <div id="tab-gen">
+                <h2 style="margin-bottom: 20px; color: var(--text-main);">Generador de Certificado Seguro</h2>
+                <div style="background: var(--bg-card); padding: 30px; border-radius: 12px; display: grid; grid-template-columns: 1fr 1fr; gap: 20px; border: 1px solid var(--border-color);">
                     <div>
-                        <label>Nombre del Solicitante (Se encriptará)</label>
-                        <input type="text" id="adm-cli" class="admin-input" placeholder="Ej: Juan Pérez">
-                    </div>
-                    <div>
-                        <label>Plataforma de Origen</label>
-                        <select class="admin-input">
-                            <option>Facebook Marketplace</option>
-                            <option>Booking / Airbnb</option>
-                            <option>Trato Directo / WhatsApp</option>
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Nombre del Cliente</label>
+                        <input type="text" id="r-cli" class="adm-input">
+                        
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Dirección Inmueble</label>
+                        <input type="text" id="r-dir" class="adm-input">
+                        
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Valor Alquiler (Mensual/Quincenal)</label>
+                        <input type="text" id="r-val" class="adm-input" placeholder="$">
+                        
+                        <label style="display:block; margin-bottom:5px; font-weight:600;">Veredicto Final</label>
+                        <select id="r-ver" class="adm-input">
+                            <option value="1">✅ APTO (VERIFICADO)</option>
+                            <option value="0">❌ FRAUDE (NO APTO)</option>
                         </select>
                     </div>
-                </div>
-                <div class="admin-row">
                     <div>
-                        <label>Dirección del Inmueble</label>
-                        <input type="text" id="adm-dir" class="admin-input">
-                    </div>
-                    <div>
-                        <label>Valor Alquiler (ARS/USD)</label>
-                        <input type="text" class="admin-input">
+                        <h4 style="margin-bottom: 15px; color: var(--text-main);">Matriz de Validación (Binaria)</h4>
+                        <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c1" checked> Existencia Física (A)</label>
+                        <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c2" checked> Coincidencia Fotos (B)</label>
+                        <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c3"> Titularidad Validada (C)</label>
+                        <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c4"> Servicios Activos (D)</label>
+                        <label style="display:block; margin-bottom:8px;"><input type="checkbox" id="c5"> Llaves/Acceso (E)</label>
+                        
+                        <div style="margin-top: 20px; padding: 15px; background: rgba(0,0,0,0.05); border-radius: 6px;">
+                            <small>Código Hash Generado:</small>
+                            <div id="hash-output" style="font-family: monospace; font-weight: bold; color: var(--primary); word-break: break-all;">---</div>
+                        </div>
                     </div>
                 </div>
-
-                <h4 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin: 30px 0 20px;">2. Matriz de Constatación Fáctica (1=SI / 0=NO)</h4>
-                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px;">
-                    <label><input type="checkbox" id="k1"> Inmueble Existe</label>
-                    <label><input type="checkbox" id="k2"> Fachada Coincide</label>
-                    <label><input type="checkbox" id="k3"> Medidor Luz/Gas Activo</label>
-                    <label><input type="checkbox" id="k4"> Llave Abre Puerta</label>
-                    <label><input type="checkbox" id="k5"> Interior Coincide</label>
-                    <label><input type="checkbox" id="k6"> Wifi Conecta</label>
-                    <label><input type="checkbox" id="k7"> DNI Titular Validado</label>
-                    <label><input type="checkbox" id="k8"> Escritura/Impuesto Visto</label>
-                    <label><input type="checkbox" id="k9"> Vecinos Confirman</label>
-                </div>
-
-                <h4 style="border-bottom: 2px solid #eee; padding-bottom: 10px; margin: 30px 0 20px;">3. Dictamen Final</h4>
-                <select id="adm-res" class="admin-input" style="font-weight: bold;">
-                    <option value="APTO">✅ PROPIEDAD VERIFICADA (APTO)</option>
-                    <option value="FRAUDE">❌ RIESGO DE FRAUDE (NO APTO)</option>
-                    <option value="IRREGULAR">⚠️ OBSERVADO / IRREGULAR</option>
-                </select>
-
-                <button onclick="generatePDF()" class="btn btn-primary" style="margin-top: 30px; width: 100%; padding: 15px;">GENERAR DOCUMENTO OFICIAL & CÓDIGO HASH</button>
+                <button class="btn btn-primary" onclick="generateAndPrint()" style="margin-top: 20px;">GENERAR E IMPRIMIR DOCUMENTO</button>
             </div>
         </div>
     </div>
 
     <div id="legal-doc" style="display: none;">
-        <div style="padding: 50px; font-family: 'Courier New', monospace;">
-            <div style="text-align: center; border-bottom: 3px double black; padding-bottom: 20px; margin-bottom: 30px;">
-                <h1 style="margin: 0;">ALQUILA SEGURO MDP</h1>
-                <p>DEPARTAMENTO DE INSPECCIÓN TÉCNICA</p>
-                <p>FECHA: <span id="p-date"></span> | HORA: <span id="p-time"></span></p>
+        <div style="padding: 50px; font-family: 'Times New Roman', serif;">
+            <div style="text-align: center; border-bottom: 2px solid black; padding-bottom: 20px; margin-bottom: 30px;">
+                <h1 style="font-size: 24px; margin: 0; text-transform: uppercase;">Informe Técnico de Constatación</h1>
+                <p style="margin: 5px 0; font-size: 10px;">ALQUILA SEGURO MDP | UNIDAD DE PREVENCIÓN DE FRAUDES</p>
             </div>
             
-            <p><strong>CÓDIGO DE VALIDACIÓN CRIPTOGRÁFICO:</strong></p>
-            <div style="background: #eee; padding: 10px; font-weight: bold; border: 1px solid black; letter-spacing: 2px;" id="p-hash">
-                </div>
-
-            <br>
-            <p><strong>DICTAMEN PERICIAL:</strong> <span id="p-verdict" style="font-size: 1.5rem; font-weight: bold;"></span></p>
+            <p style="text-align: right;">REF: <span id="p-hash"></span></p>
             
-            <p>Se deja constancia que la unidad sita en <strong><span id="p-loc"></span></strong> ha sido inspeccionada bajo los protocolos de seguridad vigentes.</p>
-
-            <table style="width: 100%; margin-top: 30px; border-collapse: collapse;">
-                <tr><td style="border: 1px solid black; padding: 5px;">EXISTENCIA FÍSICA</td><td style="border: 1px solid black; padding: 5px;" id="p-k1"></td></tr>
-                <tr><td style="border: 1px solid black; padding: 5px;">PRUEBA DE ACCESO</td><td style="border: 1px solid black; padding: 5px;" id="p-k4"></td></tr>
-                <tr><td style="border: 1px solid black; padding: 5px;">VALIDACIÓN DOMINIAL</td><td style="border: 1px solid black; padding: 5px;" id="p-k7"></td></tr>
+            <p style="text-align: justify; margin: 20px 0;">En la ciudad de Mar del Plata, siendo el día <span id="p-date"></span>, la <strong>Dirección de Operaciones</strong> procede a emitir el presente informe a solicitud del interesado.</p>
+            
+            <table style="width: 100%; border: 1px solid black; border-collapse: collapse; margin-bottom: 20px;">
+                <tr><td style="padding: 10px; border: 1px solid black;"><strong>CLIENTE</strong></td><td style="padding: 10px; border: 1px solid black;" id="p-cli-out"></td></tr>
+                <tr><td style="padding: 10px; border: 1px solid black;"><strong>UBICACIÓN</strong></td><td style="padding: 10px; border: 1px solid black;" id="p-dir-out"></td></tr>
+                <tr><td style="padding: 10px; border: 1px solid black;"><strong>DICTAMEN</strong></td><td style="padding: 10px; border: 1px solid black; font-weight: bold;" id="p-ver-out"></td></tr>
             </table>
 
-            <div style="margin-top: 60px; text-align: right;">
-                <p>__________________________</p>
-                <p>INSPECTOR CERTIFICADO #042<br>Alquila Seguro MDP</p>
-            </div>
-        </div>
-    </div>
+            <h3>MATRIZ DE RESULTADOS</h3>
+            <ul style="line-height: 2;">
+                <li>Existencia Física: <span id="p-c1"></span></li>
+                <li>Coincidencia Visual: <span id="p-c2"></span></li>
+                <li>Titularidad: <span id="p-c3"></span></li>
+                <li>Prueba de Acceso: <span id="p-c5"></span></li>
+            </ul>
 
-    <div class="floater">
-        <div class="chat-ui" id="chat-ui">
-            <div style="background: var(--primary); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
-                <span>Asistente Virtual</span>
-                <span style="cursor: pointer; font-size: 1.2rem;" onclick="toggleChat()">&times;</span>
+            <div style="margin-top: 60px; text-align: center;">
+                <div style="border-bottom: 1px solid black; width: 250px; margin: 0 auto 10px auto;"></div>
+                <strong>Inspector Certificado</strong><br>
+                <span style="font-size: 12px;">Departamento de Verificación</span>
             </div>
-            <div class="chat-msgs" id="chat-msgs"></div>
         </div>
-        
-        <div class="chat-btn" onclick="toggleChat()">💬</div>
-        <a href="https://wa.me/" class="chat-btn" style="background: #25D366; color: white;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.008-.57-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        </a>
     </div>
 
     <script>
-        // === 1. SYSTEM INIT ===
+        // === INIT ===
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => {
-                document.getElementById('preloader').style.opacity = '0';
-                setTimeout(() => document.getElementById('preloader').style.display = 'none', 500);
-            }, 1000);
-            
+            setTimeout(() => document.getElementById('loader').style.display = 'none', 1000);
             initTheme();
+            initParticles();
             initObserver();
-            initScamCounter();
-            initCanvas();
         });
 
-        // === 2. THEME LOGIC ===
+        // === THEME ===
         function initTheme() {
             const theme = localStorage.getItem('theme') || 'light';
             document.documentElement.setAttribute('data-theme', theme);
-            document.getElementById('checkbox').checked = (theme === 'dark');
         }
         function toggleTheme() {
-            const target = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+            const current = document.documentElement.getAttribute('data-theme');
+            const target = current === 'light' ? 'dark' : 'light';
             document.documentElement.setAttribute('data-theme', target);
             localStorage.setItem('theme', target);
         }
 
-        // === 3. CHATBOT LOGIC V2 (FAQ & FLOW) ===
-        let chatState = 'init';
+        // === CHATBOT TREE ===
+        let chatState = 0;
         function toggleChat() {
-            const ui = document.getElementById('chat-ui');
-            ui.classList.toggle('active');
-            if(ui.classList.contains('active') && document.getElementById('chat-msgs').innerHTML === '') {
-                startChat();
+            const win = document.getElementById('chat-window');
+            win.classList.toggle('active');
+            if (win.classList.contains('active') && document.getElementById('chat-body').children.length === 0) {
+                botSay("👋 Hola. Soy el asistente de seguridad. ¿Qué necesitás saber?");
+                chatOpts(['Precios', '¿Cómo funciona?', 'Garantías']);
             }
         }
 
-        function addMsg(txt, type) {
+        function botSay(txt) {
             const div = document.createElement('div');
-            div.className = `msg ${type}`;
+            div.className = 'msg msg-bot';
             div.innerText = txt;
-            document.getElementById('chat-msgs').appendChild(div);
-            document.getElementById('chat-msgs').scrollTop = 9999;
+            document.getElementById('chat-body').appendChild(div);
         }
 
-        function addOpts(opts) {
+        function chatOpts(options) {
             const div = document.createElement('div');
-            div.className = 'chat-opts';
-            opts.forEach(o => {
-                const b = document.createElement('button');
-                b.className = 'opt-btn';
-                b.innerText = o.label;
-                b.onclick = () => {
-                    addMsg(o.label, 'user');
-                    div.remove();
-                    o.action();
-                };
-                div.appendChild(b);
+            options.forEach(opt => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerText = opt;
+                btn.onclick = () => handleChat(opt, div);
+                div.appendChild(btn);
             });
-            document.getElementById('chat-msgs').appendChild(div);
-            document.getElementById('chat-msgs').scrollTop = 9999;
+            document.getElementById('chat-body').appendChild(div);
         }
 
-        function startChat() {
-            setTimeout(() => addMsg("👋 Bienvenido a Alquila Seguro. Soy tu asistente virtual.", 'bot'), 500);
-            setTimeout(() => addMsg("¿En qué puedo ayudarte hoy?", 'bot'), 1000);
-            setTimeout(() => addOpts([
-                { label: "Quiero verificar una casa", action: () => { 
-                    addMsg("Excelente. Para verificar, necesitás iniciar un expediente. ¿Tenés la dirección o link?", 'bot');
-                    addOpts([
-                        { label: "Sí, tengo todo", action: () => { window.location.href="#contacto"; toggleChat(); } },
-                        { label: "Aún no", action: () => addMsg("No hay problema. Cuando tengas el dato, volvé aquí. Recordá: NO transfieras sin validar.", 'bot') }
-                    ]);
-                }},
-                { label: "Preguntas Frecuentes", action: showFAQ },
-                { label: "Hablar con humano", action: () => { window.open('https://wa.me/', '_blank'); } }
-            ]), 1500);
+        function handleChat(choice, btnContainer) {
+            btnContainer.remove();
+            const usr = document.createElement('div');
+            usr.className = 'msg msg-user';
+            usr.innerText = choice;
+            document.getElementById('chat-body').appendChild(usr);
+
+            setTimeout(() => {
+                if(choice === 'Precios') {
+                    botSay("Tenemos planes desde $12.000 ARS. El 'Blindaje Total' es el más recomendado.");
+                    chatOpts(['Ver Planes', 'Volver']);
+                } else if (choice === '¿Cómo funciona?') {
+                    botSay("Vamos presencialmente a la propiedad, verificamos documentos y te enviamos un PDF certificado.");
+                    chatOpts(['Precios', 'Volver']);
+                } else if (choice === 'Garantías') {
+                    botSay("Si el informe dice APTO y resulta estafa (nunca pasó), te devolvemos el dinero del servicio. Somos peritos verificadores.");
+                    chatOpts(['Volver']);
+                } else if (choice === 'Ver Planes') {
+                    window.location.href = "#precios";
+                } else {
+                    botSay("¿En qué más puedo ayudarte?");
+                    chatOpts(['Precios', '¿Cómo funciona?', 'Garantías']);
+                }
+            }, 600);
         }
 
-        function showFAQ() {
-            addMsg("Aquí tienes las dudas más comunes:", 'bot');
-            addOpts([
-                { label: "¿Cuánto demora?", action: () => { addMsg("Plan Estándar: 48hs. Plan Urgencia: Inmediato.", 'bot'); setTimeout(showFAQ, 2000); } },
-                { label: "¿Qué entregan?", action: () => { addMsg("Un PDF legal firmado con fotos, videos y dictamen pericial.", 'bot'); setTimeout(showFAQ, 2000); } },
-                { label: "Volver", action: startChat }
-            ]);
+        // === RISK TOOL ===
+        function toggleChk(el) {
+            el.classList.toggle('checked');
+            el.querySelector('input').checked = !el.querySelector('input').checked;
+            calcRisk();
+        }
+        function calcRisk() {
+            const score = document.querySelectorAll('.chk-item.checked').length * 25;
+            document.getElementById('score').innerText = score + "%";
+            document.getElementById('gauge').style.transform = `rotate(${score * 1.8}deg)`;
+            if(score > 75) {
+                document.getElementById('risk-label').innerText = "SEGURIDAD ALTA";
+                document.getElementById('risk-label').style.color = "var(--success)";
+                document.getElementById('gauge').style.borderTopColor = "var(--success)";
+            }
         }
 
-        // === 4. ADMIN & SECURITY CODE GENERATOR ===
-        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
-        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
-
+        // === ADMIN LOGIC (COMPLEX HASH) ===
         function authAdmin() {
-            const u = document.getElementById('adm-u').value;
-            const p = document.getElementById('adm-p').value;
-            if(u === 'admin' && p === 'SEGURO2025') {
-                closeModal('login-modal');
-                openModal('admin-overlay');
-            } else {
-                alert('Credenciales inválidas');
-            }
+            if(document.getElementById('adm-u').value === 'admin' && document.getElementById('adm-p').value === 'SEGURO2025') {
+                document.getElementById('login-modal').style.display='none';
+                document.getElementById('admin-modal').style.display='flex';
+            } else { alert("Acceso Denegado"); }
         }
 
-        function generatePDF() {
-            // Data Gathering
-            const clientName = document.getElementById('adm-cli').value || "ANONIMO";
-            const address = document.getElementById('adm-dir').value || "S/D";
-            const verdict = document.getElementById('adm-res').value;
+        function generateAndPrint() {
+            const cli = document.getElementById('r-cli').value || 'Anonimo';
+            const val = document.getElementById('r-val').value || '0';
+            const now = new Date();
             
-            // Generate Code: YYYYMMDD-HASHNAME-CHECKS
-            const date = new Date();
-            const timeCode = date.toISOString().replace(/[-:T.]/g, '').slice(0, 12); // YYYYMMDDHHMM
+            // Generate Code: DDMMYYYYHHMM + NameHash + BinaryChecks
+            const dateStr = now.toLocaleDateString('es-AR').replace(/\//g, '') + now.getHours() + now.getMinutes();
             
-            // Simple "Encrypt" of name (char code sum) to avoid showing name in code directly
+            // Name Encryption (Simple Char Code Sum for Demo)
             let nameHash = 0;
-            for (let i = 0; i < clientName.length; i++) nameHash += clientName.charCodeAt(i);
+            for(let i=0; i<cli.length; i++) nameHash += cli.charCodeAt(i);
             
-            // Checkbox binary string
-            let binaryCheck = "";
-            for(let i=1; i<=9; i++) {
-                binaryCheck += document.getElementById('k'+i).checked ? "1" : "0";
-            }
+            // Checks Binary
+            let bin = '';
+            for(let i=1; i<=5; i++) bin += document.getElementById('c'+i).checked ? '1' : '0';
 
-            const secureCode = `${timeCode}-${nameHash}-${binaryCheck}`;
-
-            // Render to Print View
-            document.getElementById('p-date').innerText = date.toLocaleDateString();
-            document.getElementById('p-time').innerText = date.toLocaleTimeString();
-            document.getElementById('p-hash').innerText = secureCode;
-            document.getElementById('p-verdict').innerText = verdict;
-            document.getElementById('p-loc').innerText = address.toUpperCase();
+            const finalHash = `${dateStr}-${nameHash}-${val.replace(/\D/g,'')}-${bin}`;
             
-            // Boolean logic for print table
-            document.getElementById('p-k1').innerText = document.getElementById('k1').checked ? "POSITIVO" : "NEGATIVO";
-            document.getElementById('p-k4').innerText = document.getElementById('k4').checked ? "POSITIVO" : "NEGATIVO";
-            document.getElementById('p-k7').innerText = document.getElementById('k7').checked ? "POSITIVO" : "NEGATIVO";
+            document.getElementById('hash-output').innerText = finalHash;
+            document.getElementById('p-hash').innerText = finalHash;
+            document.getElementById('p-date').innerText = now.toLocaleDateString();
+            document.getElementById('p-cli-out').innerText = cli.toUpperCase();
+            document.getElementById('p-dir-out').innerText = document.getElementById('r-dir').value.toUpperCase();
+            
+            const v = document.getElementById('r-ver').value;
+            document.getElementById('p-ver-out').innerText = v === '1' ? 'APTO / VERIFICADO' : 'NO APTO / RIESGO';
+            
+            document.getElementById('p-c1').innerText = document.getElementById('c1').checked ? 'POSITIVO' : 'NEGATIVO';
+            document.getElementById('p-c2').innerText = document.getElementById('c2').checked ? 'POSITIVO' : 'NEGATIVO';
+            document.getElementById('p-c3').innerText = document.getElementById('c3').checked ? 'POSITIVO' : 'NEGATIVO';
+            document.getElementById('p-c5').innerText = document.getElementById('c5').checked ? 'POSITIVO' : 'NEGATIVO';
 
             window.print();
         }
 
-        // === 5. UTILITIES ===
-        function toggleRisk(el) {
-            el.classList.toggle('checked');
-            el.querySelector('input').checked = !el.querySelector('input').checked;
-            
-            // Gauge Logic
-            const count = document.querySelectorAll('.custom-checkbox.checked').length;
-            const deg = count * 90; // 4 items max
-            document.querySelector('.gauge').style.transform = `rotate(${deg}deg)`;
-            
-            const txt = document.getElementById('risk-text');
-            if(count === 4) { txt.innerText = "RIESGO BAJO"; txt.style.color = "var(--success)"; document.querySelector('.gauge').style.borderTopColor = "var(--success)"; }
-            else if(count >= 2) { txt.innerText = "RIESGO MEDIO"; txt.style.color = "var(--accent)"; document.querySelector('.gauge').style.borderTopColor = "var(--accent)"; }
-            else { txt.innerText = "RIESGO ALTO"; txt.style.color = "var(--danger)"; document.querySelector('.gauge').style.borderTopColor = "var(--danger)"; }
+        // === UTILS ===
+        function selectPlan(plan) {
+            document.getElementById('plan-select').value = plan;
+            document.getElementById('contacto').scrollIntoView();
         }
-
+        function submitLead(e) {
+            e.preventDefault();
+            alert("Solicitud Enviada. Nos contactaremos a la brevedad.");
+        }
         function initObserver() {
-            const obs = new IntersectionObserver(e => e.forEach(en => { if(en.isIntersecting) en.target.classList.add('active'); }));
+            const obs = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('active') }));
             document.querySelectorAll('.reveal').forEach(el => obs.observe(el));
         }
-
-        function initScamCounter() {
-            let c = 1420;
-            setInterval(() => {
-                c++;
-                document.getElementById('scam-count').innerText = (c/1000).toFixed(2) + 'K';
-            }, 5000);
-        }
-
-        function initCanvas() {
-            const c = document.getElementById('hero-canvas');
+        function initParticles() {
+            const c = document.getElementById('particles');
             const ctx = c.getContext('2d');
             c.width = window.innerWidth; c.height = window.innerHeight;
-            let parts = [];
-            for(let i=0;i<50;i++) parts.push({x:Math.random()*c.width, y:Math.random()*c.height, vx:(Math.random()-.5), vy:(Math.random()-.5)});
-            function tick() {
+            let p = [];
+            for(let i=0;i<50;i++) p.push({x:Math.random()*c.width,y:Math.random()*c.height,vx:Math.random()-0.5,vy:Math.random()-0.5});
+            function draw(){
                 ctx.clearRect(0,0,c.width,c.height);
-                ctx.fillStyle = "rgba(255,255,255,0.3)";
-                parts.forEach(p => {
-                    p.x+=p.vx; p.y+=p.vy;
-                    if(p.x<0||p.x>c.width) p.vx*=-1;
-                    if(p.y<0||p.y>c.height) p.vy*=-1;
-                    ctx.beginPath(); ctx.arc(p.x,p.y,2,0,Math.PI*2); ctx.fill();
+                ctx.fillStyle='rgba(255,255,255,0.2)';
+                p.forEach(pt=>{
+                    pt.x+=pt.vx; pt.y+=pt.vy;
+                    if(pt.x<0||pt.x>c.width) pt.vx*=-1; if(pt.y<0||pt.y>c.height) pt.vy*=-1;
+                    ctx.beginPath(); ctx.arc(pt.x,pt.y,2,0,Math.PI*2); ctx.fill();
                 });
-                requestAnimationFrame(tick);
+                requestAnimationFrame(draw);
             }
-            tick();
-        }
-        
-        function toggleMenu() {
-            const nav = document.querySelector('.nav-menu');
-            nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
-            nav.style.flexDirection = 'column';
-            nav.style.position = 'absolute';
-            nav.style.top = '70px';
-            nav.style.left = '0';
-            nav.style.width = '100%';
-            nav.style.background = 'white';
-            nav.style.padding = '20px';
+            draw();
         }
     </script>
 </body>

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Alquila Seguro MDP</title>
+    <title>1Alquila Seguro MDP</title>
     <meta name="description" content="Organismo privado de constatación inmobiliaria en Mar del Plata. Seguridad jurídica y fáctica para inquilinos.">
     <meta name="keywords" content="verificación inmobiliaria, anti fraude, alquiler seguro, mar del plata">
     <meta name="theme-color" content="#002B49">
@@ -4119,15 +4119,15 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 console.log('%c🛡️ AlquilaSeguro MDP - Sistema V9.0', 'color: #00A8E8; font-size: 18px; font-weight: bold;');
 console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669; font-size: 12px;');
     </script>
-   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 <script>
     document.addEventListener('DOMContentLoaded', () => {
-        // Centro ajustado (Plaza Colón)
-        const centroLat = -38.0000;
-        const centroLng = -57.5440;
+        // Centro del mapa (Plaza Colón)
+        const mapCenterLat = -38.0000;
+        const mapCenterLng = -57.5440;
         
         const map = L.map('map', { 
-            center: [centroLat, centroLng], 
+            center: [mapCenterLat, mapCenterLng], 
             zoom: 13, 
             scrollWheelZoom: false 
         });
@@ -4136,73 +4136,80 @@ console.log('%cSistema de Verificación Inmobiliaria Operativo', 'color: #059669
             attribution: '&copy; OpenStreetMap &copy; CARTO', subdomains: 'abcd', maxZoom: 20
         }).addTo(map);
 
-        // --- GENERACIÓN NATURAL AJUSTADA ---
-        const cantidadPuntos = 250; // REDUCIDO A LA MITAD
+        // --- PARÁMETROS DEL TUS DIBUJOS ---
+        const cantidadPuntos = 250; 
+        
+        // 1. Definición de TU CÍRCULO (Aprox. Luro e Independencia y 4km de radio)
+        const circuloUsuarioLat = -37.9980;
+        const circuloUsuarioLng = -57.5500;
+        const circuloUsuarioRadio = 0.036; // ~4km
+
         let puntosValidos = 0;
         let seguridadLoop = 0;
 
-        // Función de sesgo: Aumentado a 2.8 para mayor concentración central
+        // Función de sesgo MÁS FUERTE (3.5) para chupar todo al centro
         function randBias(exponente) {
             return Math.pow(Math.random(), exponente);
         }
 
-        // Bucle hasta tener 250 puntos EN TIERRA
-        while (puntosValidos < cantidadPuntos && seguridadLoop < 10000) {
+        while (puntosValidos < cantidadPuntos && seguridadLoop < 20000) {
             seguridadLoop++;
 
-            // 1. GENERACIÓN POLAR (Más concentrada)
-            // Reducido el alcance máximo para que no se vayan tan lejos
-            const distanciaMax = 0.06; 
-            // Aumentado el sesgo para que la mayoría caiga cerca del centro
-            const radio = randBias(2.8) * distanciaMax; 
-            
-            // Ángulos: Evitamos el cuadrante Este puro (Mar) para eficiencia
+            // --- GENERACIÓN ---
+            // Usamos un radio de generación un poco más grande, el filtro del círculo se encargará de recortar
+            const distanciaGen = 0.07; 
+            const radio = randBias(3.5) * distanciaGen; // Sesgo 3.5 = Muy concentrado
             const anguloRad = (Math.random() * 4.7) + 0.8; 
 
-            // Convertir a coordenadas
-            let latOffset = Math.sin(anguloRad) * radio;
-            let lngOffset = Math.cos(anguloRad) * radio * 1.4; // Estirado horizontalmente
+            const lat = mapCenterLat + Math.sin(anguloRad) * radio;
+            const lng = mapCenterLng + Math.cos(anguloRad) * radio * 1.4;
 
-            const lat = centroLat + latOffset;
-            const lng = centroLng + lngOffset;
-
-            // 2. FILTRO DE COSTA CURVA (Refinado) 🪄
+            // --- FILTRO 1: COSTA CURVA (Más seguro) ---
             const latCabo = -38.015;
             const lngCabo = -57.512;
             const diferenciaLat = Math.abs(lat - latCabo);
-            
-            // Fórmula de la curva costera (Misma curva suave)
             const limiteEstePermitido = lngCabo - (diferenciaLat * 1.6); 
 
-            // BUFFER DE SEGURIDAD AUMENTADO:
-            // Cambiado de 0.002 a 0.003 (aprox 3 cuadras de margen desde el agua)
-            if (lng > (limiteEstePermitido - 0.003)) {
-                continue; // Cayó muy cerca del agua -> Ignorar
+            // BUFFER AUMENTADO: 0.0045 (aprox 5 cuadras del agua)
+            if (lng > (limiteEstePermitido - 0.0045)) {
+                continue; 
             }
 
-            // 3. COLOR Y LÓGICA (Igual que antes, pero ahora la mayoría será "Centro")
+            // --- FILTRO 2: TU CÍRCULO DIBUJADO ---
+            // Calculamos distancia del punto generado al centro de tu círculo
+            const distAlCentroUsuario = Math.sqrt(
+                Math.pow(lat - circuloUsuarioLat, 2) + 
+                Math.pow(lng - circuloUsuarioLng, 2)
+            );
+
+            // Si está fuera de tu radio, lo borramos
+            if (distAlCentroUsuario > circuloUsuarioRadio) {
+                continue;
+            }
+
+            // --- DIBUJAR (Si pasó los dos filtros) ---
             const rand = Math.random();
             let color, text, circleRadius;
+            
+            // Lógica de colores (Microcentro vs el resto del círculo)
+            const esMicroCentro = (Math.abs(lat - mapCenterLat) < 0.015 && Math.abs(lng - mapCenterLng) < 0.015);
 
-            // Definición de "Centro" (Radio de ~2km)
-            const esCentro = (Math.abs(lat - centroLat) < 0.02 && Math.abs(lng - centroLng) < 0.02);
-
-            if (esCentro) {
-                // CENTRO: Mayoría Verde
-                if (rand < 0.80) { color = '#10B981'; text = '🛡️ Verificado'; circleRadius = 30; }
-                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ Denuncia Activa'; circleRadius = 40; }
-                else { color = '#F59E0B'; text = '✋ En proceso'; circleRadius = 30; }
+            if (esMicroCentro) {
+                circleRadius = 28; // Puntos un pelín más chicos en el tumulto
+                if (rand < 0.80) { color = '#10B981'; text = '🛡️ Verificado'; }
+                else if (rand < 0.95) { color = '#EF4444'; text = '⚠️ Denuncia Activa'; circleRadius = 35; }
+                else { color = '#F59E0B'; text = '✋ En proceso'; }
             } else {
-                // PERIFERIA: Más mezcla
-                if (rand < 0.40) { color = '#10B981'; text = '🛡️ Verificado'; circleRadius = 35; }
-                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ ALERTA: Zona sin relevar'; circleRadius = 50; }
-                else { color = '#F59E0B'; text = '✋ En proceso'; circleRadius = 35; }
+                circleRadius = 35;
+                if (rand < 0.40) { color = '#10B981'; text = '🛡️ Verificado'; }
+                else if (rand < 0.85) { color = '#EF4444'; text = '⚠️ ALERTA: Zona sin relevar'; circleRadius = 45; }
+                else { color = '#F59E0B'; text = '✋ En proceso'; }
             }
 
             L.circle([lat, lng], {
                 color: color,
                 fillColor: color,
-                fillOpacity: 0.65,
+                fillOpacity: 0.7,
                 radius: circleRadius,
                 weight: 0, 
             }).addTo(map).bindPopup(text);
